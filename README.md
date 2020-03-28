@@ -1,0 +1,2 @@
+# MoneyManager
+Money manager application
