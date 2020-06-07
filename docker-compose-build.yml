@@ -1,0 +1,8 @@
+version: '3'
+
+services: 
+    web:
+        build: .
+        image: docker.pkg.github.com/bhagavan44/moneymanager/api
+        
+
