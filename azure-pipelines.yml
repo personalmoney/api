@@ -35,6 +35,7 @@ steps:
 
 - task: DockerCompose@0
   displayName: Push Image
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/develop')
   inputs:
     containerregistrytype: 'Container Registry'
     dockerRegistryEndpoint: 'Github-docker'
@@ -43,6 +44,7 @@ steps:
 
 - task: PowerShell@2
   displayName: 'Release image'
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/develop')
   inputs:
     targetType: 'inline'
     script: |
