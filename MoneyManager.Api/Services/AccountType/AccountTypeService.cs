@@ -1,6 +1,6 @@
 ﻿namespace MoneyManager.Api.Services.AccountType
 {
-    public class AccountTypeServiceL : IAccountTypeService
+    internal class AccountTypeService : IAccountTypeService
     {
     }
 }

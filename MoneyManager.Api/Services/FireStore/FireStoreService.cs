@@ -1,6 +1,6 @@
 ﻿namespace MoneyManager.Api.Services.FireStore
 {
-    public class FireStoreService : IFireStoreService
+    internal class FireStoreService : IFireStoreService
     {
     }
 }

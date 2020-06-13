@@ -5,11 +5,19 @@ using System.Collections.Generic;
 
 namespace MoneyManager.Api.Controllers
 {
+    /// <summary>
+    /// The Account Type controller
+    /// </summary>
+    /// <seealso cref="ControllerBase" />
     [Route("[controller]")]
     [ApiController]
     public class AccountTypeController : ControllerBase
     {
         // GET: AccountType
+        /// <summary>
+        /// Gets the account types.
+        /// </summary>
+        /// <returns>The list account of types</returns>
         [HttpGet]
         public IEnumerable<AccountTypeViewModel> Get()
         {
@@ -21,6 +29,11 @@ namespace MoneyManager.Api.Controllers
         }
 
         // GET: AccountType/5
+        /// <summary>
+        /// Gets the matching account type for the given id.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>The account type</returns>
         [HttpGet("{id}", Name = "Get")]
         public AccountTypeViewModel Get(int id)
         {
@@ -29,18 +42,33 @@ namespace MoneyManager.Api.Controllers
         }
 
         // POST: AccountType
+        /// <summary>
+        /// Creates the account type with the given information.
+        /// </summary>
+        /// <param name="value">The Account type data.</param>
+        /// <returns></returns>
         [HttpPost]
-        public void Post([FromBody] AccountTypeViewModel value)
+        public IActionResult Post([FromBody] AccountTypeViewModel value)
         {
+            return Created("Get", value.Id);
         }
 
         // PUT: AccountType/5
+        /// <summary>
+        /// Updates the account type with the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="value">The Account type data.</param>
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] AccountTypeViewModel value)
         {
         }
 
         // DELETE: AccountType/5
+        /// <summary>
+        /// Deletes the Account type with specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
