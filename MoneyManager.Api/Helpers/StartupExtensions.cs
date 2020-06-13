@@ -1,14 +1,24 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
-using System;
+﻿using System;
 using System.IO;
 using System.Reflection;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
+using MoneyManager.Api.Services.AccountType;
 
 namespace MoneyManager.Api.Helpers
 {
     internal static class StartupExtensions
     {
+        /// <summary>
+        /// Adds the local service.
+        /// </summary>
+        /// <param name="services">The services.</param>
+        public static void AddLocalServices(this IServiceCollection services)
+        {
+            services.AddScoped<IAccountTypeService, AccountTypeService>();
+        }
+
         /// <summary>
         /// Adds the swagger.
         /// </summary>

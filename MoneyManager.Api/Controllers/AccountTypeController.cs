@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
+using MoneyManager.Api.Services.AccountType;
 using MoneyManager.Api.ViewModels;
-using System;
-using System.Collections.Generic;
 
 namespace MoneyManager.Api.Controllers
 {
@@ -13,6 +13,17 @@ namespace MoneyManager.Api.Controllers
     [ApiController]
     public class AccountTypeController : ControllerBase
     {
+        private readonly IAccountTypeService service;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AccountTypeController"/> class.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        public AccountTypeController(IAccountTypeService service)
+        {
+            this.service = service;
+        }
+
         // GET: AccountType
         /// <summary>
         /// Gets the account types.
@@ -21,11 +32,7 @@ namespace MoneyManager.Api.Controllers
         [HttpGet]
         public IEnumerable<AccountTypeViewModel> Get()
         {
-            return new AccountTypeViewModel[]
-            {
-                new AccountTypeViewModel {Id = 1, Name = "Wallets",IsActive = true,CreateTime = DateTime.Now,UpdateTime = DateTime.Now},
-                new AccountTypeViewModel {Id = 2, Name = "Credit card",IsActive = true,CreateTime = DateTime.Now,UpdateTime = DateTime.Now}
-            };
+            return service.Get();
         }
 
         // GET: AccountType/5
@@ -37,8 +44,7 @@ namespace MoneyManager.Api.Controllers
         [HttpGet("{id}", Name = "Get")]
         public AccountTypeViewModel Get(int id)
         {
-            return new AccountTypeViewModel
-            { Id = 1, Name = "Wallets", IsActive = true, CreateTime = DateTime.Now, UpdateTime = DateTime.Now };
+            return service.Get(id);
         }
 
         // POST: AccountType

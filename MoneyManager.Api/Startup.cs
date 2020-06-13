@@ -1,3 +1,4 @@
+using AutoMapper;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +37,8 @@ namespace MoneyManager.Api
                 .AddFluentValidation(c => c.RegisterValidatorsFromAssemblyContaining<Startup>());
 
             services.AddSwaggerServices();
+            services.AddAutoMapper(typeof(Startup));
+            services.AddLocalServices();
         }
 
         /// <summary>
