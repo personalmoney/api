@@ -5,7 +5,7 @@ using MoneyManager.Api.Models.Base;
 namespace MoneyManager.Api.Models
 {
     [FirestoreData]
-    public class Account : StatusModel
+    internal class Account : StatusModel
     {
         [FirestoreProperty("name")]
         public string Name { get; set; }

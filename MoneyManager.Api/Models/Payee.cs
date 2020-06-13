@@ -3,7 +3,7 @@ using MoneyManager.Api.Models.Base;
 
 namespace MoneyManager.Api.Models
 {
-    public class Payee : TimeModel
+    internal class Payee : TimeModel
     {
         [FirestoreProperty("name")]
         public string Name { get; set; }

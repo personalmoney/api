@@ -3,7 +3,7 @@
 namespace MoneyManager.Api.Models.Base
 {
     [FirestoreData]
-    public class BaseModel
+    internal class BaseModel
     {
         [FirestoreProperty("id")]
         public int Id { get; set; }

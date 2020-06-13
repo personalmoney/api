@@ -2,7 +2,7 @@
 
 namespace MoneyManager.Api.Models.Base
 {
-    public class UserModel : BaseModel
+    internal class UserModel : BaseModel
     {
         [FirestoreProperty("userId")]
         public string UserId { get; set; }

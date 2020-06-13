@@ -4,7 +4,7 @@ using MoneyManager.Api.Models.Base;
 
 namespace MoneyManager.Api.Models
 {
-    public class Transaction : TimeModel
+    internal class Transaction : TimeModel
     {
         [FirestoreProperty("accountId")]
         public int AccountId { get; set; }

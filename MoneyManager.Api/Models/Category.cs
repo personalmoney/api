@@ -3,7 +3,7 @@ using MoneyManager.Api.Models.Base;
 
 namespace MoneyManager.Api.Models
 {
-    public class Category : StatusModel
+    internal class Category : StatusModel
     {
         [FirestoreProperty("name")]
         public string Name { get; set; }

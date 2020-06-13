@@ -1,9 +1,9 @@
-﻿using Google.Cloud.Firestore;
-using System;
+﻿using System;
+using Google.Cloud.Firestore;
 
 namespace MoneyManager.Api.Models.Base
 {
-    public class TimeModel : UserModel
+    internal class TimeModel : UserModel
     {
         [FirestoreProperty("createTime")]
         public DateTime CreateTime { get; set; }
