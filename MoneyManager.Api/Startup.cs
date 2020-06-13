@@ -1,10 +1,12 @@
 using AutoMapper;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using MoneyManager.Api.Helpers;
 
 namespace MoneyManager.Api
@@ -39,6 +41,21 @@ namespace MoneyManager.Api
             services.AddSwaggerServices();
             services.AddAutoMapper(typeof(Startup));
             services.AddLocalServices();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    var projectId = Configuration["FireBaseId"];
+                    options.Authority = "https://securetoken.google.com/" + projectId;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = "https://securetoken.google.com/" + projectId,
+                        ValidateAudience = true,
+                        ValidAudience = projectId,
+                        ValidateLifetime = true,
+                    };
+                });
         }
 
         /// <summary>
@@ -59,13 +76,13 @@ namespace MoneyManager.Api
 
             app.UseRouting();
 
+            app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=index}/{action=get}/{id?}");
+                endpoints.MapControllers().RequireAuthorization();
             });
         }
     }
