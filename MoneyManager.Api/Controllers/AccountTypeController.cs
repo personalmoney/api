@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MoneyManager.Api.Services.AccountType;
 using MoneyManager.Api.ViewModels;
@@ -30,21 +31,21 @@ namespace MoneyManager.Api.Controllers
         /// </summary>
         /// <returns>The list account of types</returns>
         [HttpGet]
-        public IEnumerable<AccountTypeViewModel> Get()
+        public async Task<IEnumerable<AccountTypeViewModel>> Get()
         {
-            return service.Get();
+            return await service.Get();
         }
 
-        // GET: AccountType/5
+        // GET: AccountType/Id
         /// <summary>
         /// Gets the matching account type for the given id.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns>The account type</returns>
         [HttpGet("{id}", Name = "Get")]
-        public AccountTypeViewModel Get(int id)
+        public async Task<AccountTypeViewModel> Get(string id)
         {
-            return service.Get(id);
+            return await service.Get(id);
         }
 
         // POST: AccountType
@@ -54,20 +55,31 @@ namespace MoneyManager.Api.Controllers
         /// <param name="value">The Account type data.</param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult Post([FromBody] AccountTypeViewModel value)
+        public async Task<IActionResult> Post([FromBody] AccountTypeViewModel value)
         {
-            return Created("Get", value.Id);
+            value = await service.Create(value);
+            if (value == null)
+            {
+                return BadRequest();
+            }
+            return Ok(value);
         }
 
-        // PUT: AccountType/5
+        // PUT: AccountType/Id
         /// <summary>
         /// Updates the account type with the specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        /// <param name="value">The Account type data.</param>
+        /// <param name="model">The Account type data.</param>
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] AccountTypeViewModel value)
+        public async Task<IActionResult> Put(string id, [FromBody] AccountTypeViewModel model)
         {
+            model = await service.Update(id, model);
+            if (model == null)
+            {
+                return BadRequest();
+            }
+            return Ok(model);
         }
 
         // DELETE: AccountType/5
@@ -76,7 +88,7 @@ namespace MoneyManager.Api.Controllers
         /// </summary>
         /// <param name="id">The identifier.</param>
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(string id)
         {
         }
     }

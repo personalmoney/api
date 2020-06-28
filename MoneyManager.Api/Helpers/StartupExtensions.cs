@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using Google.Cloud.Firestore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using MoneyManager.Api.Models.Base;
 using MoneyManager.Api.Services.AccountType;
+using MoneyManager.Api.Services.FireStore;
 
 namespace MoneyManager.Api.Helpers
 {
@@ -16,6 +20,8 @@ namespace MoneyManager.Api.Helpers
         /// <param name="services">The services.</param>
         public static void AddLocalServices(this IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
+            services.AddScoped<IFireStoreService, FireStoreService>();
             services.AddScoped<IAccountTypeService, AccountTypeService>();
         }
 
@@ -82,6 +88,19 @@ namespace MoneyManager.Api.Helpers
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Money manager API V1");
                 c.RoutePrefix = string.Empty;
             });
+        }
+
+        /// <summary>
+        /// Converts the snapshot to model with identifier.
+        /// </summary>
+        /// <typeparam name="T">The model</typeparam>
+        /// <param name="snapshot">The snapshot.</param>
+        /// <returns>The model</returns>
+        public static T ConvertToWithId<T>(this DocumentSnapshot snapshot) where T : BaseModel
+        {
+            var result = snapshot.ConvertTo<T>();
+            result.Id = snapshot.Id;
+            return result;
         }
     }
 }
