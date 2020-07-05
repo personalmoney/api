@@ -18,7 +18,9 @@ namespace MoneyManager.Api.ViewModels.Mapper
             CreateMap<AccountTypeViewModel, AccountType>();
 
             //Domain to viewmodel
-            CreateMap<AccountType, AccountTypeViewModel>();
+            CreateMap<AccountType, AccountTypeViewModel>()
+                .ForMember(dest => dest.UpdateTime, source => source.MapFrom(c => c.UpdatedTime))
+                .ForMember(dest => dest.CreateTime, source => source.MapFrom(c => c.CreatedTime));
         }
     }
 }

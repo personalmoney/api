@@ -6,9 +6,9 @@ namespace MoneyManager.Api.Models.Base
     internal class TimeModel : UserModel
     {
         [FirestoreProperty("createTime")]
-        public DateTime CreateTime { get; set; }
+        public DateTime? CreatedTime { get; internal set; }
 
         [FirestoreProperty("updateTime")]
-        public DateTime UpdateTime { get; set; }
+        public DateTime? UpdatedTime { get; internal set; }
     }
 }

@@ -49,5 +49,11 @@ namespace MoneyManager.Api.Services.AccountType
             var result = await fireStore.UpdateDocument(document, CollectionName);
             return mapper.Map<AccountTypeViewModel>(result);
         }
+
+        /// <inheritdoc />
+        public async Task Delete(string id)
+        {
+            await fireStore.DeleteDocument(id, CollectionName);
+        }
     }
 }

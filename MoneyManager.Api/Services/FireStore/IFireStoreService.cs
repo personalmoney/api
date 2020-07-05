@@ -43,5 +43,13 @@ namespace MoneyManager.Api.Services.FireStore
         /// <param name="collectionName">Name of the collection.</param>
         /// <returns></returns>
         Task<T> UpdateDocument<T>(T document, string collectionName) where T : TimeModel;
+
+        /// <summary>
+        /// Deletes the document.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="collectionName">Name of the collection.</param>
+        /// <returns></returns>
+        Task DeleteDocument(string id, string collectionName);
     }
 }

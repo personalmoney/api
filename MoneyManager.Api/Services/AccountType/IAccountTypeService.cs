@@ -36,5 +36,12 @@ namespace MoneyManager.Api.Services.AccountType
         /// <param name="model">The model.</param>
         /// <returns></returns>
         Task<AccountTypeViewModel> Update(string id, AccountTypeViewModel model);
+
+        /// <summary>
+        /// Deletes the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        Task Delete(string id);
     }
 }

@@ -62,7 +62,7 @@ namespace MoneyManager.Api.Controllers
             {
                 return BadRequest();
             }
-            return Ok(value);
+            return CreatedAtAction("Get", new { id = value.Id }, value);
         }
 
         // PUT: AccountType/Id
@@ -88,8 +88,9 @@ namespace MoneyManager.Api.Controllers
         /// </summary>
         /// <param name="id">The identifier.</param>
         [HttpDelete("{id}")]
-        public void Delete(string id)
+        public async Task Delete(string id)
         {
+            await service.Delete(id);
         }
     }
 }
