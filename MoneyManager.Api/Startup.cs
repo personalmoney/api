@@ -16,6 +16,8 @@ namespace MoneyManager.Api
     /// </summary>
     public class Startup
     {
+        private static readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup"/> class.
         /// </summary>
@@ -40,7 +42,7 @@ namespace MoneyManager.Api
 
             services.AddSwaggerServices();
             services.AddAutoMapper(typeof(Startup));
-            services.AddLocalServices();
+            services.AddLocalServices(MyAllowSpecificOrigins, Configuration);
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -75,6 +77,8 @@ namespace MoneyManager.Api
             app.UseSwaggerServices();
 
             app.UseRouting();
+
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseAuthentication();
 

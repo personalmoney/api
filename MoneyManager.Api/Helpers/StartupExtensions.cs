@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using Google.Cloud.Firestore;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using MoneyManager.Api.Models.Base;
@@ -18,11 +19,25 @@ namespace MoneyManager.Api.Helpers
         /// Adds the local service.
         /// </summary>
         /// <param name="services">The services.</param>
-        public static void AddLocalServices(this IServiceCollection services)
+        /// <param name="myAllowSpecificOrigins">My allow specific origins.</param>
+        /// <param name="configuration">The configuration.</param>
+        public static void AddLocalServices(this IServiceCollection services, string myAllowSpecificOrigins, IConfiguration configuration)
         {
             services.AddHttpContextAccessor();
             services.AddScoped<IFireStoreService, FireStoreService>();
             services.AddScoped<IAccountTypeService, AccountTypeService>();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: myAllowSpecificOrigins,
+                                  builder =>
+                                  {
+                                      var corsSection = configuration.GetSection("CORS");
+                                      builder
+                                      .WithOrigins(corsSection.Get<string[]>())
+                                      .WithHeaders("Authorization", "Accept");
+                                  });
+            });
         }
 
         /// <summary>
