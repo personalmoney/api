@@ -1,0 +1,5 @@
+FROM docker.pkg.github.com/personalmoney/api/app:${TAG}
+WORKDIR /app
+
+COPY MoneyManager.json google.json
+ENV GOOGLE_APPLICATION_CREDENTIALS=/app/google.json
