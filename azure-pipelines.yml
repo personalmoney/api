@@ -6,6 +6,10 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+  ${{ if eq(variables['Build.SourceBranchName'], 'develop') }}:
+  TAG: $(Build.BuildId)
+
 steps:
 
 - task: DockerInstaller@0
