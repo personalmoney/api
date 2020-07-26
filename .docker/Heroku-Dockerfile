@@ -3,4 +3,5 @@ FROM docker.pkg.github.com/personalmoney/api/app:$BUILD_TAG
 WORKDIR /app
 
 COPY $secretFilePath google.json
+CMD chmod a+r /app/google.json
 ENV GOOGLE_APPLICATION_CREDENTIALS=/app/google.json
