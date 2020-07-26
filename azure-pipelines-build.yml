@@ -1,0 +1,36 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- feature/*
+
+pr:
+- master
+- develop
+
+variables:
+  buildConfiguration: 'Release'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: UseDotNet@2
+  inputs:
+    version: '3.1.x'
+    packageType: sdk
+  displayName: 'Tool installation'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+  displayName: 'Restore'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    projects: '**/*.csproj'
+    arguments: '--configuration $(BuildConfiguration)'
+  displayName: 'Build'
