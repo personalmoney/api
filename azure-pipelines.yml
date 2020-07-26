@@ -6,14 +6,6 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-variables:
-  project: 'MoneyManager.Api/MoneyManager.Api.csproj'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
-  githubImage: 'docker.pkg.github.com/bhagavan44/moneymanager/api:latest'
-  herokuImage: 'registry.heroku.com/money-manager-dev/web'
-  herokuAppName: 'money-manager-dev'
-
 steps:
 
 - task: DockerInstaller@0
@@ -27,12 +19,25 @@ steps:
 
 - task: DockerCompose@0
   displayName: Build Image
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
   inputs:
     containerregistrytype: 'Container Registry'
     dockerRegistryEndpoint: 'Github-docker'
     dockerComposeFile: '**/docker-compose-build.yml'
+    includeLatestTag: true
     action: 'Build services'
 
+- task: DockerCompose@0
+  displayName: Build Image
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/develop')
+  inputs:
+    containerregistrytype: 'Container Registry'
+    dockerRegistryEndpoint: 'Github-docker'
+    dockerComposeFile: '**/docker-compose-build.yml'
+    includeLatestTag: false
+    additionalImageTags: 
+    action: 'Build services'
+  
 - task: DockerCompose@0
   displayName: Push Image
   condition: eq(variables['Build.SourceBranch'], 'refs/heads/develop')
@@ -41,27 +46,3 @@ steps:
     dockerRegistryEndpoint: 'Github-docker'
     dockerComposeFile: '**/docker-compose-build.yml'
     action: 'Push services'
-
-- task: PowerShell@2
-  displayName: 'Release image'
-  condition: eq(variables['Build.SourceBranch'], 'refs/heads/develop')
-  inputs:
-    targetType: 'inline'
-    script: |
-      docker login --username=_ --password=$(herokuToken) registry.heroku.com
-      docker tag $(githubImage) $(herokuImage)
-      docker push $(herokuImage)
-      $imageId = docker inspect $(herokuImage) --format='{{.Id}}'
-      $Params = @{
-      Uri = 'https://api.heroku.com/apps/$(herokuAppName)/formation'
-      Headers = @{ 
-        Authorization = 'Bearer $(herokuToken)'
-        Accept='application/vnd.heroku+json; version=3.docker-releases' 
-      }
-      Body =@"
-      {"updates":[{"type":"web", "docker_image": "$imageId"}]}
-      "@
-      Method = 'PATCH'
-      }
-      Invoke-RestMethod @Params
-    pwsh: true
