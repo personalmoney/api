@@ -9,6 +9,8 @@ pool:
 variables:
   ${{ if eq(variables['Build.SourceBranchName'], 'develop') }}:
     TAG: $(Build.BuildId)
+  ${{ if eq(variables['Build.SourceBranchName'], 'master') }}:
+    TAG: latest
 
 steps:
 
@@ -29,6 +31,7 @@ steps:
     dockerRegistryEndpoint: 'Github-docker'
     dockerComposeFile: '**/docker-compose-build.yml'
     includeLatestTag: true
+    additionalImageTags: $(Build.BuildId)
     action: 'Build services'
 
 - task: DockerCompose@0
