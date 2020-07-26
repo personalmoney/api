@@ -3,6 +3,6 @@ version: '3'
 services: 
     web:
         build: .
-        image: docker.pkg.github.com/personalmoney/api:${TAG}
+        image: docker.pkg.github.com/personalmoney/api/app:${TAG}
         
 
