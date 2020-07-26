@@ -8,7 +8,7 @@ pool:
 
 variables:
   ${{ if eq(variables['Build.SourceBranchName'], 'develop') }}:
-  TAG: $(Build.BuildId)
+    TAG: $(Build.BuildId)
 
 steps:
 
