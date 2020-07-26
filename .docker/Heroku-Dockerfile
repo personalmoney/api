@@ -1,5 +1,6 @@
-FROM docker.pkg.github.com/personalmoney/api/app:${Build.BuildId}
+ARG BUILD_TAG=latest
+FROM docker.pkg.github.com/personalmoney/api/app:$BUILD_TAG
 WORKDIR /app
 
-COPY MoneyManager.json google.json
+COPY $secretFilePath google.json
 ENV GOOGLE_APPLICATION_CREDENTIALS=/app/google.json
