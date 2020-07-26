@@ -1,4 +1,4 @@
-FROM docker.pkg.github.com/personalmoney/api/app:${TAG}
+FROM docker.pkg.github.com/personalmoney/api/app:${Build.BuildId}
 WORKDIR /app
 
 COPY MoneyManager.json google.json
