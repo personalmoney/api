@@ -35,7 +35,7 @@ steps:
     dockerRegistryEndpoint: 'Github-docker'
     dockerComposeFile: '**/docker-compose-build.yml'
     includeLatestTag: false
-    additionalImageTags: 
+    additionalImageTags: $(Build.BuildId)
     action: 'Build services'
   
 - task: DockerCompose@0
