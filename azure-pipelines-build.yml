@@ -31,6 +31,14 @@ steps:
   displayName: 'Build'
 
 - task: DotNetCoreCLI@2
+  displayName: "Install dotnet format"
+  inputs:
+    command: custom
+    custom: tool
+    arguments: install -g dotnet-format --version 4.0.130203 --ignore-failed-sources
+
+- task: DotNetCoreCLI@2
+  displayName: "Check code format"
   inputs:
     command: 'custom'
     custom: 'format'
