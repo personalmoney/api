@@ -2,6 +2,6 @@ ARG BUILD_TAG=latest
 FROM docker.pkg.github.com/personalmoney/api/app:$BUILD_TAG
 WORKDIR /app
 
-COPY $secretFilePath google.json
+COPY ./google.json google.json
 RUN chmod a+r /app/google.json
 ENV GOOGLE_APPLICATION_CREDENTIALS=/app/google.json
