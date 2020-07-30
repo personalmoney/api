@@ -1,0 +1,56 @@
+
+trigger:
+- master
+- develop
+
+pr: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  ${{ if eq(variables['Build.SourceBranchName'], 'develop') }}:
+    TAG: $(Build.BuildId)
+  ${{ if eq(variables['Build.SourceBranchName'], 'master') }}:
+    TAG: latest
+
+steps:
+
+- task: DockerInstaller@0
+  inputs:
+    dockerVersion: '17.09.0-ce'
+    
+- task: Docker@2
+  inputs:
+    containerRegistry: 'Github-docker'
+    command: 'login'
+
+- task: DockerCompose@0
+  displayName: Build Image
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+  inputs:
+    containerregistrytype: 'Container Registry'
+    dockerRegistryEndpoint: 'Github-docker'
+    dockerComposeFile: '**/docker-compose-build.yml'
+    includeLatestTag: true
+    additionalImageTags: $(Build.BuildId)
+    action: 'Build services'
+
+- task: DockerCompose@0
+  displayName: Build Image
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/develop')
+  inputs:
+    containerregistrytype: 'Container Registry'
+    dockerRegistryEndpoint: 'Github-docker'
+    dockerComposeFile: '**/docker-compose-build.yml'
+    includeLatestTag: false
+    additionalImageTags: $(Build.BuildId)
+    action: 'Build services'
+  
+- task: DockerCompose@0
+  displayName: Push Image
+  inputs:
+    containerregistrytype: 'Container Registry'
+    dockerRegistryEndpoint: 'Github-docker'
+    dockerComposeFile: '**/docker-compose-build.yml'
+    action: 'Push services'
