@@ -5,16 +5,16 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["MoneyManager.Api/MoneyManager.Api.csproj", "MoneyManager.Api/"]
-RUN dotnet restore "MoneyManager.Api/MoneyManager.Api.csproj"
+COPY ["PersonalMoney.Api/PersonalMoney.Api.csproj", "PersonalMoney.Api/"]
+RUN dotnet restore "PersonalMoney.Api/PersonalMoney.Api.csproj"
 COPY . .
-WORKDIR "/src/MoneyManager.Api"
-RUN dotnet build "MoneyManager.Api.csproj" -c Release -o /app/build
+WORKDIR "/src/PersonalMoney.Api"
+RUN dotnet build "PersonalMoney.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "MoneyManager.Api.csproj" -c Release -o /app/publish
+RUN dotnet publish "PersonalMoney.Api.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-CMD ASPNETCORE_URLS=http://*:$PORT dotnet MoneyManager.Api.dll
+CMD ASPNETCORE_URLS=http://*:$PORT dotnet PersonalMoney.Api.dll
