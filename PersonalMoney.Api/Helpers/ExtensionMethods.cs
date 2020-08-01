@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using Google.Cloud.Firestore;
-using PersonalMoney.Api.Models.Base;
 using Newtonsoft.Json;
+using PersonalMoney.Api.Models.Base;
 
 namespace PersonalMoney.Api.Helpers
 {
