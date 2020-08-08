@@ -35,7 +35,7 @@ namespace PersonalMoney.Api.Helpers
                                       var corsSection = configuration.GetSection("CORS");
                                       builder
                                       .WithOrigins(corsSection.Get<string[]>())
-                                      .WithHeaders("Authorization", "Accept");
+                                      .WithHeaders("Authorization", "Accept", "Content-Type");
                                   });
             });
         }
