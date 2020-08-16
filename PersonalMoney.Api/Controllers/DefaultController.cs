@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace PersonalMoney.Api.Controllers
 {
@@ -16,6 +17,17 @@ namespace PersonalMoney.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         public ActionResult Get()
+        {
+            return Ok("Service active");
+        }
+
+        /// <summary>
+        /// Gets the Status of this instance.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("Status")]
+        [AllowAnonymous]
+        public ActionResult Status()
         {
             return Ok("Service active");
         }
