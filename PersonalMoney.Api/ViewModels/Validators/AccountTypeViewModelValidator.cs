@@ -19,6 +19,10 @@ namespace PersonalMoney.Api.ViewModels.Validators
 
             RuleFor(c => c.IsActive)
                 .NotNull();
+
+            RuleFor(c => c.Icon)
+                .NotEmpty()
+                .MaximumLength(50);
         }
     }
 }

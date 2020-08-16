@@ -53,7 +53,7 @@ namespace PersonalMoney.Api.Services.AccountType
         /// <inheritdoc />
         public async Task Delete(string id)
         {
-            await fireStore.DeleteDocument(id, CollectionName);
+            await fireStore.SoftDeleteDocument(id, CollectionName);
         }
     }
 }
