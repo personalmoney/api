@@ -32,10 +32,13 @@ namespace PersonalMoney.Api.Helpers
                 options.AddPolicy(name: myAllowSpecificOrigins,
                                   builder =>
                                   {
-                                      var corsSection = configuration.GetSection("CORS");
+                                      var corsMethods = configuration.GetSection("CORS:Methods");
+                                      var corsOrigins = configuration.GetSection("CORS:Origins");
+                                      var corsHeaders = configuration.GetSection("CORS:Headers");
                                       builder
-                                      .WithOrigins(corsSection.Get<string[]>())
-                                      .WithHeaders("Authorization", "Accept", "Content-Type");
+                                      .WithMethods(corsMethods.Get<string[]>())
+                                      .WithOrigins(corsOrigins.Get<string[]>())
+                                      .WithHeaders(corsHeaders.Get<string[]>());
                                   });
             });
         }
