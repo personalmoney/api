@@ -8,5 +8,8 @@ namespace PersonalMoney.Api.Models
     {
         [FirestoreProperty("name")]
         public string Name { get; set; }
+
+        [FirestoreProperty("icon")]
+        public string Icon { get; set; }
     }
 }

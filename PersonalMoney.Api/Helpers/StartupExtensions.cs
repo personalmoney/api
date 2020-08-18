@@ -32,10 +32,13 @@ namespace PersonalMoney.Api.Helpers
                 options.AddPolicy(name: myAllowSpecificOrigins,
                                   builder =>
                                   {
-                                      var corsSection = configuration.GetSection("CORS");
+                                      var corsMethods = configuration.GetSection("CORS:Methods");
+                                      var corsOrigins = configuration.GetSection("CORS:Origins");
+                                      var corsHeaders = configuration.GetSection("CORS:Headers");
                                       builder
-                                      .WithOrigins(corsSection.Get<string[]>())
-                                      .WithHeaders("Authorization", "Accept", "Content-Type");
+                                      .WithMethods(corsMethods.Get<string[]>())
+                                      .WithOrigins(corsOrigins.Get<string[]>())
+                                      .WithHeaders(corsHeaders.Get<string[]>());
                                   });
             });
         }
@@ -51,8 +54,8 @@ namespace PersonalMoney.Api.Helpers
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "Money manager API",
-                    Description = "Money manager api is used to handle the CRUD operations of money manger application",
+                    Title = "Personal money API",
+                    Description = "Person money api is used to handle the CRUD operations of personal money application",
                     TermsOfService = new Uri("https://example.com/terms"),
                     Contact = new OpenApiContact
                     {
@@ -100,7 +103,7 @@ namespace PersonalMoney.Api.Helpers
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Money manager API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Personal money API V1");
                 c.RoutePrefix = string.Empty;
             });
         }

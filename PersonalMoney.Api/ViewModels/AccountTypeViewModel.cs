@@ -15,5 +15,13 @@ namespace PersonalMoney.Api.ViewModels
         /// The name.
         /// </value>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the icon.
+        /// </summary>
+        /// <value>
+        /// The icon.
+        /// </value>
+        public string Icon { get; set; }
     }
 }

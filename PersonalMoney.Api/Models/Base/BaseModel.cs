@@ -6,5 +6,8 @@ namespace PersonalMoney.Api.Models.Base
     internal class BaseModel
     {
         public string Id { get; set; }
+
+        [FirestoreProperty("isDeleted")]
+        public bool IsDeleted { get; set; }
     }
 }

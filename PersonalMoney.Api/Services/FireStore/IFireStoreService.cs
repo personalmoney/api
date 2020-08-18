@@ -51,5 +51,13 @@ namespace PersonalMoney.Api.Services.FireStore
         /// <param name="collectionName">Name of the collection.</param>
         /// <returns></returns>
         Task DeleteDocument(string id, string collectionName);
+
+        /// <summary>
+        /// Soft deletes the document.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="collectionName">Name of the collection.</param>
+        /// <returns></returns>
+        Task SoftDeleteDocument(string id, string collectionName);
     }
 }

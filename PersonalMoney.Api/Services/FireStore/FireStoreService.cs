@@ -29,7 +29,8 @@ namespace PersonalMoney.Api.Services.FireStore
         public async Task<IEnumerable<T>> GetCollection<T>(string collection) where T : BaseModel
         {
             CollectionReference collectionRef = db.Collection(collection);
-            var query = collectionRef.WhereEqualTo("userId", userId);
+            var query = collectionRef.WhereEqualTo("userId", userId)
+                .WhereEqualTo("isDeleted", false);
             QuerySnapshot snapshot = await query.GetSnapshotAsync();
             return snapshot.Documents.Select(c => c.ConvertToWithId<T>());
         }
@@ -46,6 +47,10 @@ namespace PersonalMoney.Api.Services.FireStore
             }
 
             T result = snapshot.ConvertToWithId<T>();
+            if (result.IsDeleted)
+            {
+                return default;
+            }
             return string.Equals(result.UserId, userId) ? result : default;
         }
 
@@ -83,6 +88,20 @@ namespace PersonalMoney.Api.Services.FireStore
                 return;
             }
             await docRef.DeleteAsync();
+        }
+
+        /// <inheritdoc />
+        public async Task SoftDeleteDocument(string id, string collectionName)
+        {
+            var docRef = await CheckDocumentUser(id, collectionName);
+            if (docRef == null)
+            {
+                return;
+            }
+            var dictionary = new Dictionary<string, dynamic>();
+            dictionary["updateTime"] = DateTime.UtcNow;
+            dictionary["isDeleted"] = true;
+            await docRef.SetAsync(dictionary, SetOptions.MergeAll);
         }
 
         private async Task<DocumentReference> CheckDocumentUser(string id, string collectionName)
