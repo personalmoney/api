@@ -7,7 +7,7 @@ namespace PersonalMoney.Api.Services.FireStore
     /// <summary>
     /// FireStore interface to handle the fire store database communication
     /// </summary>
-    internal interface IFireStoreService
+    public interface IFireStoreService
     {
         /// <summary>
         /// Gets the collection.
@@ -25,6 +25,25 @@ namespace PersonalMoney.Api.Services.FireStore
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         Task<T> GetDocument<T>(string collection, string id) where T : UserModel;
+
+        /// <summary>
+        /// Finds the document by name.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection">The collection.</param>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        Task<T> FindDocumentByName<T>(string collection, string name) where T : UserModel;
+
+        /// <summary>
+        /// Finds the document by name.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection">The collection.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        Task<T> FindDocumentByName<T>(string collection, string name, string id) where T : UserModel;
 
         /// <summary>
         /// Adds the document.

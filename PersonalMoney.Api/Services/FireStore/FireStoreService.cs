@@ -115,5 +115,29 @@ namespace PersonalMoney.Api.Services.FireStore
 
             return !string.Equals(snapshot.GetValue<string>("userId"), userId) ? null : docRef;
         }
+
+        /// <inheritdoc />
+        public async Task<T> FindDocumentByName<T>(string collection, string name) where T : UserModel
+        {
+            var collectionReference = db.Collection(collection);
+            Query query = collectionReference.WhereEqualTo("userId", userId)
+                .WhereEqualTo("isDeleted", false)
+                .WhereEqualTo("name", name);
+
+            var snapshot = await query.GetSnapshotAsync();
+            return snapshot.FirstOrDefault()?.ConvertToWithId<T>();
+        }
+
+        /// <inheritdoc />
+        public async Task<T> FindDocumentByName<T>(string collection, string name, string id) where T : UserModel
+        {
+            var collectionReference = db.Collection(collection);
+            Query query = collectionReference.WhereEqualTo("userId", userId)
+                .WhereEqualTo("isDeleted", false)
+                .WhereEqualTo("name", name);
+
+            var snapshot = await query.GetSnapshotAsync();
+            return snapshot.FirstOrDefault(c => c.Id != id)?.ConvertToWithId<T>();
+        }
     }
 }
