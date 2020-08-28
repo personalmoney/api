@@ -6,12 +6,25 @@ using PersonalMoney.Api.Services.FireStore;
 
 namespace PersonalMoney.Api.Services
 {
-    internal abstract class BaseService<TModel, TViewModel> : IBaseService<TModel, TViewModel> where TModel : TimeModel
+    /// <summary>
+    /// Base service
+    /// </summary>
+    /// <typeparam name="TModel">The type of the model.</typeparam>
+    /// <typeparam name="TViewModel">The type of the view model.</typeparam>
+    /// <seealso cref="IBaseService{TModel, TViewModel}" />
+    public abstract class BaseService<TModel, TViewModel> : IBaseService<TModel, TViewModel> where TModel : TimeModel
     {
         private readonly IMapper mapper;
         private readonly IFireStoreService fireStore;
+
+        /// <inheritdoc />
         public abstract string CollectionName { get; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseService{TModel, TViewModel}"/> class.
+        /// </summary>
+        /// <param name="mapper">The mapper.</param>
+        /// <param name="fireStore">The fire store.</param>
         protected BaseService(IMapper mapper, IFireStoreService fireStore)
         {
             this.mapper = mapper;

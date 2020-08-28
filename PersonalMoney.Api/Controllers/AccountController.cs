@@ -27,7 +27,7 @@ namespace PersonalMoney.Api.Controllers
 
         // GET: Account
         /// <summary>
-        /// Gets the account.
+        /// Gets the accounts.
         /// </summary>
         /// <returns>The list accounts</returns>
         [HttpGet]
