@@ -1,15 +1,13 @@
-﻿using Google.Cloud.Firestore;
-using Google.Type;
-using PersonalMoney.Api.Models.Base;
+﻿using System;
+using PersonalMoney.Api.ViewModels.Base;
 
-namespace PersonalMoney.Api.Models
+namespace PersonalMoney.Api.ViewModels
 {
     /// <summary>
-    /// Account Model
+    /// Account View Model
     /// </summary>
-    /// <seealso cref="StatusModel" />
-    [FirestoreData]
-    public class Account : StatusModel
+    /// <seealso cref="StatusViewModel" />
+    public class AccountViewModel : StatusViewModel
     {
         /// <summary>
         /// Gets or sets the name.
@@ -17,17 +15,15 @@ namespace PersonalMoney.Api.Models
         /// <value>
         /// The name.
         /// </value>
-        [FirestoreProperty("name")]
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the type.
+        /// Gets or sets the type of the account.
         /// </summary>
         /// <value>
-        /// The type.
+        /// The type of the account.
         /// </value>
-        [FirestoreProperty("type")]
-        public string Type { get; set; }
+        public string AccountType { get; set; }
 
         /// <summary>
         /// Gets or sets the initial balance.
@@ -35,8 +31,7 @@ namespace PersonalMoney.Api.Models
         /// <value>
         /// The initial balance.
         /// </value>
-        [FirestoreProperty("initialBalance")]
-        public double InitialBalance { get; set; }
+        public decimal InitialBalance { get; set; }
 
         /// <summary>
         /// Gets or sets the minimum balance.
@@ -44,8 +39,7 @@ namespace PersonalMoney.Api.Models
         /// <value>
         /// The minimum balance.
         /// </value>
-        [FirestoreProperty("minimumBalance")]
-        public double MinimumBalance { get; set; }
+        public decimal MinimumBalance { get; set; }
 
         /// <summary>
         /// Gets or sets the credit limit.
@@ -53,8 +47,7 @@ namespace PersonalMoney.Api.Models
         /// <value>
         /// The credit limit.
         /// </value>
-        [FirestoreProperty("creditLimit")]
-        public double CreditLimit { get; set; }
+        public decimal CreditLimit { get; set; }
 
         /// <summary>
         /// Gets or sets the payment date.
@@ -62,8 +55,7 @@ namespace PersonalMoney.Api.Models
         /// <value>
         /// The payment date.
         /// </value>
-        [FirestoreProperty("paymentDate")]
-        public Date PaymentDate { get; set; }
+        public DateTime? PaymentDate { get; set; }
 
         /// <summary>
         /// Gets or sets the interest rate.
@@ -71,16 +63,14 @@ namespace PersonalMoney.Api.Models
         /// <value>
         /// The interest rate.
         /// </value>
-        [FirestoreProperty("interestRate")]
-        public double InterestRate { get; set; }
+        public decimal InterestRate { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to include the account value in balance calculation.
+        /// Gets or sets a value indicating whether [include balance].
         /// </summary>
         /// <value>
-        ///   <c>true</c> to include in balance calculation; otherwise, <c>false</c>.
+        ///   <c>true</c> if [include balance]; otherwise, <c>false</c>.
         /// </value>
-        [FirestoreProperty("includeInBalance")]
         public bool IncludeInBalance { get; set; }
     }
 }

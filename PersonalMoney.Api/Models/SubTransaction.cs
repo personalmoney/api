@@ -3,6 +3,7 @@ using PersonalMoney.Api.Models.Base;
 
 namespace PersonalMoney.Api.Models
 {
+    [FirestoreData]
     internal class SubTransaction : TimeModel
     {
         [FirestoreProperty("transactionId")]
@@ -15,6 +16,6 @@ namespace PersonalMoney.Api.Models
         public int PayeeId { get; set; }
 
         [FirestoreProperty("amount")]
-        public decimal Amount { get; set; }
+        public double Amount { get; set; }
     }
 }

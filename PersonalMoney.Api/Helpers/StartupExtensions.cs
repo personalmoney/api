@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using PersonalMoney.Api.Models.Base;
+using PersonalMoney.Api.Services.Account;
 using PersonalMoney.Api.Services.AccountType;
 using PersonalMoney.Api.Services.FireStore;
 
@@ -26,6 +27,7 @@ namespace PersonalMoney.Api.Helpers
             services.AddHttpContextAccessor();
             services.AddScoped<IFireStoreService, FireStoreService>();
             services.AddScoped<IAccountTypeService, AccountTypeService>();
+            services.AddScoped<IAccountService, AccountService>();
 
             services.AddCors(options =>
             {

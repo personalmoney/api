@@ -1,10 +1,15 @@
-﻿using PersonalMoney.Api.Models.Base;
+﻿using Google.Cloud.Firestore;
+using PersonalMoney.Api.Models.Base;
 
 namespace PersonalMoney.Api.Models
 {
+    [FirestoreData]
     internal class TransactionTag : TimeModel
     {
-        public int TransactionId { get; set; }
-        public int TagId { get; set; }
+        [FirestoreProperty("transactionId")]
+        public string TransactionId { get; set; }
+
+        [FirestoreProperty("tagId")]
+        public string TagId { get; set; }
     }
 }
