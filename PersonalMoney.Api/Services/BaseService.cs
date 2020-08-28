@@ -6,48 +6,48 @@ using PersonalMoney.Api.Services.FireStore;
 
 namespace PersonalMoney.Api.Services
 {
-    internal abstract class BaseService<ViewT, ViewModelT> where ViewT : TimeModel
+    internal abstract class BaseService<TModel, TViewModel> : IBaseService<TModel, TViewModel> where TModel : TimeModel
     {
         private readonly IMapper mapper;
         private readonly IFireStoreService fireStore;
-        protected abstract string CollectionName { get; }
+        public abstract string CollectionName { get; }
 
-        public BaseService(IMapper mapper, IFireStoreService fireStore)
+        protected BaseService(IMapper mapper, IFireStoreService fireStore)
         {
             this.mapper = mapper;
             this.fireStore = fireStore;
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<ViewModelT>> Get()
+        public async Task<IEnumerable<TViewModel>> Get()
         {
-            var views = await fireStore.GetCollection<ViewT>(CollectionName);
-            var viewModels = mapper.Map<IEnumerable<ViewModelT>>(views);
+            var views = await fireStore.GetCollection<TModel>(CollectionName);
+            var viewModels = mapper.Map<IEnumerable<TViewModel>>(views);
             return viewModels;
         }
 
         /// <inheritdoc />
-        public async Task<ViewModelT> Get(string id)
+        public async Task<TViewModel> Get(string id)
         {
-            var view = await fireStore.GetDocument<ViewT>(CollectionName, id);
-            var viewModel = mapper.Map<ViewModelT>(view);
+            var view = await fireStore.GetDocument<TModel>(CollectionName, id);
+            var viewModel = mapper.Map<TViewModel>(view);
             return viewModel;
         }
 
         /// <inheritdoc />
-        public async Task<ViewModelT> Create(ViewModelT model)
+        public async Task<TViewModel> Create(TViewModel model)
         {
-            var document = mapper.Map<ViewT>(model);
+            var document = mapper.Map<TModel>(model);
             var result = await fireStore.AddDocument(document, CollectionName);
-            return mapper.Map<ViewModelT>(result);
+            return mapper.Map<TViewModel>(result);
         }
 
         /// <inheritdoc />
-        public async Task<ViewModelT> Update(string id, ViewModelT model)
+        public async Task<TViewModel> Update(string id, TViewModel model)
         {
-            var document = mapper.Map<ViewT>(model);
+            var document = mapper.Map<TModel>(model);
             var result = await fireStore.UpdateDocument(document, CollectionName);
-            return mapper.Map<ViewModelT>(result);
+            return mapper.Map<TViewModel>(result);
         }
 
         /// <inheritdoc />
