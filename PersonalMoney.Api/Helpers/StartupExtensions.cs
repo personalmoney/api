@@ -10,6 +10,7 @@ using Microsoft.OpenApi.Models;
 using PersonalMoney.Api.Models.Base;
 using PersonalMoney.Api.Services.Account;
 using PersonalMoney.Api.Services.AccountType;
+using PersonalMoney.Api.Services.Category;
 using PersonalMoney.Api.Services.FireStore;
 
 namespace PersonalMoney.Api.Helpers
@@ -28,6 +29,7 @@ namespace PersonalMoney.Api.Helpers
             services.AddScoped<IFireStoreService, FireStoreService>();
             services.AddScoped<IAccountTypeService, AccountTypeService>();
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<ICategoryService, CategoryService>();
 
             services.AddCors(options =>
             {
