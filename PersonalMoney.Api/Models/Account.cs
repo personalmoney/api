@@ -11,22 +11,22 @@ namespace PersonalMoney.Api.Models
         public string Name { get; set; }
 
         [FirestoreProperty("type")]
-        public int Type { get; set; }
+        public string Type { get; set; }
 
         [FirestoreProperty("initialBalance")]
-        public decimal InitialBalance { get; set; }
+        public double InitialBalance { get; set; }
 
         [FirestoreProperty("minimumBalance")]
-        public decimal MinimumBalance { get; set; }
+        public double MinimumBalance { get; set; }
 
         [FirestoreProperty("creditLimit")]
-        public decimal CreditLimit { get; set; }
+        public double CreditLimit { get; set; }
 
         [FirestoreProperty("paymentDate")]
         public Date PaymentDate { get; set; }
 
         [FirestoreProperty("interestRate")]
-        public decimal InterestRate { get; set; }
+        public double InterestRate { get; set; }
 
         [FirestoreProperty("includeInBalance")]
         public bool IncludeInBalance { get; set; }
