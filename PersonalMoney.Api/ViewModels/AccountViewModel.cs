@@ -6,17 +6,9 @@ namespace PersonalMoney.Api.ViewModels
     /// <summary>
     /// Account View Model
     /// </summary>
-    /// <seealso cref="StatusViewModel" />
-    public class AccountViewModel : StatusViewModel
+    /// <seealso cref="NameViewModel" />
+    public class AccountViewModel : NameViewModel
     {
-        /// <summary>
-        /// Gets or sets the name.
-        /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
-        public string Name { get; set; }
-
         /// <summary>
         /// Gets or sets the type of the account.
         /// </summary>
