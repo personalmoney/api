@@ -1,61 +1,61 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using PersonalMoney.Api.Services.Account;
+using PersonalMoney.Api.Services.Category;
 using PersonalMoney.Api.ViewModels;
 
 namespace PersonalMoney.Api.Controllers
 {
     /// <summary>
-    /// The Account controller
+    /// The Category controller
     /// </summary>
     /// <seealso cref="ControllerBase" />
     [Route("[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class CategoryController : ControllerBase
     {
-        private readonly IAccountService service;
+        private readonly ICategoryService service;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AccountController"/> class.
+        /// Initializes a new instance of the <see cref="CategoryController"/> class.
         /// </summary>
         /// <param name="service">The service.</param>
-        public AccountController(IAccountService service)
+        public CategoryController(ICategoryService service)
         {
             this.service = service;
         }
 
-        // GET: Account
+        // GET: Category
         /// <summary>
-        /// Gets the accounts.
+        /// Gets the Categories.
         /// </summary>
-        /// <returns>The list accounts</returns>
+        /// <returns>The list categories</returns>
         [HttpGet]
-        public async Task<IEnumerable<AccountViewModel>> Get()
+        public async Task<IEnumerable<CategoryViewModel>> Get()
         {
             return await service.Get();
         }
 
-        // GET: Account/Id
+        // GET: Category/Id
         /// <summary>
-        /// Gets the matching account for the given id.
+        /// Gets the matching Category for the given id.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        /// <returns>The account type</returns>
+        /// <returns>The Category</returns>
         [HttpGet("{id}")]
-        public async Task<AccountViewModel> Get(string id)
+        public async Task<CategoryViewModel> Get(string id)
         {
             return await service.Get(id);
         }
 
-        // POST: Account
+        // POST: Category
         /// <summary>
-        /// Creates the account with the given information.
+        /// Creates the Category with the given information.
         /// </summary>
-        /// <param name="value">The Account type data.</param>
+        /// <param name="value">The Category data.</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] AccountViewModel value)
+        public async Task<IActionResult> Post([FromBody] CategoryViewModel value)
         {
             value = await service.Create(value);
             if (value == null)
@@ -65,14 +65,14 @@ namespace PersonalMoney.Api.Controllers
             return CreatedAtAction("Get", new { id = value.Id }, value);
         }
 
-        // PUT: Account/Id
+        // PUT: Category/Id
         /// <summary>
-        /// Updates the account with the specified identifier.
+        /// Updates the Category with the specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        /// <param name="model">The Account type data.</param>
+        /// <param name="model">The Category data.</param>
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(string id, [FromBody] AccountViewModel model)
+        public async Task<IActionResult> Put(string id, [FromBody] CategoryViewModel model)
         {
             model = await service.Update(id, model);
             if (model == null)
@@ -82,9 +82,9 @@ namespace PersonalMoney.Api.Controllers
             return Ok(model);
         }
 
-        // DELETE: Account/5
+        // DELETE: Category/Id
         /// <summary>
-        /// Deletes the Account with specified identifier.
+        /// Deletes the Category with specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
         [HttpDelete("{id}")]

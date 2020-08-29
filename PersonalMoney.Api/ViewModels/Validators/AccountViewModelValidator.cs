@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
+using PersonalMoney.Api.Helpers;
 using PersonalMoney.Api.Services.AccountType;
 using PersonalMoney.Api.Services.FireStore;
 
@@ -9,11 +10,13 @@ namespace PersonalMoney.Api.ViewModels.Validators
     /// <summary>
     /// Account View Model validator
     /// </summary>
-    /// <seealso cref="AbstractValidator{T}" />
-    public class AccountViewModelValidator : AbstractValidator<AccountViewModel>
+    /// <seealso cref="NameValidator{TModel,TViewModel}" />
+    public class AccountViewModelValidator : NameValidator<Models.Account, AccountViewModel>
     {
-        private readonly IFireStoreService fireStoreService;
         private readonly IAccountTypeService accountTypeService;
+
+        /// <inheritdoc />
+        public override string CollectionName { get; } = CollectionNames.Accounts;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountViewModelValidator" /> class.
@@ -21,12 +24,9 @@ namespace PersonalMoney.Api.ViewModels.Validators
         /// <param name="fireStoreService">The fire store service.</param>
         /// <param name="accountTypeService">The account type service.</param>
         public AccountViewModelValidator(IFireStoreService fireStoreService, IAccountTypeService accountTypeService)
+        : base(fireStoreService, 50)
         {
-            this.fireStoreService = fireStoreService;
             this.accountTypeService = accountTypeService;
-            RuleFor(c => c.Name)
-             .NotEmpty()
-             .MaximumLength(50);
 
             RuleFor(c => c.IsActive)
                 .NotNull();
@@ -39,26 +39,9 @@ namespace PersonalMoney.Api.ViewModels.Validators
              .MaximumLength(50);
 
             RuleFor(c => c)
-                .MustAsync(CheckName)
-                .OverridePropertyName(c => c.Name)
-                .WithMessage(c => $"Record with the name {c.Name} already exists");
-
-            RuleFor(c => c)
                 .MustAsync(CheckAccountType)
                 .OverridePropertyName(c => c.AccountType)
                 .WithMessage(c => "Invalid Account Type");
-        }
-
-        private async Task<bool> CheckName(AccountViewModel model, CancellationToken cancellationToken)
-        {
-            if (string.IsNullOrEmpty(model.Id))
-            {
-                return await fireStoreService.FindDocumentByName<Models.AccountType>("accounts", model.Name) == null;
-            }
-            else
-            {
-                return await fireStoreService.FindDocumentByName<Models.AccountType>("accounts", model.Name, model.Id) == null;
-            }
         }
 
         private async Task<bool> CheckAccountType(AccountViewModel viewModel, CancellationToken cancellationToken)

@@ -6,19 +6,10 @@ namespace PersonalMoney.Api.Models
     /// <summary>
     /// Account Type database model
     /// </summary>
-    /// <seealso cref="StatusModel" />
+    /// <seealso cref="NameModel" />
     [FirestoreData]
-    public class AccountType : StatusModel
+    public class AccountType : NameModel
     {
-        /// <summary>
-        /// Gets or sets the name.
-        /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
-        [FirestoreProperty("name")]
-        public string Name { get; set; }
-
         /// <summary>
         /// Gets or sets the icon.
         /// </summary>
