@@ -19,5 +19,10 @@
         /// The categories
         /// </summary>
         public static readonly string Categories = "categories";
+
+        /// <summary>
+        /// The sub categories
+        /// </summary>
+        public static readonly string SubCategories = "subCategories";
     }
 }
