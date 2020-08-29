@@ -37,13 +37,15 @@ namespace PersonalMoney.Api.ViewModels.Validators
             this.fireStoreService = fireStoreService;
 
             RuleFor(c => c.Name)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
-                .MaximumLength(maxLength);
-
-            RuleFor(c => c)
-                .MustAsync(CheckName)
-                .OverridePropertyName(c => c.Name)
-                .WithMessage(c => $"Record with the name {c.Name} already exists");
+                .MaximumLength(maxLength)
+                .DependentRules(() =>
+                {
+                    RuleFor(c => c)
+                        .MustAsync(CheckName)
+                        .WithMessage(c => $"Record with the name {c.Name} already exists");
+                });
         }
 
         private async Task<bool> CheckName(TViewModel model, CancellationToken cancellationToken)

@@ -35,18 +35,16 @@ namespace PersonalMoney.Api.ViewModels.Validators
              .NotNull();
 
             RuleFor(c => c.AccountType)
-             .NotEmpty()
-             .MaximumLength(50);
-
-            RuleFor(c => c)
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty()
+                .MaximumLength(50)
                 .MustAsync(CheckAccountType)
-                .OverridePropertyName(c => c.AccountType)
                 .WithMessage(c => "Invalid Account Type");
         }
 
-        private async Task<bool> CheckAccountType(AccountViewModel viewModel, CancellationToken cancellationToken)
+        private async Task<bool> CheckAccountType(string accountType, CancellationToken cancellationToken)
         {
-            return await accountTypeService.Get(viewModel.AccountType) != null;
+            return await accountTypeService.Get(accountType) != null;
         }
     }
 }
