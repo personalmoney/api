@@ -1,14 +1,12 @@
-﻿using Google.Cloud.Firestore;
-using PersonalMoney.Api.Models.Base;
+﻿using PersonalMoney.Api.ViewModels.Base;
 
-namespace PersonalMoney.Api.Models
+namespace PersonalMoney.Api.ViewModels
 {
     /// <summary>
-    /// SubCategory Model
+    /// SubCategory ViewModel
     /// </summary>
-    /// <seealso cref="NameModel" />
-    [FirestoreData]
-    public class SubCategory : NameModel
+    /// <seealso cref="NameViewModel" />
+    public class SubCategoryViewModel : NameViewModel
     {
         /// <summary>
         /// Gets or sets the category identifier.
@@ -16,7 +14,6 @@ namespace PersonalMoney.Api.Models
         /// <value>
         /// The category identifier.
         /// </value>
-        [FirestoreProperty("categoryId")]
         public string CategoryId { get; set; }
     }
 }
