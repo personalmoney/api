@@ -24,5 +24,10 @@
         /// The sub categories
         /// </summary>
         public static readonly string SubCategories = "subCategories";
+
+        /// <summary>
+        /// The payees
+        /// </summary>
+        public static readonly string Payees = "Payees";
     }
 }
