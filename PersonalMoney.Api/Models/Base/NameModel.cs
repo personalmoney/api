@@ -5,8 +5,8 @@ namespace PersonalMoney.Api.Models.Base
     /// <summary>
     /// Name model
     /// </summary>
-    /// <seealso cref="StatusModel" />
-    public class NameModel : StatusModel
+    /// <seealso cref="TimeModel" />
+    public class NameModel : TimeModel
     {
         /// <summary>
         /// Gets or sets the name.
