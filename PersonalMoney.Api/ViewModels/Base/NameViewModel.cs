@@ -3,8 +3,8 @@
     /// <summary>
     ///  Name ViewModel
     /// </summary>
-    /// <seealso cref="StatusViewModel" />
-    public class NameViewModel : StatusViewModel
+    /// <seealso cref="TimeViewModel" />
+    public class NameViewModel : TimeViewModel
     {
         /// <summary>
         /// Gets or sets the name.

@@ -27,8 +27,6 @@ namespace PersonalMoney.Api.ViewModels.Validators
             : base(fireStoreService, 50)
         {
             this.categoryService = categoryService;
-            RuleFor(c => c.IsActive)
-                .NotNull();
 
             RuleFor(c => c.CategoryId)
                 .Cascade(CascadeMode.Stop)

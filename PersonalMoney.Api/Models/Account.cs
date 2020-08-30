@@ -73,5 +73,14 @@ namespace PersonalMoney.Api.Models
         /// </value>
         [FirestoreProperty("includeInBalance")]
         public bool IncludeInBalance { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this Account is active.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is active; otherwise, <c>false</c>.
+        /// </value>
+        [FirestoreProperty("isActive")]
+        public bool IsActive { get; set; }
     }
 }
