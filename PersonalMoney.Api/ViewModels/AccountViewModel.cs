@@ -64,5 +64,13 @@ namespace PersonalMoney.Api.ViewModels
         ///   <c>true</c> if [include balance]; otherwise, <c>false</c>.
         /// </value>
         public bool IncludeInBalance { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this account is active.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is active; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsActive { get; set; }
     }
 }

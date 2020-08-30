@@ -19,9 +19,6 @@ namespace PersonalMoney.Api.ViewModels.Validators
         public AccountTypeViewModelValidator(IFireStoreService fireStoreService)
         : base(fireStoreService, 50)
         {
-            RuleFor(c => c.IsActive)
-                .NotNull();
-
             RuleFor(c => c.Icon)
                 .NotEmpty()
                 .MaximumLength(50);

@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using PersonalMoney.Api.Helpers;
+﻿using PersonalMoney.Api.Helpers;
 using PersonalMoney.Api.Services.FireStore;
 
 namespace PersonalMoney.Api.ViewModels.Validators
@@ -20,8 +19,6 @@ namespace PersonalMoney.Api.ViewModels.Validators
         public CategoryViewModelValidator(IFireStoreService fireStoreService)
             : base(fireStoreService, 50)
         {
-            RuleFor(c => c.IsActive)
-                .NotNull();
         }
     }
 }
