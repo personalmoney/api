@@ -29,5 +29,10 @@
         /// The payees
         /// </summary>
         public static readonly string Payees = "Payees";
+
+        /// <summary>
+        /// The tags
+        /// </summary>
+        public static readonly string Tags = "tags";
     }
 }

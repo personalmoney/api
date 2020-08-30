@@ -14,6 +14,7 @@ using PersonalMoney.Api.Services.Category;
 using PersonalMoney.Api.Services.FireStore;
 using PersonalMoney.Api.Services.Payee;
 using PersonalMoney.Api.Services.SubCategory;
+using PersonalMoney.Api.Services.Tag;
 
 namespace PersonalMoney.Api.Helpers
 {
@@ -34,6 +35,7 @@ namespace PersonalMoney.Api.Helpers
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ISubCategoryService, SubCategoryService>();
             services.AddScoped<IPayeeService, PayeeService>();
+            services.AddScoped<ITagService, TagService>();
 
             services.AddCors(options =>
             {
