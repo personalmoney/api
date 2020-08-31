@@ -44,6 +44,7 @@ namespace PersonalMoney.Api.ViewModels.Validators
                 {
                     RuleFor(c => c)
                         .MustAsync(CheckName)
+                        .OverridePropertyName(c => c.Name)
                         .WithMessage(c => $"Record with the name {c.Name} already exists");
                 });
         }
