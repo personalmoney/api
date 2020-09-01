@@ -10,7 +10,7 @@ namespace PersonalMoney.Api.Controllers
     /// The SubCategory controller
     /// </summary>
     /// <seealso cref="ControllerBase" />
-    [Route("[controller]")]
+    [Route("category/{categoryId}/[controller]")]
     [ApiController]
     public class SubCategoryController : ControllerBase
     {
@@ -25,27 +25,30 @@ namespace PersonalMoney.Api.Controllers
             this.service = service;
         }
 
-        // GET: SubCategory
         /// <summary>
-        /// Gets the SubCategories.
+        /// Gets the by records by category identifier.
         /// </summary>
-        /// <returns>The list SubCategories</returns>
+        /// <param name="categoryId">The category identifier.</param>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<IEnumerable<SubCategoryViewModel>> Get()
+        public async Task<IEnumerable<SubCategoryViewModel>> Get(string categoryId)
         {
-            return await service.Get();
+            return await service.GetByCategoryId(categoryId);
         }
 
         // GET: SubCategory/Id
         /// <summary>
         /// Gets the matching SubCategory for the given id.
         /// </summary>
+        /// <param name="categoryId">The category identifier.</param>
         /// <param name="id">The identifier.</param>
-        /// <returns>The SubCategory</returns>
+        /// <returns>
+        /// The SubCategory
+        /// </returns>
         [HttpGet("{id}")]
-        public async Task<SubCategoryViewModel> Get(string id)
+        public async Task<SubCategoryViewModel> Get(string categoryId, string id)
         {
-            return await service.Get(id);
+            return await service.Get(categoryId, id);
         }
 
         // POST: SubCategory
@@ -62,7 +65,7 @@ namespace PersonalMoney.Api.Controllers
             {
                 return BadRequest();
             }
-            return CreatedAtAction("Get", new { id = value.Id }, value);
+            return CreatedAtAction("Get", new { categoryId = value.CategoryId, id = value.Id }, value);
         }
 
         // PUT: SubCategory/Id
@@ -86,11 +89,12 @@ namespace PersonalMoney.Api.Controllers
         /// <summary>
         /// Deletes the SubCategory with specified identifier.
         /// </summary>
+        /// <param name="categoryId">The category identifier.</param>
         /// <param name="id">The identifier.</param>
         [HttpDelete("{id}")]
-        public async Task Delete(string id)
+        public async Task Delete(string categoryId, string id)
         {
-            await service.Delete(id);
+            await service.Delete(categoryId, id);
         }
     }
 }
