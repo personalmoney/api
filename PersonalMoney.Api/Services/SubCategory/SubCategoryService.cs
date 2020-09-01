@@ -14,7 +14,7 @@ namespace PersonalMoney.Api.Services.SubCategory
     public class SubCategoryService : BaseService<Models.SubCategory, SubCategoryViewModel>, ISubCategoryService
     {
         /// <inheritdoc />
-        public override string CollectionName { get; } = CollectionNames.SubCategories;
+        public override string CollectionName { get; protected set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CategoryService"/> class.

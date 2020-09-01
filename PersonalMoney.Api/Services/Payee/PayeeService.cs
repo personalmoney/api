@@ -8,7 +8,7 @@ namespace PersonalMoney.Api.Services.Payee
     internal class PayeeService : BaseService<Models.Payee, PayeeViewModel>, IPayeeService
     {
         /// <inheritdoc />
-        public override string CollectionName { get; } = CollectionNames.Payees;
+        public override string CollectionName { get; protected set; } = CollectionNames.Payees;
 
         public PayeeService(IMapper mapper, IFireStoreService fireStore)
             : base(mapper, fireStore)

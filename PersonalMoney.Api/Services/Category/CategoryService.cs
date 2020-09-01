@@ -13,7 +13,7 @@ namespace PersonalMoney.Api.Services.Category
     public class CategoryService : BaseService<Models.Category, CategoryViewModel>, ICategoryService
     {
         /// <inheritdoc />
-        public override string CollectionName { get; } = CollectionNames.Categories;
+        public override string CollectionName { get; protected set; } = CollectionNames.Categories;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CategoryService"/> class.

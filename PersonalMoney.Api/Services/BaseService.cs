@@ -18,7 +18,7 @@ namespace PersonalMoney.Api.Services
         private readonly IFireStoreService fireStore;
 
         /// <inheritdoc />
-        public abstract string CollectionName { get; }
+        public abstract string CollectionName { get; protected set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseService{TModel, TViewModel}"/> class.
