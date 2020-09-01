@@ -28,7 +28,7 @@
         /// <summary>
         /// The payees
         /// </summary>
-        public static readonly string Payees = "Payees";
+        public static readonly string Payees = "payees";
 
         /// <summary>
         /// The tags
