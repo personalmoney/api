@@ -18,6 +18,15 @@ namespace PersonalMoney.Api.Services.FireStore
         Task<IEnumerable<T>> GetCollection<T>(string collection) where T : BaseModel;
 
         /// <summary>
+        /// Searches the collection.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection">The collection.</param>
+        /// <param name="conditions">The conditions.</param>
+        /// <returns></returns>
+        Task<IEnumerable<T>> SearchCollection<T>(string collection, IDictionary<string, dynamic> conditions) where T : BaseModel;
+
+        /// <summary>
         /// Gets the document.
         /// </summary>
         /// <typeparam name="T"></typeparam>

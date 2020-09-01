@@ -36,6 +36,20 @@ namespace PersonalMoney.Api.Services.FireStore
         }
 
         /// <inheritdoc />
+        public async Task<IEnumerable<T>> SearchCollection<T>(string collection, IDictionary<string, dynamic> conditions) where T : BaseModel
+        {
+            CollectionReference collectionRef = db.Collection(collection);
+            var query = collectionRef.WhereEqualTo("userId", userId)
+                .WhereEqualTo("isDeleted", false);
+            foreach ((string key, dynamic value) in conditions)
+            {
+                query = query.WhereEqualTo(key, value);
+            }
+            QuerySnapshot snapshot = await query.GetSnapshotAsync();
+            return snapshot.Documents.Select(c => c.ConvertToWithId<T>());
+        }
+
+        /// <inheritdoc />
         public async Task<T> GetDocument<T>(string collection, string id) where T : UserModel
         {
             var docRef = db.Collection(collection).Document(id);
