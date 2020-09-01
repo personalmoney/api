@@ -32,7 +32,7 @@ namespace PersonalMoney.Api.Services
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<TViewModel>> Get()
+        public virtual async Task<IEnumerable<TViewModel>> Get()
         {
             var views = await fireStore.GetCollection<TModel>(CollectionName);
             var viewModels = mapper.Map<IEnumerable<TViewModel>>(views);
@@ -40,7 +40,7 @@ namespace PersonalMoney.Api.Services
         }
 
         /// <inheritdoc />
-        public async Task<TViewModel> Get(string id)
+        public virtual async Task<TViewModel> Get(string id)
         {
             var view = await fireStore.GetDocument<TModel>(CollectionName, id);
             var viewModel = mapper.Map<TViewModel>(view);
@@ -48,7 +48,7 @@ namespace PersonalMoney.Api.Services
         }
 
         /// <inheritdoc />
-        public async Task<TViewModel> Create(TViewModel model)
+        public virtual async Task<TViewModel> Create(TViewModel model)
         {
             var document = mapper.Map<TModel>(model);
             var result = await fireStore.AddDocument(document, CollectionName);
@@ -56,7 +56,7 @@ namespace PersonalMoney.Api.Services
         }
 
         /// <inheritdoc />
-        public async Task<TViewModel> Update(string id, TViewModel model)
+        public virtual async Task<TViewModel> Update(string id, TViewModel model)
         {
             var document = mapper.Map<TModel>(model);
             var result = await fireStore.UpdateDocument(document, CollectionName);
@@ -64,7 +64,7 @@ namespace PersonalMoney.Api.Services
         }
 
         /// <inheritdoc />
-        public async Task Delete(string id)
+        public virtual async Task Delete(string id)
         {
             await fireStore.SoftDeleteDocument(id, CollectionName);
         }
