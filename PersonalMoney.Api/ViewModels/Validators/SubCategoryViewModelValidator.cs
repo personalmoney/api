@@ -16,7 +16,7 @@ namespace PersonalMoney.Api.ViewModels.Validators
         private readonly ICategoryService categoryService;
 
         /// <inheritdoc />
-        public override string CollectionName { get; } = CollectionNames.SubCategories;
+        public override string CollectionName { get; protected set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SubCategoryViewModelValidator" /> class.

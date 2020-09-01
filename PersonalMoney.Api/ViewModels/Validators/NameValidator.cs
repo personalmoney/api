@@ -25,7 +25,7 @@ namespace PersonalMoney.Api.ViewModels.Validators
         /// <value>
         /// The name of the collection.
         /// </value>
-        public abstract string CollectionName { get; }
+        public abstract string CollectionName { get; protected set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NameValidator{TModel, TViewModel}" /> class.

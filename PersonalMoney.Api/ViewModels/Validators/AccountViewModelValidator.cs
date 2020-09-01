@@ -16,7 +16,7 @@ namespace PersonalMoney.Api.ViewModels.Validators
         private readonly IAccountTypeService accountTypeService;
 
         /// <inheritdoc />
-        public override string CollectionName { get; } = CollectionNames.Accounts;
+        public override string CollectionName { get; protected set; } = CollectionNames.Accounts;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountViewModelValidator" /> class.

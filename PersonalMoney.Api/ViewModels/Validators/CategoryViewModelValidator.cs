@@ -10,7 +10,7 @@ namespace PersonalMoney.Api.ViewModels.Validators
     public class CategoryViewModelValidator : NameValidator<Models.Category, CategoryViewModel>
     {
         /// <inheritdoc />
-        public override string CollectionName { get; } = CollectionNames.Categories;
+        public override string CollectionName { get; protected set; } = CollectionNames.Categories;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CategoryViewModelValidator"/> class.

@@ -11,7 +11,7 @@ namespace PersonalMoney.Api.ViewModels.Validators
     public class AccountTypeViewModelValidator : NameValidator<Models.AccountType, AccountTypeViewModel>
     {
         /// <inheritdoc />
-        public override string CollectionName { get; } = CollectionNames.AccountTypes;
+        public override string CollectionName { get; protected set; } = CollectionNames.AccountTypes;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountTypeViewModelValidator"/> class.

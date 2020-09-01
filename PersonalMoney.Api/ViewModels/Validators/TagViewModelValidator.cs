@@ -10,7 +10,7 @@ namespace PersonalMoney.Api.ViewModels.Validators
     public class TagViewModelValidator : NameValidator<Models.Tag, TagViewModel>
     {
         /// <inheritdoc />
-        public override string CollectionName => CollectionNames.Tags;
+        public override string CollectionName { get; protected set; } = CollectionNames.Tags;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TagViewModelValidator"/> class.

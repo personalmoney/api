@@ -10,7 +10,7 @@ namespace PersonalMoney.Api.ViewModels.Validators
     public class PayeeViewModelValidator : NameValidator<Models.Payee, PayeeViewModel>
     {
         /// <inheritdoc />
-        public override string CollectionName => CollectionNames.Payees;
+        public override string CollectionName { get; protected set; } = CollectionNames.Payees;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PayeeViewModelValidator"/> class.
