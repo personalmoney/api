@@ -49,7 +49,13 @@ namespace PersonalMoney.Api.ViewModels.Validators
                 });
         }
 
-        private async Task<bool> CheckName(TViewModel model, CancellationToken cancellationToken)
+        /// <summary>
+        /// Checks the name.
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        protected virtual async Task<bool> CheckName(TViewModel model, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(model.Id))
             {

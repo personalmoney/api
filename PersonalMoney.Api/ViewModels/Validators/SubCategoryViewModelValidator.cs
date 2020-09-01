@@ -36,6 +36,17 @@ namespace PersonalMoney.Api.ViewModels.Validators
                 .WithMessage(c => "Invalid Parent category");
         }
 
+        /// <inheritdoc />
+        protected override async Task<bool> CheckName(SubCategoryViewModel model, CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrEmpty(model.CategoryId))
+            {
+                return false;
+            }
+            CollectionName = $"{CollectionNames.Categories}/{model.CategoryId}/{CollectionNames.SubCategories}";
+            return await base.CheckName(model, cancellationToken);
+        }
+
         private async Task<bool> CheckCategory(string categoryId, CancellationToken cancellationToken)
         {
             return await categoryService.Get(categoryId) != null;
