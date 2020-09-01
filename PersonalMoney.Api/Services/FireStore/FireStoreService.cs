@@ -122,7 +122,7 @@ namespace PersonalMoney.Api.Services.FireStore
             var collectionReference = db.Collection(collection);
             Query query = collectionReference.WhereEqualTo("userId", userId)
                 .WhereEqualTo("isDeleted", false)
-                .WhereEqualTo("name", name);
+                .WhereEqualTo("name_lowercase", name!.ToLower());
 
             var snapshot = await query.GetSnapshotAsync();
             return snapshot.FirstOrDefault()?.ConvertToWithId<T>();
@@ -134,7 +134,7 @@ namespace PersonalMoney.Api.Services.FireStore
             var collectionReference = db.Collection(collection);
             Query query = collectionReference.WhereEqualTo("userId", userId)
                 .WhereEqualTo("isDeleted", false)
-                .WhereEqualTo("name", name);
+                .WhereEqualTo("name_lowercase", name!.ToLower());
 
             var snapshot = await query.GetSnapshotAsync();
             return snapshot.FirstOrDefault(c => c.Id != id)?.ConvertToWithId<T>();

@@ -15,7 +15,8 @@ namespace PersonalMoney.Api.ViewModels.Mapper
         public CategoryMapper()
         {
             //Viewmodel to domain
-            CreateMap<CategoryViewModel, Category>();
+            CreateMap<CategoryViewModel, Category>()
+                .ForMember(dest => dest.NameLowerCase, source => source.MapFrom(c => c.Name!.ToLower()));
 
             //Domain to viewmodel
             CreateMap<Category, CategoryViewModel>()

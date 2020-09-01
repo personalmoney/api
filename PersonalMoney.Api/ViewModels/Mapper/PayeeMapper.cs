@@ -15,7 +15,8 @@ namespace PersonalMoney.Api.ViewModels.Mapper
         public PayeeMapper()
         {
             //Viewmodel to domain
-            CreateMap<PayeeViewModel, Payee>();
+            CreateMap<PayeeViewModel, Payee>()
+                .ForMember(dest => dest.NameLowerCase, source => source.MapFrom(c => c.Name!.ToLower()));
 
             //Domain to viewmodel
             CreateMap<Payee, PayeeViewModel>()

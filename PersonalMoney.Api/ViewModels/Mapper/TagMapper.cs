@@ -15,7 +15,8 @@ namespace PersonalMoney.Api.ViewModels.Mapper
         public TagMapper()
         {
             //Viewmodel to domain
-            CreateMap<TagViewModel, Tag>();
+            CreateMap<TagViewModel, Tag>()
+                .ForMember(dest => dest.NameLowerCase, source => source.MapFrom(c => c.Name!.ToLower()));
 
             //Domain to viewmodel
             CreateMap<Tag, TagViewModel>()

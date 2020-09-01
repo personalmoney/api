@@ -16,5 +16,14 @@ namespace PersonalMoney.Api.Models.Base
         /// </value>
         [FirestoreProperty("name")]
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name lower case.
+        /// </summary>
+        /// <value>
+        /// The name lower case.
+        /// </value>
+        [FirestoreProperty("name_lowercase")]
+        public string NameLowerCase { get; set; }
     }
 }
