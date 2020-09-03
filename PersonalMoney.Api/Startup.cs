@@ -1,10 +1,9 @@
-using System.Net.Mime;
+using AspNetCoreRateLimit;
 using AutoMapper;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -40,6 +39,8 @@ namespace PersonalMoney.Api
         /// <param name="services">The services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddRateLimiterInitial(Configuration);
+
             services.AddControllers(options => options.Filters.Add(new HttpResponseExceptionFilter()))
                 .AddFluentValidation(c => c.RegisterValidatorsFromAssemblyContaining<Startup>());
 
@@ -61,6 +62,8 @@ namespace PersonalMoney.Api
                         ValidateLifetime = true,
                     };
                 });
+
+            services.AddRateLimiterEnd();
         }
 
         /// <summary>
@@ -74,6 +77,8 @@ namespace PersonalMoney.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseIpRateLimiting();
 
             app.UseHttpsRedirection();
 
