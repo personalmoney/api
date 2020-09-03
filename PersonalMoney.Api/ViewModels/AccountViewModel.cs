@@ -66,6 +66,22 @@ namespace PersonalMoney.Api.ViewModels
         public bool IncludeInBalance { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to exclude this account from dashboard.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if need to exclude from this account dashboard; otherwise, <c>false</c>.
+        /// </value>
+        public bool ExcludeFromDashboard { get; set; }
+
+        /// <summary>
+        /// Gets or sets the notes.
+        /// </summary>
+        /// <value>
+        /// The notes.
+        /// </value>
+        public string Notes { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether this account is active.
         /// </summary>
         /// <value>

@@ -82,5 +82,23 @@ namespace PersonalMoney.Api.Models
         /// </value>
         [FirestoreProperty("isActive")]
         public bool IsActive { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to exclude this account from dashboard.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if need to exclude from this account dashboard; otherwise, <c>false</c>.
+        /// </value>
+        [FirestoreProperty("excludeFromDashboard")]
+        public bool ExcludeFromDashboard { get; set; }
+
+        /// <summary>
+        /// Gets or sets the notes.
+        /// </summary>
+        /// <value>
+        /// The notes.
+        /// </value>
+        [FirestoreProperty("notes")]
+        public string Notes { get; set; }
     }
 }
