@@ -17,7 +17,8 @@ namespace PersonalMoney.Api.ViewModels.Mapper
             //Viewmodel to domain
             CreateMap<AccountViewModel, Account>()
                 .ForMember(dest => dest.NameLowerCase, source => source.MapFrom(c => c.Name!.ToLower()))
-                .ForMember(dest => dest.Type, source => source.MapFrom(c => c.AccountType));
+                .ForMember(dest => dest.Type, source => source.MapFrom(c => c.AccountType))
+                .ForMember(dest => dest.Balance, source => source.Ignore());
 
             //Domain to viewmodel
             CreateMap<Account, AccountViewModel>()

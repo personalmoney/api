@@ -34,6 +34,10 @@ namespace PersonalMoney.Api.ViewModels.Validators
             RuleFor(c => c.IncludeInBalance)
              .NotNull();
 
+            RuleFor(c => c.PaymentDate)
+                .InclusiveBetween(1, 31)
+                .When(c => c.PaymentDate.HasValue);
+
             RuleFor(c => c.AccountType)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()

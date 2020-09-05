@@ -1,5 +1,4 @@
 ﻿using Google.Cloud.Firestore;
-using Google.Type;
 using PersonalMoney.Api.Models.Base;
 
 namespace PersonalMoney.Api.Models
@@ -19,6 +18,15 @@ namespace PersonalMoney.Api.Models
         /// </value>
         [FirestoreProperty("type")]
         public string Type { get; set; }
+
+        /// <summary>
+        /// Gets or sets the balance.
+        /// </summary>
+        /// <value>
+        /// The balance.
+        /// </value>
+        [FirestoreProperty("balance")]
+        public double? Balance { get; set; }
 
         /// <summary>
         /// Gets or sets the initial balance.
@@ -54,7 +62,7 @@ namespace PersonalMoney.Api.Models
         /// The payment date.
         /// </value>
         [FirestoreProperty("paymentDate")]
-        public Date PaymentDate { get; set; }
+        public int? PaymentDate { get; set; }
 
         /// <summary>
         /// Gets or sets the interest rate.

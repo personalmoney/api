@@ -1,5 +1,4 @@
-﻿using System;
-using PersonalMoney.Api.ViewModels.Base;
+﻿using PersonalMoney.Api.ViewModels.Base;
 
 namespace PersonalMoney.Api.ViewModels
 {
@@ -16,6 +15,14 @@ namespace PersonalMoney.Api.ViewModels
         /// The type of the account.
         /// </value>
         public string AccountType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the balance.
+        /// </summary>
+        /// <value>
+        /// The balance.
+        /// </value>
+        public decimal Balance { get; set; }
 
         /// <summary>
         /// Gets or sets the initial balance.
@@ -47,7 +54,7 @@ namespace PersonalMoney.Api.ViewModels
         /// <value>
         /// The payment date.
         /// </value>
-        public DateTime? PaymentDate { get; set; }
+        public int? PaymentDate { get; set; }
 
         /// <summary>
         /// Gets or sets the interest rate.
