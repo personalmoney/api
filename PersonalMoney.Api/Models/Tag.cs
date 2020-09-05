@@ -3,9 +3,12 @@ using PersonalMoney.Api.Models.Base;
 
 namespace PersonalMoney.Api.Models
 {
-    internal class Tag : TimeModel
+    /// <summary>
+    /// Tag model
+    /// </summary>
+    /// <seealso cref="NameModel" />
+    [FirestoreData]
+    public class Tag : NameModel
     {
-        [FirestoreProperty("Name")]
-        public string Name { get; set; }
     }
 }

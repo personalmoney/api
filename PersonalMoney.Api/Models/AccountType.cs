@@ -3,12 +3,19 @@ using PersonalMoney.Api.Models.Base;
 
 namespace PersonalMoney.Api.Models
 {
+    /// <summary>
+    /// Account Type database model
+    /// </summary>
+    /// <seealso cref="NameModel" />
     [FirestoreData]
-    internal class AccountType : StatusModel
+    public class AccountType : NameModel
     {
-        [FirestoreProperty("name")]
-        public string Name { get; set; }
-
+        /// <summary>
+        /// Gets or sets the icon.
+        /// </summary>
+        /// <value>
+        /// The icon.
+        /// </value>
         [FirestoreProperty("icon")]
         public string Icon { get; set; }
     }

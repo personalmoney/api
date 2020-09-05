@@ -1,17 +1,17 @@
 ﻿namespace PersonalMoney.Api.ViewModels.Base
 {
     /// <summary>
-    /// Status viewModel
+    ///  Name ViewModel
     /// </summary>
     /// <seealso cref="TimeViewModel" />
-    public class StatusViewModel : TimeViewModel
+    public class NameViewModel : TimeViewModel
     {
         /// <summary>
-        /// Gets or sets the is active.
+        /// Gets or sets the name.
         /// </summary>
         /// <value>
-        /// The is active.
+        /// The name.
         /// </value>
-        public bool? IsActive { get; set; }
+        public string Name { get; set; }
     }
 }

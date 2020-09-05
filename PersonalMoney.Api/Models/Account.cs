@@ -1,34 +1,112 @@
 ﻿using Google.Cloud.Firestore;
-using Google.Type;
 using PersonalMoney.Api.Models.Base;
 
 namespace PersonalMoney.Api.Models
 {
+    /// <summary>
+    /// Account Model
+    /// </summary>
+    /// <seealso cref="NameModel" />
     [FirestoreData]
-    internal class Account : StatusModel
+    public class Account : NameModel
     {
-        [FirestoreProperty("name")]
-        public string Name { get; set; }
-
+        /// <summary>
+        /// Gets or sets the type.
+        /// </summary>
+        /// <value>
+        /// The type.
+        /// </value>
         [FirestoreProperty("type")]
-        public int Type { get; set; }
+        public string Type { get; set; }
 
+        /// <summary>
+        /// Gets or sets the balance.
+        /// </summary>
+        /// <value>
+        /// The balance.
+        /// </value>
+        [FirestoreProperty("balance")]
+        public double? Balance { get; set; }
+
+        /// <summary>
+        /// Gets or sets the initial balance.
+        /// </summary>
+        /// <value>
+        /// The initial balance.
+        /// </value>
         [FirestoreProperty("initialBalance")]
-        public decimal InitialBalance { get; set; }
+        public double InitialBalance { get; set; }
 
+        /// <summary>
+        /// Gets or sets the minimum balance.
+        /// </summary>
+        /// <value>
+        /// The minimum balance.
+        /// </value>
         [FirestoreProperty("minimumBalance")]
-        public decimal MinimumBalance { get; set; }
+        public double MinimumBalance { get; set; }
 
+        /// <summary>
+        /// Gets or sets the credit limit.
+        /// </summary>
+        /// <value>
+        /// The credit limit.
+        /// </value>
         [FirestoreProperty("creditLimit")]
-        public decimal CreditLimit { get; set; }
+        public double CreditLimit { get; set; }
 
+        /// <summary>
+        /// Gets or sets the payment date.
+        /// </summary>
+        /// <value>
+        /// The payment date.
+        /// </value>
         [FirestoreProperty("paymentDate")]
-        public Date PaymentDate { get; set; }
+        public int? PaymentDate { get; set; }
 
+        /// <summary>
+        /// Gets or sets the interest rate.
+        /// </summary>
+        /// <value>
+        /// The interest rate.
+        /// </value>
         [FirestoreProperty("interestRate")]
-        public decimal InterestRate { get; set; }
+        public double InterestRate { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether to include the account value in balance calculation.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> to include in balance calculation; otherwise, <c>false</c>.
+        /// </value>
         [FirestoreProperty("includeInBalance")]
         public bool IncludeInBalance { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this Account is active.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is active; otherwise, <c>false</c>.
+        /// </value>
+        [FirestoreProperty("isActive")]
+        public bool IsActive { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to exclude this account from dashboard.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if need to exclude from this account dashboard; otherwise, <c>false</c>.
+        /// </value>
+        [FirestoreProperty("excludeFromDashboard")]
+        public bool ExcludeFromDashboard { get; set; }
+
+        /// <summary>
+        /// Gets or sets the notes.
+        /// </summary>
+        /// <value>
+        /// The notes.
+        /// </value>
+        [FirestoreProperty("notes")]
+        public string Notes { get; set; }
     }
 }

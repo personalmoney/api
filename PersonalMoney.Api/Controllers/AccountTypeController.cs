@@ -42,7 +42,7 @@ namespace PersonalMoney.Api.Controllers
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns>The account type</returns>
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
         public async Task<AccountTypeViewModel> Get(string id)
         {
             return await service.Get(id);

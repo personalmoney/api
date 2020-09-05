@@ -3,12 +3,20 @@ using PersonalMoney.Api.Models.Base;
 
 namespace PersonalMoney.Api.Models
 {
-    internal class SubCategory : StatusModel
+    /// <summary>
+    /// SubCategory Model
+    /// </summary>
+    /// <seealso cref="NameModel" />
+    [FirestoreData]
+    public class SubCategory : NameModel
     {
-        [FirestoreProperty("name")]
-        public string Name { get; set; }
-
+        /// <summary>
+        /// Gets or sets the category identifier.
+        /// </summary>
+        /// <value>
+        /// The category identifier.
+        /// </value>
         [FirestoreProperty("categoryId")]
-        public int CategoryId { get; set; }
+        public string CategoryId { get; set; }
     }
 }

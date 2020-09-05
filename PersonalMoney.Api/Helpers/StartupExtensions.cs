@@ -2,14 +2,21 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using AspNetCoreRateLimit;
 using Google.Cloud.Firestore;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using PersonalMoney.Api.Models.Base;
+using PersonalMoney.Api.Services.Account;
 using PersonalMoney.Api.Services.AccountType;
+using PersonalMoney.Api.Services.Category;
 using PersonalMoney.Api.Services.FireStore;
+using PersonalMoney.Api.Services.Payee;
+using PersonalMoney.Api.Services.SubCategory;
+using PersonalMoney.Api.Services.Tag;
 
 namespace PersonalMoney.Api.Helpers
 {
@@ -26,6 +33,11 @@ namespace PersonalMoney.Api.Helpers
             services.AddHttpContextAccessor();
             services.AddScoped<IFireStoreService, FireStoreService>();
             services.AddScoped<IAccountTypeService, AccountTypeService>();
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ISubCategoryService, SubCategoryService>();
+            services.AddScoped<IPayeeService, PayeeService>();
+            services.AddScoped<ITagService, TagService>();
 
             services.AddCors(options =>
             {
@@ -92,6 +104,31 @@ namespace PersonalMoney.Api.Helpers
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
+        }
+
+        public static void AddRateLimiterInitial(this IServiceCollection services, IConfiguration configuration)
+        {
+            // needed to load configuration from appsettings.json
+            services.AddOptions();
+
+            // needed to store rate limit counters and ip rules
+            services.AddMemoryCache();
+
+            //load general configuration from appsettings.json
+            services.Configure<IpRateLimitOptions>(configuration.GetSection("IpRateLimiting"));
+
+            //load ip rules from appsettings.json
+            services.Configure<IpRateLimitPolicies>(configuration.GetSection("IpRateLimitPolicies"));
+
+            // inject counter and rules stores
+            services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+            services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+        }
+
+        public static void AddRateLimiterEnd(this IServiceCollection services)
+        {
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
         }
 
         /// <summary>

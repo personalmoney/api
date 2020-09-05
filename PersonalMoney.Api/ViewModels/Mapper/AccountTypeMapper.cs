@@ -15,7 +15,8 @@ namespace PersonalMoney.Api.ViewModels.Mapper
         public AccountTypeMapper()
         {
             //Viewmodel to domain
-            CreateMap<AccountTypeViewModel, AccountType>();
+            CreateMap<AccountTypeViewModel, AccountType>()
+                .ForMember(dest => dest.NameLowerCase, source => source.MapFrom(c => c.Name!.ToLower()));
 
             //Domain to viewmodel
             CreateMap<AccountType, AccountTypeViewModel>()

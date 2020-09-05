@@ -1,22 +1,34 @@
-﻿using Google.Cloud.Firestore;
+﻿using System.Collections.Generic;
+using Google.Cloud.Firestore;
 using Google.Type;
 using PersonalMoney.Api.Models.Base;
 
 namespace PersonalMoney.Api.Models
 {
+    [FirestoreData]
     internal class Transaction : TimeModel
     {
+        public Transaction() : this(new List<SubTransaction>(), new List<TransactionTag>())
+        {
+        }
+
+        public Transaction(IList<SubTransaction> subTransactions, IList<TransactionTag> tags)
+        {
+            SubTransactions = subTransactions;
+            Tags = tags;
+        }
+
         [FirestoreProperty("accountId")]
-        public int AccountId { get; set; }
+        public string AccountId { get; set; }
 
         [FirestoreProperty("toAccountId")]
-        public int ToAccountId { get; set; }
+        public string ToAccountId { get; set; }
 
         [FirestoreProperty("subCategoryId")]
-        public int SubCategoryId { get; set; }
+        public string SubCategoryId { get; set; }
 
         [FirestoreProperty("payeeId")]
-        public int PayeeId { get; set; }
+        public string PayeeId { get; set; }
 
         [FirestoreProperty("status")]
         public string Status { get; set; }
@@ -25,10 +37,10 @@ namespace PersonalMoney.Api.Models
         public Date Date { get; set; }
 
         [FirestoreProperty("amount")]
-        public decimal Amount { get; set; }
+        public double Amount { get; set; }
 
         [FirestoreProperty("toAmount")]
-        public decimal ToAmount { get; set; }
+        public double ToAmount { get; set; }
 
         [FirestoreProperty("type")]
         public string Type { get; set; }
@@ -38,5 +50,11 @@ namespace PersonalMoney.Api.Models
 
         [FirestoreProperty("number")]
         public string Number { get; set; }
+
+        [FirestoreProperty("subTransactions")]
+        public IList<SubTransaction> SubTransactions { get; }
+
+        [FirestoreProperty("tags")]
+        public IList<TransactionTag> Tags { get; }
     }
 }
