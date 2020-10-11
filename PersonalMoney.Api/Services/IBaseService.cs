@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using PersonalMoney.Api.Models.Base;
 
@@ -24,6 +25,13 @@ namespace PersonalMoney.Api.Services
         /// </summary>
         /// <returns></returns>
         Task<IEnumerable<TViewModel>> Get();
+
+        /// <summary>
+        /// Gets the specified last synchronize time.
+        /// </summary>
+        /// <param name="lastSyncTime">The last synchronize time.</param>
+        /// <returns></returns>
+        Task<IEnumerable<TViewModel>> Get(DateTime? lastSyncTime);
 
         /// <summary>
         /// Gets the record with the specified identifier.

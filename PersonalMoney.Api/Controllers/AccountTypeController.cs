@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PersonalMoney.Api.Services.AccountType;
@@ -34,6 +35,16 @@ namespace PersonalMoney.Api.Controllers
         public async Task<IEnumerable<AccountTypeViewModel>> Get()
         {
             return await service.Get();
+        }
+
+        /// <summary>
+        /// Gets the modified account types from the given time.
+        /// </summary>
+        /// <returns>The list account of types</returns>
+        [HttpGet("modified/{lastSyncTime}")]
+        public async Task<IEnumerable<AccountTypeViewModel>> GetModifiedRecords(DateTime? lastSyncTime)
+        {
+            return await service.Get(lastSyncTime);
         }
 
         // GET: AccountType/Id

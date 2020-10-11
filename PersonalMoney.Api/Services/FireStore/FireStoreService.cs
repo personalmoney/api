@@ -36,6 +36,19 @@ namespace PersonalMoney.Api.Services.FireStore
         }
 
         /// <inheritdoc />
+        public async Task<IEnumerable<T>> GetCollection<T>(string collection, DateTime? modifiedTime) where T : BaseModel
+        {
+            CollectionReference collectionRef = db.Collection(collection);
+            var query = collectionRef.WhereEqualTo("userId", userId);
+            if (modifiedTime.HasValue)
+            {
+                query = query.WhereGreaterThanOrEqualTo("updateTime", modifiedTime.Value.ToUniversalTime());
+            }
+            QuerySnapshot snapshot = await query.GetSnapshotAsync();
+            return snapshot.Documents.Select(c => c.ConvertToWithId<T>());
+        }
+
+        /// <inheritdoc />
         public async Task<IEnumerable<T>> SearchCollection<T>(string collection, IDictionary<string, dynamic> conditions) where T : BaseModel
         {
             CollectionReference collectionRef = db.Collection(collection);
@@ -112,9 +125,12 @@ namespace PersonalMoney.Api.Services.FireStore
             {
                 return;
             }
-            var dictionary = new Dictionary<string, dynamic>();
-            dictionary["updateTime"] = DateTime.UtcNow;
-            dictionary["isDeleted"] = true;
+
+            var dictionary = new Dictionary<string, dynamic>
+            {
+                ["updateTime"] = DateTime.UtcNow,
+                ["isDeleted"] = true
+            };
             await docRef.SetAsync(dictionary, SetOptions.MergeAll);
         }
 

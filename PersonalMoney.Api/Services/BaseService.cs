@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using PersonalMoney.Api.Models.Base;
@@ -35,6 +36,14 @@ namespace PersonalMoney.Api.Services
         public virtual async Task<IEnumerable<TViewModel>> Get()
         {
             var views = await fireStore.GetCollection<TModel>(CollectionName);
+            var viewModels = mapper.Map<IEnumerable<TViewModel>>(views);
+            return viewModels;
+        }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<TViewModel>> Get(DateTime? lastSyncTime)
+        {
+            var views = await fireStore.GetCollection<TModel>(CollectionName, lastSyncTime);
             var viewModels = mapper.Map<IEnumerable<TViewModel>>(views);
             return viewModels;
         }

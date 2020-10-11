@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PersonalMoney.Api.Services.Category;
@@ -34,6 +35,16 @@ namespace PersonalMoney.Api.Controllers
         public async Task<IEnumerable<CategoryViewModel>> Get()
         {
             return await service.Get();
+        }
+
+        /// <summary>
+        /// Gets the modified categories from the given time.
+        /// </summary>
+        /// <returns>The list account of types</returns>
+        [HttpGet("modified/{lastSyncTime}")]
+        public async Task<IEnumerable<CategoryViewModel>> GetModifiedRecords(DateTime? lastSyncTime)
+        {
+            return await service.Get(lastSyncTime);
         }
 
         // GET: Category/Id

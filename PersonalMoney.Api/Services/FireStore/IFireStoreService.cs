@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using PersonalMoney.Api.Models.Base;
 
@@ -16,6 +17,15 @@ namespace PersonalMoney.Api.Services.FireStore
         /// <param name="collection">The collection.</param>
         /// <returns></returns>
         Task<IEnumerable<T>> GetCollection<T>(string collection) where T : BaseModel;
+
+        /// <summary>
+        /// Gets the collection.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection">The collection.</param>
+        /// <param name="modifiedTime">The modified time.</param>
+        /// <returns></returns>
+        Task<IEnumerable<T>> GetCollection<T>(string collection, DateTime? modifiedTime) where T : BaseModel;
 
         /// <summary>
         /// Searches the collection.
