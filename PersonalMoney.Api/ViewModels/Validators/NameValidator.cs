@@ -38,7 +38,7 @@ namespace PersonalMoney.Api.ViewModels.Validators
 
             RuleFor(c => c.IsDeleted)
                 .Must(c => c == false)
-                .WithMessage("Delete should be set to true");
+                .WithMessage("Delete shouldn't be set to true");
 
             RuleFor(c => c.Name)
                 .Cascade(CascadeMode.Stop)
