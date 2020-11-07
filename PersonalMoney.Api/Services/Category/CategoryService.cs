@@ -135,14 +135,14 @@ namespace PersonalMoney.Api.Services.Category
             await foreach (var childDocument in documents)
             {
                 var snapshot = await childDocument.GetSnapshotAsync();
-                PrepareChild(snapshot, category);
+                PrepareChild(snapshot, category, false);
             }
         }
 
-        private void PrepareChild(DocumentSnapshot snapshot, CategoryViewModel category)
+        private void PrepareChild(DocumentSnapshot snapshot, CategoryViewModel category, bool allowDeleted)
         {
             var subCategory = snapshot.ConvertToWithId<Models.SubCategory>();
-            if (subCategory.IsDeleted)
+            if (subCategory.IsDeleted && !allowDeleted)
             {
                 return;
             }
@@ -156,15 +156,15 @@ namespace PersonalMoney.Api.Services.Category
             await foreach (var subCollection in docRef.ListCollectionsAsync())
             {
                 var data = await subCollection.WhereGreaterThan("updateTime", lastSyncTime.ToUniversalTime()).GetSnapshotAsync();
-                PrepareChildren(data.Documents, category);
+                PrepareChildren(data.Documents, category, true);
             }
         }
 
-        private void PrepareChildren(IEnumerable<DocumentSnapshot> documents, CategoryViewModel category)
+        private void PrepareChildren(IEnumerable<DocumentSnapshot> documents, CategoryViewModel category, bool allowDeleted)
         {
             foreach (var document in documents)
             {
-                PrepareChild(document, category);
+                PrepareChild(document, category, allowDeleted);
             }
         }
     }
