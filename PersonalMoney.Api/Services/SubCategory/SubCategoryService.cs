@@ -36,24 +36,29 @@ namespace PersonalMoney.Api.Services.SubCategory
         }
 
         /// <inheritdoc />
-        public override Task<SubCategoryViewModel> Create(SubCategoryViewModel model)
+        public override async Task<SubCategoryViewModel> Create(SubCategoryViewModel model)
         {
             SetCollectionName(model.CategoryId);
-            return base.Create(model);
+            var record = await base.Create(model);
+            await UpdateCollectionTime(model.CategoryId);
+            return record;
         }
 
         /// <inheritdoc />
-        public override Task<SubCategoryViewModel> Update(string id, SubCategoryViewModel model)
+        public override async Task<SubCategoryViewModel> Update(string id, SubCategoryViewModel model)
         {
             SetCollectionName(model.CategoryId);
-            return base.Update(id, model);
+            var record = await base.Update(id, model);
+            await UpdateCollectionTime(model.CategoryId);
+            return record;
         }
 
         /// <inheritdoc />
-        public Task Delete(string categoryId, string id)
+        public async Task Delete(string categoryId, string id)
         {
             SetCollectionName(categoryId);
-            return base.Delete(id);
+            await base.Delete(id);
+            await UpdateCollectionTime(categoryId);
         }
 
         /// <inheritdoc />
@@ -66,6 +71,11 @@ namespace PersonalMoney.Api.Services.SubCategory
         private void SetCollectionName(string categoryId)
         {
             CollectionName = $"{CollectionNames.Categories}/{categoryId}/{CollectionNames.SubCategories}";
+        }
+
+        private Task UpdateCollectionTime(string categoryId)
+        {
+            return base.UpdateTime(categoryId, CollectionNames.Categories);
         }
     }
 }

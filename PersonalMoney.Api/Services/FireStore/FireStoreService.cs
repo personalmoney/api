@@ -134,6 +134,22 @@ namespace PersonalMoney.Api.Services.FireStore
             await docRef.SetAsync(dictionary, SetOptions.MergeAll);
         }
 
+        /// <inheritdoc />
+        public async Task UpdateTime(string id, string collectionName)
+        {
+            var docRef = await CheckDocumentUser(id, collectionName);
+            if (docRef == null)
+            {
+                return;
+            }
+
+            var dictionary = new Dictionary<string, dynamic>
+            {
+                ["updateTime"] = DateTime.UtcNow
+            };
+            await docRef.SetAsync(dictionary, SetOptions.MergeAll);
+        }
+
         private async Task<DocumentReference> CheckDocumentUser(string id, string collectionName)
         {
             var docRef = db.Collection(collectionName).Document(id);

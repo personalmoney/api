@@ -61,5 +61,13 @@ namespace PersonalMoney.Api.Services
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         Task Delete(string id);
+
+        /// <summary>
+        /// Updates the record modified time.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="collectionName">Name of the collection.</param>
+        /// <returns></returns>
+        Task UpdateTime(string id, string collectionName);
     }
 }

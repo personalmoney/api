@@ -41,7 +41,7 @@ namespace PersonalMoney.Api.Services
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<TViewModel>> Get(DateTime? lastSyncTime)
+        public virtual async Task<IEnumerable<TViewModel>> Get(DateTime? lastSyncTime)
         {
             var views = await fireStore.GetCollection<TModel>(CollectionName, lastSyncTime);
             var viewModels = mapper.Map<IEnumerable<TViewModel>>(views);
@@ -76,6 +76,12 @@ namespace PersonalMoney.Api.Services
         public virtual async Task Delete(string id)
         {
             await fireStore.SoftDeleteDocument(id, CollectionName);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task UpdateTime(string id, string collectionName)
+        {
+            await fireStore.UpdateTime(id, collectionName);
         }
     }
 }
