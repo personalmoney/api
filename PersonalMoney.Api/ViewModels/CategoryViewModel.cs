@@ -1,5 +1,5 @@
-﻿using PersonalMoney.Api.ViewModels.Base;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using PersonalMoney.Api.ViewModels.Base;
 
 namespace PersonalMoney.Api.ViewModels
 {
