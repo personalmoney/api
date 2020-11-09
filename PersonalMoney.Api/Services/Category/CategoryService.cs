@@ -85,10 +85,6 @@ namespace PersonalMoney.Api.Services.Category
             foreach (var document in snapshot.Documents)
             {
                 var category = mapper.Map<CategoryViewModel>(document.ConvertToWithId<Models.Category>());
-                if (lastSyncTime.HasValue)
-                {
-                    await PrepareChildren(collectionRef.Document(document.Id), category, lastSyncTime.Value);
-                }
                 records.Add(category);
             }
 
@@ -135,37 +131,20 @@ namespace PersonalMoney.Api.Services.Category
             await foreach (var childDocument in documents)
             {
                 var snapshot = await childDocument.GetSnapshotAsync();
-                PrepareChild(snapshot, category, false);
+                PrepareChild(snapshot, category);
             }
         }
 
-        private void PrepareChild(DocumentSnapshot snapshot, CategoryViewModel category, bool allowDeleted)
+        private void PrepareChild(DocumentSnapshot snapshot, CategoryViewModel category)
         {
             var subCategory = snapshot.ConvertToWithId<Models.SubCategory>();
-            if (subCategory.IsDeleted && !allowDeleted)
+            if (subCategory.IsDeleted)
             {
                 return;
             }
 
             var subCategoryViewModel = mapper.Map<SubCategoryViewModel>(subCategory);
             category.SubCategories.Add(subCategoryViewModel);
-        }
-
-        private async Task PrepareChildren(DocumentReference docRef, CategoryViewModel category, DateTime lastSyncTime)
-        {
-            await foreach (var subCollection in docRef.ListCollectionsAsync())
-            {
-                var data = await subCollection.WhereGreaterThan("updateTime", lastSyncTime.ToUniversalTime()).GetSnapshotAsync();
-                PrepareChildren(data.Documents, category, true);
-            }
-        }
-
-        private void PrepareChildren(IEnumerable<DocumentSnapshot> documents, CategoryViewModel category, bool allowDeleted)
-        {
-            foreach (var document in documents)
-            {
-                PrepareChild(document, category, allowDeleted);
-            }
         }
     }
 }
