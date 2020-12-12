@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using AutoMapper;
 using PersonalMoney.Api.Models;
 
 namespace PersonalMoney.Api.ViewModels.Mapper
@@ -19,7 +20,8 @@ namespace PersonalMoney.Api.ViewModels.Mapper
                 .ForMember(dest => dest.ToAccountId, source => source.MapFrom(c => c.ToAccount))
                 .ForMember(dest => dest.SubCategoryId, source => source.MapFrom(c => c.SubCategory))
                 .ForMember(dest => dest.PayeeId, source => source.MapFrom(c => c.Payee))
-                .ForMember(dest => dest.Date, source => source.MapFrom(c => c.Date))
+                .ForMember(dest => dest.Date, source => source.MapFrom(c => c.Date.ToUniversalTime()))
+                .ForMember(dest => dest.Tags, source => source.MapFrom(c => c.Tags.Select(d => new TransactionTag { TagId = d })))
                 .ForMember(dest => dest.UpdatedTime, source => source.Ignore())
                 .ForMember(dest => dest.CreatedTime, source => source.Ignore());
 
@@ -28,6 +30,8 @@ namespace PersonalMoney.Api.ViewModels.Mapper
                 .ForMember(dest => dest.Account, source => source.MapFrom(c => c.AccountId))
                 .ForMember(dest => dest.SubCategory, source => source.MapFrom(c => c.SubCategoryId))
                 .ForMember(dest => dest.Payee, source => source.MapFrom(c => c.PayeeId))
+                .ForMember(dest => dest.Date, source => source.MapFrom(c => c.Date.GetValueOrDefault().Date))
+                .ForMember(dest => dest.Tags, source => source.MapFrom(c => c.Tags.Select(c => c.TagId)))
                 .ForMember(dest => dest.ToAccount, source => source.MapFrom(c => c.ToAccountId));
         }
     }
