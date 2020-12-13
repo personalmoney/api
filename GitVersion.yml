@@ -28,7 +28,7 @@ branches:
     tracks-release-branches: false
     is-release-branch: false
   feature:
-    regex: ^features?[/-]
+    regex: ^feature?[/-]
     mode: ContinuousDelivery
     tag: useBranchName
     increment: Patch
