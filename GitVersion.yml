@@ -1,11 +1,10 @@
-next-version: 1.0
 assembly-versioning-scheme: MajorMinorPatchTag
 assembly-file-versioning-scheme: MajorMinorPatchTag
 assembly-informational-format: '{InformationalVersion}'
-mode: ContinuousDelivery
-increment: Inherit
-continuous-delivery-fallback-tag: ci
+mode: ContinuousDeployment
 tag-prefix: '[vV]'
+continuous-delivery-fallback-tag: ci
+next-version: 1.0.1
 major-version-bump-message: '\+semver:\s?(breaking|major)'
 minor-version-bump-message: '\+semver:\s?(feature|minor)'
 patch-version-bump-message: '\+semver:\s?(fix|patch)'
@@ -14,34 +13,36 @@ legacy-semver-padding: 4
 build-metadata-padding: 4
 commits-since-version-source-padding: 4
 commit-message-incrementing: Enabled
-commit-date-format: 'yyyy-MM-dd'
-ignore:
-  sha: []
 branches:
   master:
-    regex: ^master
     mode: ContinuousDelivery
-    tag: ""
+    tag: ''
     increment: Patch
     prevent-increment-of-merged-branch-version: true
     track-merge-target: false
+    regex: ^master
     tracks-release-branches: false
     is-release-branch: false
   feature:
-    regex: ^feature?[/-]
     mode: ContinuousDelivery
     tag: useBranchName
     increment: Patch
     prevent-increment-of-merged-branch-version: false
     track-merge-target: false
+    regex: ^feature?[/-]
     tracks-release-branches: false
     is-release-branch: false
   develop:
-    regex: ^dev(elop)?(ment)?$
     mode: ContinuousDeployment
     tag: unstable
     increment: Minor
     prevent-increment-of-merged-branch-version: false
     track-merge-target: true
+    regex: ^dev(elop)?(ment)?$
     tracks-release-branches: true
     is-release-branch: false
+ignore:
+  sha: []
+increment: Inherit
+commit-date-format: yyyy-MM-dd
+merge-message-formats: {}
