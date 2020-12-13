@@ -34,5 +34,10 @@
         /// The tags
         /// </summary>
         public static readonly string Tags = "tags";
+
+        /// <summary>
+        /// The transactions
+        /// </summary>
+        public static readonly string Transactions = "transactions";
     }
 }

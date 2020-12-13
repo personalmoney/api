@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Google.Cloud.Firestore;
-using Google.Type;
 using PersonalMoney.Api.Models.Base;
+using DateTime = System.DateTime;
 
 namespace PersonalMoney.Api.Models
 {
@@ -34,7 +34,7 @@ namespace PersonalMoney.Api.Models
         public string Status { get; set; }
 
         [FirestoreProperty("date")]
-        public Date Date { get; set; }
+        public DateTime? Date { get; set; }
 
         [FirestoreProperty("amount")]
         public double Amount { get; set; }

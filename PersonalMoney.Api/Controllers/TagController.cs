@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PersonalMoney.Api.Services.Tag;
@@ -34,6 +35,16 @@ namespace PersonalMoney.Api.Controllers
         public async Task<IEnumerable<TagViewModel>> Get()
         {
             return await service.Get();
+        }
+
+        /// <summary>
+        /// Gets the modified Tags from the given time.
+        /// </summary>
+        /// <returns>The list account of types</returns>
+        [HttpGet("modified/{lastSyncTime}")]
+        public async Task<IEnumerable<TagViewModel>> GetModifiedRecords(DateTime? lastSyncTime)
+        {
+            return await service.Get(lastSyncTime);
         }
 
         // GET: Tag/Id
