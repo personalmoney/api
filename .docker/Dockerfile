@@ -14,7 +14,7 @@ WORKDIR "/src/PersonalMoney.Api"
 RUN dotnet build "PersonalMoney.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "PersonalMoney.Api.csproj" -c Release -o /app/publish /p:Version=Version
+RUN dotnet publish "PersonalMoney.Api.csproj" -c Release -o /app/publish /p:Version=$Version
 
 FROM base AS final
 WORKDIR /app
