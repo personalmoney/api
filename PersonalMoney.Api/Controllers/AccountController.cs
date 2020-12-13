@@ -54,7 +54,7 @@ namespace PersonalMoney.Api.Controllers
         /// <param name="id">The identifier.</param>
         /// <returns>The account type</returns>
         [HttpGet("{id}")]
-        public async Task<AccountViewModel> Get(string id)
+        public async Task<AccountViewModel> Get(int id)
         {
             return await service.Get(id);
         }
@@ -99,7 +99,7 @@ namespace PersonalMoney.Api.Controllers
         /// </summary>
         /// <param name="id">The identifier.</param>
         [HttpDelete("{id}")]
-        public async Task Delete(string id)
+        public async Task Delete(int id)
         {
             await service.Delete(id);
         }

@@ -11,7 +11,7 @@
         /// <value>
         /// The identifier.
         /// </value>
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is deleted.

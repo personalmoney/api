@@ -1,5 +1,4 @@
-﻿using PersonalMoney.Api.Helpers;
-using PersonalMoney.Api.Services.FireStore;
+﻿using PersonalMoney.Api.Models;
 
 namespace PersonalMoney.Api.ViewModels.Validators
 {
@@ -7,17 +6,14 @@ namespace PersonalMoney.Api.ViewModels.Validators
     ///  Payee ViewModel validator
     /// </summary>
     /// <seealso cref="NameValidator{TModel, TViewModel}" />
-    public class PayeeViewModelValidator : NameValidator<Models.Payee, PayeeViewModel>
+    public class PayeeViewModelValidator : NameValidator<Payee, PayeeViewModel>
     {
-        /// <inheritdoc />
-        public override string CollectionName { get; protected set; } = CollectionNames.Payees;
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="PayeeViewModelValidator"/> class.
+        /// Initializes a new instance of the <see cref="PayeeViewModelValidator" /> class.
         /// </summary>
-        /// <param name="fireStoreService">The fire store service.</param>
-        public PayeeViewModelValidator(IFireStoreService fireStoreService)
-            : base(fireStoreService, 50)
+        /// <param name="dbContext">The database context.</param>
+        public PayeeViewModelValidator(AppDbContext dbContext)
+            : base(dbContext, 50)
         {
         }
     }

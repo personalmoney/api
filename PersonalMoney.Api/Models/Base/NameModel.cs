@@ -1,4 +1,4 @@
-﻿using Google.Cloud.Firestore;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace PersonalMoney.Api.Models.Base
 {
@@ -14,16 +14,7 @@ namespace PersonalMoney.Api.Models.Base
         /// <value>
         /// The name.
         /// </value>
-        [FirestoreProperty("name")]
+        [MaxLength(100)]
         public string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets the name lower case.
-        /// </summary>
-        /// <value>
-        /// The name lower case.
-        /// </value>
-        [FirestoreProperty("name_lowercase")]
-        public string NameLowerCase { get; set; }
     }
 }

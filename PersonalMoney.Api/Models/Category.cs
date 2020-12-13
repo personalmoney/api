@@ -1,4 +1,4 @@
-﻿using Google.Cloud.Firestore;
+﻿using System.Collections.Generic;
 using PersonalMoney.Api.Models.Base;
 
 namespace PersonalMoney.Api.Models
@@ -7,8 +7,8 @@ namespace PersonalMoney.Api.Models
     /// Category Model
     /// </summary>
     /// <seealso cref="NameModel" />
-    [FirestoreData]
     public class Category : NameModel
     {
+        private IList<SubCategory> SubCategories { get; set; }
     }
 }

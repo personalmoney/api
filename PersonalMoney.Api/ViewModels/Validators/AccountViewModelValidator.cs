@@ -1,9 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
-using PersonalMoney.Api.Helpers;
+using PersonalMoney.Api.Models;
 using PersonalMoney.Api.Services.AccountType;
-using PersonalMoney.Api.Services.FireStore;
 
 namespace PersonalMoney.Api.ViewModels.Validators
 {
@@ -11,20 +10,17 @@ namespace PersonalMoney.Api.ViewModels.Validators
     /// Account View Model validator
     /// </summary>
     /// <seealso cref="NameValidator{TModel,TViewModel}" />
-    public class AccountViewModelValidator : NameValidator<Models.Account, AccountViewModel>
+    public class AccountViewModelValidator : NameValidator<Account, AccountViewModel>
     {
         private readonly IAccountTypeService accountTypeService;
-
-        /// <inheritdoc />
-        public override string CollectionName { get; protected set; } = CollectionNames.Accounts;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountViewModelValidator" /> class.
         /// </summary>
-        /// <param name="fireStoreService">The fire store service.</param>
+        /// <param name="dbContext">The database context.</param>
         /// <param name="accountTypeService">The account type service.</param>
-        public AccountViewModelValidator(IFireStoreService fireStoreService, IAccountTypeService accountTypeService)
-        : base(fireStoreService, 50)
+        public AccountViewModelValidator(AppDbContext dbContext, IAccountTypeService accountTypeService)
+        : base(dbContext, 50)
         {
             this.accountTypeService = accountTypeService;
 
@@ -41,12 +37,11 @@ namespace PersonalMoney.Api.ViewModels.Validators
             RuleFor(c => c.AccountType)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
-                .MaximumLength(50)
                 .MustAsync(CheckAccountType)
                 .WithMessage(c => "Invalid Account Type");
         }
 
-        private async Task<bool> CheckAccountType(string accountType, CancellationToken cancellationToken)
+        private async Task<bool> CheckAccountType(int accountType, CancellationToken cancellationToken)
         {
             return await accountTypeService.Get(accountType) != null;
         }

@@ -16,7 +16,7 @@ namespace PersonalMoney.Api.ViewModels
         /// </summary>
         public TransactionViewModel()
         {
-            Tags = new List<string>();
+            Tags = new List<int>();
         }
 
         /// <summary>
@@ -89,6 +89,6 @@ namespace PersonalMoney.Api.ViewModels
         /// <value>
         /// The tags.
         /// </value>
-        public ICollection<string> Tags { get; set; }
+        public ICollection<int> Tags { get; set; }
     }
 }

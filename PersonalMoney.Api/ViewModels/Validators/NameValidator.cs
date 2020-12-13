@@ -1,8 +1,10 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
+using PersonalMoney.Api.Models;
 using PersonalMoney.Api.Models.Base;
-using PersonalMoney.Api.Services.FireStore;
 using PersonalMoney.Api.ViewModels.Base;
 
 namespace PersonalMoney.Api.ViewModels.Validators
@@ -14,28 +16,19 @@ namespace PersonalMoney.Api.ViewModels.Validators
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
     /// <seealso cref="AbstractValidator{TViewModel}" />
     public abstract class NameValidator<TModel, TViewModel> : AbstractValidator<TViewModel>
-        where TModel : UserModel
+        where TModel : NameModel
         where TViewModel : NameViewModel
     {
-        private readonly IFireStoreService fireStoreService;
-
-        /// <summary>
-        /// Gets the name of the collection.
-        /// </summary>
-        /// <value>
-        /// The name of the collection.
-        /// </value>
-        public abstract string CollectionName { get; protected set; }
+        private readonly AppDbContext dbContext;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NameValidator{TModel, TViewModel}" /> class.
         /// </summary>
-        /// <param name="fireStoreService">The fire store service.</param>
+        /// <param name="dbContext">The database context.</param>
         /// <param name="maxLength">The maximum length.</param>
-        protected NameValidator(IFireStoreService fireStoreService, int maxLength)
+        protected NameValidator(AppDbContext dbContext, int maxLength)
         {
-            this.fireStoreService = fireStoreService;
-
+            this.dbContext = dbContext;
             RuleFor(c => c.IsDeleted)
                 .Must(c => c == false)
                 .WithMessage("Delete shouldn't be set to true");
@@ -61,13 +54,13 @@ namespace PersonalMoney.Api.ViewModels.Validators
         /// <returns></returns>
         protected virtual async Task<bool> CheckName(TViewModel model, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrEmpty(model.Id))
+            if (model.Id <= 0)
             {
-                return await fireStoreService.FindDocumentByName<TModel>(CollectionName, model.Name) == null;
+                return !await dbContext.Set<TModel>().AnyAsync(c => c.Name == model.Name, cancellationToken);
             }
             else
             {
-                return await fireStoreService.FindDocumentByName<TModel>(CollectionName, model.Name, model.Id) == null;
+                return !await dbContext.Set<TModel>().Where(c => c.Id != model.Id).AnyAsync(c => c.Name == model.Name, cancellationToken);
             }
         }
     }

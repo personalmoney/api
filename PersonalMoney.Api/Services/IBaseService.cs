@@ -12,13 +12,6 @@ namespace PersonalMoney.Api.Services
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
     public interface IBaseService<TModel, TViewModel> where TModel : TimeModel
     {
-        /// <summary>
-        /// Gets the name of the collection.
-        /// </summary>
-        /// <value>
-        /// The name of the collection.
-        /// </value>
-        string CollectionName { get; }
 
         /// <summary>
         /// Gets records for the given collection.
@@ -38,7 +31,7 @@ namespace PersonalMoney.Api.Services
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        Task<TViewModel> Get(string id);
+        Task<TViewModel> Get(int id);
 
         /// <summary>
         /// Creates the record with the specified model.
@@ -60,14 +53,6 @@ namespace PersonalMoney.Api.Services
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        Task Delete(string id);
-
-        /// <summary>
-        /// Updates the record modified time.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <param name="collectionName">Name of the collection.</param>
-        /// <returns></returns>
-        Task UpdateTime(string id, string collectionName);
+        Task Delete(int id);
     }
 }

@@ -1,11 +1,8 @@
-﻿using Google.Cloud.Firestore;
-
-namespace PersonalMoney.Api.Models.Base
+﻿namespace PersonalMoney.Api.Models.Base
 {
     /// <summary>
     /// Base Model
     /// </summary>
-    [FirestoreData]
     public class BaseModel
     {
         /// <summary>
@@ -14,7 +11,7 @@ namespace PersonalMoney.Api.Models.Base
         /// <value>
         /// The identifier.
         /// </value>
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is deleted.
@@ -22,7 +19,6 @@ namespace PersonalMoney.Api.Models.Base
         /// <value>
         ///   <c>true</c> if this instance is deleted; otherwise, <c>false</c>.
         /// </value>
-        [FirestoreProperty("isDeleted")]
         public bool IsDeleted { get; set; }
     }
 }

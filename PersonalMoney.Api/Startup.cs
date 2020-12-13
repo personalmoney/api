@@ -4,12 +4,15 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using PersonalMoney.Api.Filters;
 using PersonalMoney.Api.Helpers;
+using PersonalMoney.Api.Models;
 
 namespace PersonalMoney.Api
 {
@@ -18,7 +21,7 @@ namespace PersonalMoney.Api
     /// </summary>
     public class Startup
     {
-        private static readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+        private const string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup"/> class.
@@ -43,6 +46,9 @@ namespace PersonalMoney.Api
 
             services.AddControllers(options => options.Filters.Add(new HttpResponseExceptionFilter()))
                 .AddFluentValidation(c => c.RegisterValidatorsFromAssemblyContaining<Startup>());
+
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseMySQL(Configuration.GetConnectionString("DbContext")));
 
             services.AddSwaggerServices();
             services.AddAutoMapper(typeof(Startup));
@@ -71,7 +77,8 @@ namespace PersonalMoney.Api
         /// </summary>
         /// <param name="app">The application.</param>
         /// <param name="env">The env.</param>
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        /// <param name="logger">The logger.</param>
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
             if (env.IsDevelopment())
             {
@@ -96,6 +103,10 @@ namespace PersonalMoney.Api
             {
                 endpoints.MapControllers().RequireAuthorization();
             });
+
+            //Taking care of the database
+            SeedData.Initialize(app.ApplicationServices);
+            logger.LogInformation("App started");
         }
     }
 }

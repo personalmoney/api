@@ -1,5 +1,4 @@
-﻿using PersonalMoney.Api.Helpers;
-using PersonalMoney.Api.Services.FireStore;
+﻿using PersonalMoney.Api.Models;
 
 namespace PersonalMoney.Api.ViewModels.Validators
 {
@@ -7,17 +6,14 @@ namespace PersonalMoney.Api.ViewModels.Validators
     ///  Tag ViewModel validator
     /// </summary>
     /// <seealso cref="NameValidator{TModel, TViewModel}" />
-    public class TagViewModelValidator : NameValidator<Models.Tag, TagViewModel>
+    public class TagViewModelValidator : NameValidator<Tag, TagViewModel>
     {
-        /// <inheritdoc />
-        public override string CollectionName { get; protected set; } = CollectionNames.Tags;
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="TagViewModelValidator"/> class.
+        /// Initializes a new instance of the <see cref="TagViewModelValidator" /> class.
         /// </summary>
-        /// <param name="fireStoreService">The fire store service.</param>
-        public TagViewModelValidator(IFireStoreService fireStoreService)
-            : base(fireStoreService, 50)
+        /// <param name="dbContext">The database context.</param>
+        public TagViewModelValidator(AppDbContext dbContext)
+            : base(dbContext, 50)
         {
         }
     }
