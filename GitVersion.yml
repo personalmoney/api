@@ -31,7 +31,7 @@ branches:
     regex: ^features?[/-]
     mode: ContinuousDelivery
     tag: useBranchName
-    increment: Tag
+    increment: Patch
     prevent-increment-of-merged-branch-version: false
     track-merge-target: false
     tracks-release-branches: false
