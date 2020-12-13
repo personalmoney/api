@@ -3,8 +3,6 @@
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
 WORKDIR /app
 
-ARG Version
-
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY ["PersonalMoney.Api/PersonalMoney.Api.csproj", "PersonalMoney.Api/"]
@@ -14,6 +12,7 @@ WORKDIR "/src/PersonalMoney.Api"
 RUN dotnet build "PersonalMoney.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
+ARG Version
 RUN dotnet publish "PersonalMoney.Api.csproj" -c Release -o /app/publish /p:Version=$Version
 
 FROM base AS final
