@@ -36,6 +36,10 @@ namespace PersonalMoney.Api.ViewModels.Validators
         {
             this.fireStoreService = fireStoreService;
 
+            RuleFor(c => c.IsDeleted)
+                .Must(c => c == false)
+                .WithMessage("Delete shouldn't be set to true");
+
             RuleFor(c => c.Name)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()

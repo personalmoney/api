@@ -14,7 +14,7 @@ namespace PersonalMoney.Api.ViewModels.Base
         /// <value>
         /// The create time.
         /// </value>
-        public DateTime? CreateTime { get; set; }
+        public DateTime? CreatedTime { get; set; }
 
         /// <summary>
         /// Gets or sets the update time.
@@ -22,6 +22,6 @@ namespace PersonalMoney.Api.ViewModels.Base
         /// <value>
         /// The update time.
         /// </value>
-        public DateTime? UpdateTime { get; set; }
+        public DateTime? UpdatedTime { get; set; }
     }
 }

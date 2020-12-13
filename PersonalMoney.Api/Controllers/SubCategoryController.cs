@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PersonalMoney.Api.Services.SubCategory;
@@ -34,6 +35,16 @@ namespace PersonalMoney.Api.Controllers
         public async Task<IEnumerable<SubCategoryViewModel>> Get(string categoryId)
         {
             return await service.GetByCategoryId(categoryId);
+        }
+
+        /// <summary>
+        /// Gets the modified Sub categories from the given time.
+        /// </summary>
+        /// <returns>The list account of types</returns>
+        [HttpGet("modified/{lastSyncTime}")]
+        public async Task<IEnumerable<SubCategoryViewModel>> GetModifiedRecords(DateTime? lastSyncTime)
+        {
+            return await service.Get(lastSyncTime);
         }
 
         // GET: SubCategory/Id
