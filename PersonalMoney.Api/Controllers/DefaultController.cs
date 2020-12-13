@@ -31,5 +31,16 @@ namespace PersonalMoney.Api.Controllers
         {
             return Ok("Service active");
         }
+
+        /// <summary>
+        /// Gets the Version of the current deployment.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("Version")]
+        [AllowAnonymous]
+        public ActionResult Version()
+        {
+            return Ok(GetType().Assembly.GetName().Version!.ToString());
+        }
     }
 }
