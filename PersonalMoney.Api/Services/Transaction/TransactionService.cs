@@ -1,14 +1,20 @@
-﻿using System;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 using PersonalMoney.Api.Models;
 using PersonalMoney.Api.ViewModels;
 using PersonalMoney.Api.ViewModels.Base;
 
 namespace PersonalMoney.Api.Services.Transaction
 {
-    internal class TransactionService : BaseService<Models.Transaction, TransactionViewModel>, ITransactionService
+    internal class TransactionService : BaseService<Models.Transaction, TransactionRequestModel>, ITransactionService
     {
+        private readonly IMapper mapper;
+        private readonly AppDbContext dataContext;
+        private readonly string userId;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TransactionService"/> class.
         /// </summary>
@@ -20,18 +26,59 @@ namespace PersonalMoney.Api.Services.Transaction
             UserResolverService userResolver)
           : base(mapper, dataContext, userResolver)
         {
+            this.mapper = mapper;
+            this.dataContext = dataContext;
+            userId = userResolver.GetUserId();
         }
 
         /// <inheritdoc />
-        public Task<PagingResponse<TransactionViewModel>> Get(TransactionSearchViewModel request)
+        public new async Task<TransactionViewModel> Get(int id)
         {
-            throw new NotImplementedException();
+            return await dataContext.Transactions
+                .Where(c => !c.IsDeleted)
+                .Where(c => c.UserId == userId)
+                .ProjectTo<TransactionViewModel>(mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
 
         /// <inheritdoc />
-        public Task<PagingResponse<TransactionViewModel>> GetModified(TransactionSearchViewModel request)
+        public PagingResponse<TransactionViewModel> Get(TransactionSearchViewModel request)
         {
-            throw new NotImplementedException();
+            var query = dataContext.Transactions
+                .Where(c => !c.IsDeleted)
+                .Where(c => c.UserId == userId)
+                .ProjectTo<TransactionViewModel>(mapper.ConfigurationProvider);
+
+            var response = PagingResponse(request, query);
+
+            return response;
+        }
+
+        /// <inheritdoc />
+        public PagingResponse<TransactionRequestModel> GetModified(TransactionSearchViewModel request)
+        {
+            var query = dataContext.Transactions
+                .Where(c => c.UpdatedTime > request.LastSyncTime)
+                .Where(c => c.UserId == userId)
+                .ProjectTo<TransactionRequestModel>(mapper.ConfigurationProvider);
+
+            var response = PagingResponse(request, query);
+
+            return response;
+        }
+
+        private static PagingResponse<T> PagingResponse<T>(PagingRequest request, IQueryable<T> query)
+        {
+            var response = new PagingResponse<T>
+            {
+                CurrentPage = request.CurrentPage,
+                PageSize = request.PageSize,
+                TotalRecords = query.Count(),
+                Records = query
+                    .Skip((request.CurrentPage - 1) * request.PageSize)
+                    .Take(request.PageSize)
+            };
+            return response;
         }
     }
 }

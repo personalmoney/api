@@ -84,7 +84,7 @@ namespace PersonalMoney.Api.Models
         /// <value>
         /// The amount.
         /// </value>
-        public double Amount { get; set; }
+        public decimal Amount { get; set; }
 
         /// <summary>
         /// Converts to amount.
@@ -136,5 +136,37 @@ namespace PersonalMoney.Api.Models
         /// The tags.
         /// </value>
         public IList<TransactionTag> Tags { get; }
+
+        /// <summary>
+        /// Gets or sets the account.
+        /// </summary>
+        /// <value>
+        /// The account.
+        /// </value>
+        public virtual Account Account { get; set; }
+
+        /// <summary>
+        /// Gets or sets the To account.
+        /// </summary>
+        /// <value>
+        /// To account.
+        /// </value>
+        public virtual Account ToAccount { get; set; }
+
+        /// <summary>
+        /// Gets or sets the sub category.
+        /// </summary>
+        /// <value>
+        /// The sub category.
+        /// </value>
+        public virtual SubCategory SubCategory { get; set; }
+
+        /// <summary>
+        /// Gets or sets the payee.
+        /// </summary>
+        /// <value>
+        /// The payee.
+        /// </value>
+        public virtual Payee Payee { get; set; }
     }
 }

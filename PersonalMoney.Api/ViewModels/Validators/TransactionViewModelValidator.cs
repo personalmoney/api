@@ -13,7 +13,7 @@ namespace PersonalMoney.Api.ViewModels.Validators
     ///  Transaction view model validator
     /// </summary>
     /// <seealso cref="AbstractValidator{T}" />
-    public class TransactionViewModelValidator : AbstractValidator<TransactionViewModel>
+    public class TransactionViewModelValidator : AbstractValidator<TransactionRequestModel>
     {
         private readonly AppDbContext dbContext;
         private readonly UserResolverService userResolver;
@@ -56,7 +56,7 @@ namespace PersonalMoney.Api.ViewModels.Validators
                         .When(c => c.Type == TransactionType.Transfer)
                         .WithMessage("Invalid To Account");
 
-                    RuleFor(c => c.Tags)
+                    RuleFor(c => c.TagIds)
                         .Must(c => c.Count <= 0)
                         .When(c => c.Type == TransactionType.Transfer)
                         .WithMessage("Tags not allowed in Transfer mode");
@@ -95,12 +95,12 @@ namespace PersonalMoney.Api.ViewModels.Validators
             RuleFor(c => c.Notes)
                 .MaximumLength(250);
 
-            RuleFor(c => c.Tags)
+            RuleFor(c => c.TagIds)
                 .Must(d => d.Count <= 5)
                 .WithMessage("Maximum 5 tags allowed")
                 .DependentRules(() =>
                 {
-                    RuleFor(c => c.Tags)
+                    RuleFor(c => c.TagIds)
                         .Must(CheckTags)
                         .WithMessage("Invalid Tags");
                 });

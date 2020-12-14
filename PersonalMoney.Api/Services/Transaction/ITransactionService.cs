@@ -14,7 +14,7 @@ namespace PersonalMoney.Api.Services.Transaction
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns></returns>
-        Task<TransactionViewModel> Create(TransactionViewModel value);
+        Task<TransactionRequestModel> Create(TransactionRequestModel value);
 
         /// <summary>
         /// Updates the specified identifier.
@@ -22,7 +22,7 @@ namespace PersonalMoney.Api.Services.Transaction
         /// <param name="id">The identifier.</param>
         /// <param name="model">The model.</param>
         /// <returns></returns>
-        Task<TransactionViewModel> Update(int id, TransactionViewModel model);
+        Task<TransactionRequestModel> Update(int id, TransactionRequestModel model);
 
         /// <summary>
         /// Gets the transaction with the given identifier
@@ -36,7 +36,7 @@ namespace PersonalMoney.Api.Services.Transaction
         /// </summary>
         /// <param name="request">The request.</param>
         /// <returns></returns>
-        Task<PagingResponse<TransactionViewModel>> Get(TransactionSearchViewModel request);
+        PagingResponse<TransactionViewModel> Get(TransactionSearchViewModel request);
 
         /// <summary>
         /// Deletes the specified identifier.
@@ -50,6 +50,6 @@ namespace PersonalMoney.Api.Services.Transaction
         /// </summary>
         /// <param name="request">The request.</param>
         /// <returns></returns>
-        Task<PagingResponse<TransactionViewModel>> GetModified(TransactionSearchViewModel request);
+        PagingResponse<TransactionRequestModel> GetModified(TransactionSearchViewModel request);
     }
 }
