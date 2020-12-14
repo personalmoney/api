@@ -14,7 +14,7 @@ namespace PersonalMoney.Api.ViewModels
         /// <value>
         /// The type of the account.
         /// </value>
-        public int AccountType { get; set; }
+        public int AccountTypeId { get; set; }
 
         /// <summary>
         /// Gets or sets the balance.

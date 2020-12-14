@@ -32,7 +32,7 @@ namespace PersonalMoney.Api.ViewModels.Validators
                 .InclusiveBetween(1, 31)
                 .When(c => c.PaymentDate.HasValue);
 
-            RuleFor(c => c.AccountType)
+            RuleFor(c => c.AccountTypeId)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .MustAsync(CheckAccountType)

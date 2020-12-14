@@ -25,7 +25,7 @@ namespace PersonalMoney.Api.ViewModels
         /// <value>
         /// The account.
         /// </value>
-        public int Account { get; set; }
+        public int AccountId { get; set; }
 
         /// <summary>
         /// Converts to account.
@@ -33,7 +33,7 @@ namespace PersonalMoney.Api.ViewModels
         /// <value>
         /// To account.
         /// </value>
-        public int ToAccount { get; set; }
+        public int ToAccountId { get; set; }
 
         /// <summary>
         /// Gets or sets the sub category.
@@ -41,7 +41,7 @@ namespace PersonalMoney.Api.ViewModels
         /// <value>
         /// The sub category.
         /// </value>
-        public int SubCategory { get; set; }
+        public int SubCategoryId { get; set; }
 
         /// <summary>
         /// Gets or sets the payee.
@@ -49,7 +49,7 @@ namespace PersonalMoney.Api.ViewModels
         /// <value>
         /// The payee.
         /// </value>
-        public int Payee { get; set; }
+        public int PayeeId { get; set; }
 
         /// <summary>
         /// Gets or sets the amount.

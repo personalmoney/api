@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using PersonalMoney.Api.Models;
 using PersonalMoney.Api.ViewModels;
+using Z.EntityFramework.Plus;
 
 namespace PersonalMoney.Api.Services.Category
 {
@@ -36,7 +37,7 @@ namespace PersonalMoney.Api.Services.Category
         public override Task<IEnumerable<CategoryViewModel>> Get()
         {
             var query = dataContext.Categories
-                .Include(c => c.SubCategories);
+                .IncludeFilter(c => c.SubCategories.Where(d => !d.IsDeleted));
             return GetData(query);
         }
     }
