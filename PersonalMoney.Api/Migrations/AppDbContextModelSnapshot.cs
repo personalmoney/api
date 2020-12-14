@@ -223,7 +223,7 @@ namespace PersonalMoney.Api.Migrations
                     b.Property<int>("SubCategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TransactionId")
+                    b.Property<int>("TransactionId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedTime")
@@ -348,7 +348,7 @@ namespace PersonalMoney.Api.Migrations
                     b.Property<int>("TagId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TransactionId")
+                    b.Property<int>("TransactionId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedTime")
@@ -370,7 +370,7 @@ namespace PersonalMoney.Api.Migrations
             modelBuilder.Entity("PersonalMoney.Api.Models.Account", b =>
                 {
                     b.HasOne("PersonalMoney.Api.Models.AccountType", "AccountType")
-                        .WithMany()
+                        .WithMany("Accounts")
                         .HasForeignKey("AccountTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -379,7 +379,7 @@ namespace PersonalMoney.Api.Migrations
             modelBuilder.Entity("PersonalMoney.Api.Models.SubCategory", b =>
                 {
                     b.HasOne("PersonalMoney.Api.Models.Category", "Category")
-                        .WithMany()
+                        .WithMany("SubCategories")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -399,9 +399,11 @@ namespace PersonalMoney.Api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PersonalMoney.Api.Models.Transaction", null)
+                    b.HasOne("PersonalMoney.Api.Models.Transaction", "Transaction")
                         .WithMany("SubTransactions")
-                        .HasForeignKey("TransactionId");
+                        .HasForeignKey("TransactionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("PersonalMoney.Api.Models.TransactionTag", b =>
@@ -412,9 +414,11 @@ namespace PersonalMoney.Api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PersonalMoney.Api.Models.Transaction", null)
+                    b.HasOne("PersonalMoney.Api.Models.Transaction", "Transaction")
                         .WithMany("Tags")
-                        .HasForeignKey("TransactionId");
+                        .HasForeignKey("TransactionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

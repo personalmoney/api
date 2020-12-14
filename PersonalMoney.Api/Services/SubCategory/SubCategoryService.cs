@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using PersonalMoney.Api.Models;
 using PersonalMoney.Api.Services.Category;
 using PersonalMoney.Api.ViewModels;
@@ -15,6 +17,10 @@ namespace PersonalMoney.Api.Services.SubCategory
     /// <seealso cref="ISubCategoryService" />
     public class SubCategoryService : BaseService<Models.SubCategory, SubCategoryViewModel>, ISubCategoryService
     {
+        private readonly IMapper mapper;
+        private readonly AppDbContext dataContext;
+        private readonly UserResolverService userResolver;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CategoryService" /> class.
         /// </summary>
@@ -27,24 +33,34 @@ namespace PersonalMoney.Api.Services.SubCategory
             UserResolverService userResolver)
             : base(mapper, dataContext, userResolver)
         {
+            this.mapper = mapper;
+            this.dataContext = dataContext;
+            this.userResolver = userResolver;
         }
 
         /// <inheritdoc />
-        public Task<IEnumerable<SubCategoryViewModel>> GetByCategoryId(string categoryId)
+        public async Task<IEnumerable<SubCategoryViewModel>> GetByCategoryId(int categoryId)
         {
-            throw new NotImplementedException();
+            var models = await dataContext.SubCategories
+                .Where(c => !c.IsDeleted)
+                .Where(c => c.CategoryId == categoryId)
+                .Where(c => c.UserId == userResolver.GetUserId())
+                .ToListAsync();
+
+            var viewModels = mapper.Map<IEnumerable<SubCategoryViewModel>>(models);
+            return viewModels;
         }
 
         /// <inheritdoc />
-        public Task<SubCategoryViewModel> Get(string categoryId, string id)
+        public Task<SubCategoryViewModel> Get(int categoryId, int id)
         {
-            throw new NotImplementedException();
+            return base.Get(id);
         }
 
         /// <inheritdoc />
-        public Task Delete(string categoryId, string id)
+        public Task Delete(int categoryId, int id)
         {
-            throw new NotImplementedException();
+            return base.Delete(id);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using PersonalMoney.Api.Models;
+using PersonalMoney.Api.Services;
 
 namespace PersonalMoney.Api.ViewModels.Validators
 {
@@ -12,8 +13,9 @@ namespace PersonalMoney.Api.ViewModels.Validators
         /// Initializes a new instance of the <see cref="PayeeViewModelValidator" /> class.
         /// </summary>
         /// <param name="dbContext">The database context.</param>
-        public PayeeViewModelValidator(AppDbContext dbContext)
-            : base(dbContext, 50)
+        /// <param name="userResolver">The user resolver.</param>
+        public PayeeViewModelValidator(AppDbContext dbContext, UserResolverService userResolver)
+            : base(dbContext, userResolver, 50)
         {
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using PersonalMoney.Api.Models.Base;
 
 namespace PersonalMoney.Api.Models
@@ -17,5 +18,13 @@ namespace PersonalMoney.Api.Models
         /// </value>
         [MaxLength(100)]
         public string Icon { get; set; }
+
+        /// <summary>
+        /// Gets or sets the accounts.
+        /// </summary>
+        /// <value>
+        /// The accounts.
+        /// </value>
+        public ICollection<Account> Accounts { get; set; }
     }
 }

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using PersonalMoney.Api.Models;
-using PersonalMoney.Api.Services.Category;
+using PersonalMoney.Api.Services;
 
 namespace PersonalMoney.Api.ViewModels.Validators
 {
@@ -14,20 +14,14 @@ namespace PersonalMoney.Api.ViewModels.Validators
     /// <seealso cref="NameValidator{TModel, TViewModel}" />
     public class SubCategoryViewModelValidator : NameValidator<SubCategory, SubCategoryViewModel>
     {
-        private readonly AppDbContext dbContext;
-        private readonly ICategoryService categoryService;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SubCategoryViewModelValidator" /> class.
         /// </summary>
         /// <param name="dbContext">The database context.</param>
-        /// <param name="categoryService">The category service.</param>
-        public SubCategoryViewModelValidator(AppDbContext dbContext, ICategoryService categoryService)
-            : base(dbContext, 50)
+        /// <param name="userResolver">The user resolver.</param>
+        public SubCategoryViewModelValidator(AppDbContext dbContext, UserResolverService userResolver)
+            : base(dbContext, userResolver, 50)
         {
-            this.dbContext = dbContext;
-            this.categoryService = categoryService;
-
             RuleFor(c => c.CategoryId)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
@@ -42,24 +36,34 @@ namespace PersonalMoney.Api.ViewModels.Validators
             {
                 return false;
             }
+
+            var query = DbContext.SubCategories
+                .AsNoTracking()
+                .Where(c => !c.IsDeleted)
+                .Where(c => c.CategoryId == model.CategoryId)
+                .Where(c => c.Name == model.Name)
+                .Where(c => c.UserId == UserResolver.GetUserId());
+
             if (model.Id <= 0)
             {
-                return !await dbContext.SubCategories
-                    .Where(c => c.CategoryId == model.CategoryId)
-                    .AnyAsync(c => c.Name == model.Name, cancellationToken);
+                return !await query.AnyAsync(cancellationToken);
             }
             else
             {
-                return !await dbContext.SubCategories
-                    .Where(c => c.CategoryId == model.CategoryId)
+                return !await query
                     .Where(c => c.Id != model.Id)
-                    .AnyAsync(c => c.Name == model.Name, cancellationToken);
+                    .AnyAsync(cancellationToken);
             }
         }
 
         private async Task<bool> CheckCategory(int categoryId, CancellationToken cancellationToken)
         {
-            return await categoryService.Get(categoryId) != null;
+            return await DbContext.Categories
+                .AsNoTracking()
+                .Where(c => !c.IsDeleted)
+                .Where(c => c.Id == categoryId)
+                .Where(c => c.UserId == UserResolver.GetUserId())
+                .AnyAsync(cancellationToken);
         }
     }
 }

@@ -20,7 +20,8 @@ namespace PersonalMoney.Api.ViewModels.Mapper
                 .ForMember(dest => dest.CreatedTime, source => source.Ignore());
 
             //Domain to viewmodel
-            CreateMap<Category, CategoryViewModel>();
+            CreateMap<Category, CategoryViewModel>()
+                .ForMember(dest => dest.SubCategories, source => source.MapFrom(c => c.SubCategories));
         }
     }
 }

@@ -22,7 +22,6 @@ namespace PersonalMoney.Api.Services
         private readonly AppDbContext dataContext;
         private readonly UserResolverService userResolver;
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseService{TModel, TViewModel}"/> class.
         /// </summary>
@@ -39,22 +38,33 @@ namespace PersonalMoney.Api.Services
         /// <inheritdoc />
         public virtual async Task<IEnumerable<TViewModel>> Get()
         {
-            var views = await dataContext.Set<TModel>()
+            var dbSet = dataContext.Set<TModel>();
+            return await GetData(dbSet);
+        }
+
+        /// <summary>
+        /// Gets the data.
+        /// </summary>
+        /// <param name="dbSet">The database set.</param>
+        /// <returns></returns>
+        protected async Task<IEnumerable<TViewModel>> GetData(IQueryable<TModel> dbSet)
+        {
+            var models = await dbSet
                 .Where(c => !c.IsDeleted)
                 .Where(c => c.UserId == userResolver.GetUserId())
                 .ToListAsync();
-            var viewModels = mapper.Map<IEnumerable<TViewModel>>(views);
+            var viewModels = mapper.Map<IEnumerable<TViewModel>>(models);
             return viewModels;
         }
 
         /// <inheritdoc />
         public virtual async Task<IEnumerable<TViewModel>> Get(DateTime? lastSyncTime)
         {
-            var views = await dataContext.Set<TModel>()
+            var models = await dataContext.Set<TModel>()
                 .Where(c => c.UpdatedTime > lastSyncTime)
                 .Where(c => c.UserId == userResolver.GetUserId())
                 .ToListAsync();
-            var viewModels = mapper.Map<IEnumerable<TViewModel>>(views);
+            var viewModels = mapper.Map<IEnumerable<TViewModel>>(models);
             return viewModels;
         }
 
@@ -63,7 +73,7 @@ namespace PersonalMoney.Api.Services
         {
             var view = await dataContext.Set<TModel>()
                 .Where(c => !c.IsDeleted)
-                .Where(c => c.Id > id)
+                .Where(c => c.Id == id)
                 .Where(c => c.UserId == userResolver.GetUserId())
                 .FirstOrDefaultAsync();
             var viewModel = mapper.Map<TViewModel>(view);
@@ -80,7 +90,7 @@ namespace PersonalMoney.Api.Services
         }
 
         /// <inheritdoc />
-        public virtual async Task<TViewModel> Update(string id, TViewModel model)
+        public virtual async Task<TViewModel> Update(int id, TViewModel model)
         {
             var document = mapper.Map<TModel>(model);
             EntityEntry<TModel> result = dataContext.Set<TModel>().Update(document);

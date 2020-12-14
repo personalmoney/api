@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using PersonalMoney.Api.Models;
 using PersonalMoney.Api.ViewModels;
 
@@ -12,6 +15,8 @@ namespace PersonalMoney.Api.Services.Category
     /// <seealso cref="ICategoryService" />
     public class CategoryService : BaseService<Models.Category, CategoryViewModel>, ICategoryService
     {
+        private readonly AppDbContext dataContext;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CategoryService" /> class.
         /// </summary>
@@ -24,6 +29,15 @@ namespace PersonalMoney.Api.Services.Category
             UserResolverService userResolver)
             : base(mapper, dataContext, userResolver)
         {
+            this.dataContext = dataContext;
+        }
+
+        /// <inheritdoc />
+        public override Task<IEnumerable<CategoryViewModel>> Get()
+        {
+            var query = dataContext.Categories
+                .Include(c => c.SubCategories);
+            return GetData(query);
         }
     }
 }

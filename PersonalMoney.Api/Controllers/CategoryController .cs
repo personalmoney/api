@@ -83,7 +83,7 @@ namespace PersonalMoney.Api.Controllers
         /// <param name="id">The identifier.</param>
         /// <param name="model">The Category data.</param>
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(string id, [FromBody] CategoryViewModel model)
+        public async Task<IActionResult> Put(int id, [FromBody] CategoryViewModel model)
         {
             model = await service.Update(id, model);
             if (model == null)

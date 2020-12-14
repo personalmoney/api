@@ -46,7 +46,7 @@ namespace PersonalMoney.Api.Services
         /// <param name="id">The identifier.</param>
         /// <param name="model">The model.</param>
         /// <returns></returns>
-        Task<TViewModel> Update(string id, TViewModel model);
+        Task<TViewModel> Update(int id, TViewModel model);
 
         /// <summary>
         /// Deletes the record with the specified identifier.

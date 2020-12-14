@@ -173,7 +173,7 @@ namespace PersonalMoney.Api.Migrations
                     CreatedTime = table.Column<DateTime>(nullable: true),
                     UpdatedTime = table.Column<DateTime>(nullable: true),
                     TagId = table.Column<int>(nullable: false),
-                    TransactionId = table.Column<int>(nullable: true)
+                    TransactionId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -189,7 +189,7 @@ namespace PersonalMoney.Api.Migrations
                         column: x => x.TransactionId,
                         principalTable: "Transactions",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -204,8 +204,8 @@ namespace PersonalMoney.Api.Migrations
                     UpdatedTime = table.Column<DateTime>(nullable: true),
                     SubCategoryId = table.Column<int>(nullable: false),
                     PayeeId = table.Column<int>(nullable: false),
-                    Amount = table.Column<double>(nullable: false),
-                    TransactionId = table.Column<int>(nullable: true)
+                    TransactionId = table.Column<int>(nullable: false),
+                    Amount = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -227,7 +227,7 @@ namespace PersonalMoney.Api.Migrations
                         column: x => x.TransactionId,
                         principalTable: "Transactions",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

@@ -9,6 +9,14 @@ namespace PersonalMoney.Api.Helpers
     public class PersonalMoneyException : Exception
     {
         /// <summary>
+        /// Gets or sets the code.
+        /// </summary>
+        /// <value>
+        /// The code.
+        /// </value>
+        public string Code { get; set; } = "0001";
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="PersonalMoneyException"/> class.
         /// </summary>
         /// <param name="message">The message that describes the error.</param>

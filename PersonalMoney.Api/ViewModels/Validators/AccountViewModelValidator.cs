@@ -1,8 +1,10 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using PersonalMoney.Api.Models;
-using PersonalMoney.Api.Services.AccountType;
+using PersonalMoney.Api.Services;
 
 namespace PersonalMoney.Api.ViewModels.Validators
 {
@@ -12,18 +14,14 @@ namespace PersonalMoney.Api.ViewModels.Validators
     /// <seealso cref="NameValidator{TModel,TViewModel}" />
     public class AccountViewModelValidator : NameValidator<Account, AccountViewModel>
     {
-        private readonly IAccountTypeService accountTypeService;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountViewModelValidator" /> class.
         /// </summary>
         /// <param name="dbContext">The database context.</param>
-        /// <param name="accountTypeService">The account type service.</param>
-        public AccountViewModelValidator(AppDbContext dbContext, IAccountTypeService accountTypeService)
-        : base(dbContext, 50)
+        /// <param name="userResolver">The user resolver.</param>
+        public AccountViewModelValidator(AppDbContext dbContext, UserResolverService userResolver)
+        : base(dbContext, userResolver, 50)
         {
-            this.accountTypeService = accountTypeService;
-
             RuleFor(c => c.IsActive)
                 .NotNull();
 
@@ -43,7 +41,12 @@ namespace PersonalMoney.Api.ViewModels.Validators
 
         private async Task<bool> CheckAccountType(int accountType, CancellationToken cancellationToken)
         {
-            return await accountTypeService.Get(accountType) != null;
+            return await DbContext.AccountTypes
+                .Where(c => !c.IsDeleted)
+                .AsNoTracking()
+                .Where(c => c.UserId == UserResolver.GetUserId())
+                .Where(c => c.Id == accountType)
+                .AnyAsync(cancellationToken);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace PersonalMoney.Api.Services.SubCategory
         /// </summary>
         /// <param name="categoryId">The category identifier.</param>
         /// <returns></returns>
-        Task<IEnumerable<SubCategoryViewModel>> GetByCategoryId(string categoryId);
+        Task<IEnumerable<SubCategoryViewModel>> GetByCategoryId(int categoryId);
 
         /// <summary>
         /// Gets the specified category identifier.
@@ -23,7 +23,7 @@ namespace PersonalMoney.Api.Services.SubCategory
         /// <param name="categoryId">The category identifier.</param>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        Task<SubCategoryViewModel> Get(string categoryId, string id);
+        Task<SubCategoryViewModel> Get(int categoryId, int id);
 
         /// <summary>
         /// Deletes the specified category identifier.
@@ -31,6 +31,6 @@ namespace PersonalMoney.Api.Services.SubCategory
         /// <param name="categoryId">The category identifier.</param>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        Task Delete(string categoryId, string id);
+        Task Delete(int categoryId, int id);
     }
 }

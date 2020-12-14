@@ -25,6 +25,14 @@ namespace PersonalMoney.Api.Models
         public int PayeeId { get; set; }
 
         /// <summary>
+        /// Gets or sets the transaction identifier.
+        /// </summary>
+        /// <value>
+        /// The transaction identifier.
+        /// </value>
+        public int TransactionId { get; set; }
+
+        /// <summary>
         /// Gets or sets the amount.
         /// </summary>
         /// <value>
@@ -47,5 +55,13 @@ namespace PersonalMoney.Api.Models
         /// The payee.
         /// </value>
         public Payee Payee { get; set; }
+
+        /// <summary>
+        /// Gets or sets the transaction.
+        /// </summary>
+        /// <value>
+        /// The transaction.
+        /// </value>
+        public Transaction Transaction { get; set; }
     }
 }

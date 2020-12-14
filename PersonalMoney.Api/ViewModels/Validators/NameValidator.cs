@@ -5,6 +5,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using PersonalMoney.Api.Models;
 using PersonalMoney.Api.Models.Base;
+using PersonalMoney.Api.Services;
 using PersonalMoney.Api.ViewModels.Base;
 
 namespace PersonalMoney.Api.ViewModels.Validators
@@ -19,16 +20,27 @@ namespace PersonalMoney.Api.ViewModels.Validators
         where TModel : NameModel
         where TViewModel : NameViewModel
     {
-        private readonly AppDbContext dbContext;
+        /// <summary>
+        /// The database context
+        /// </summary>
+        protected readonly AppDbContext DbContext;
+
+        /// <summary>
+        /// The user resolver
+        /// </summary>
+        protected readonly UserResolverService UserResolver;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NameValidator{TModel, TViewModel}" /> class.
         /// </summary>
         /// <param name="dbContext">The database context.</param>
+        /// <param name="userResolver">The user resolver service</param>
         /// <param name="maxLength">The maximum length.</param>
-        protected NameValidator(AppDbContext dbContext, int maxLength)
+        protected NameValidator(AppDbContext dbContext, UserResolverService userResolver, int maxLength)
         {
-            this.dbContext = dbContext;
+            DbContext = dbContext;
+            UserResolver = userResolver;
+
             RuleFor(c => c.IsDeleted)
                 .Must(c => c == false)
                 .WithMessage("Delete shouldn't be set to true");
@@ -54,14 +66,21 @@ namespace PersonalMoney.Api.ViewModels.Validators
         /// <returns></returns>
         protected virtual async Task<bool> CheckName(TViewModel model, CancellationToken cancellationToken)
         {
+            var query = DbContext
+                .Set<TModel>()
+                .AsNoTracking()
+                .Where(c => !c.IsDeleted)
+                .Where(c => c.UserId == UserResolver.GetUserId())
+                .Where(c => c.Name == model.Name);
+
             if (model.Id <= 0)
             {
-                return !await dbContext.Set<TModel>().AnyAsync(c => c.Name == model.Name, cancellationToken);
+                return !await query.AnyAsync(cancellationToken);
             }
-            else
-            {
-                return !await dbContext.Set<TModel>().Where(c => c.Id != model.Id).AnyAsync(c => c.Name == model.Name, cancellationToken);
-            }
+
+            return !await query
+                .Where(c => c.Id != model.Id)
+                .AnyAsync(c => c.Name == model.Name, cancellationToken);
         }
     }
 }

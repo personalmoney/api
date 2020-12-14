@@ -9,6 +9,12 @@ namespace PersonalMoney.Api.Services.Transaction
 {
     internal class TransactionService : BaseService<Models.Transaction, TransactionViewModel>, ITransactionService
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TransactionService"/> class.
+        /// </summary>
+        /// <param name="mapper">The mapper.</param>
+        /// <param name="dataContext">The database context</param>
+        /// <param name="userResolver">The user resolver service</param>
         public TransactionService(IMapper mapper,
             AppDbContext dataContext,
             UserResolverService userResolver)
@@ -16,22 +22,14 @@ namespace PersonalMoney.Api.Services.Transaction
         {
         }
 
+        /// <inheritdoc />
         public Task<PagingResponse<TransactionViewModel>> Get(TransactionSearchViewModel request)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc />
         public Task<PagingResponse<TransactionViewModel>> GetModified(TransactionSearchViewModel request)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<TransactionViewModel> Get(string id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Delete(string id)
         {
             throw new NotImplementedException();
         }

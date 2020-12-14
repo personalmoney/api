@@ -9,6 +9,12 @@ namespace PersonalMoney.Api.Models
     /// <seealso cref="NameModel" />
     public class Category : NameModel
     {
-        private IList<SubCategory> SubCategories { get; set; }
+        /// <summary>
+        /// Gets or sets the sub categories.
+        /// </summary>
+        /// <value>
+        /// The sub categories.
+        /// </value>
+        public IList<SubCategory> SubCategories { get; set; }
     }
 }

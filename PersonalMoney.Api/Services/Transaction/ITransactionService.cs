@@ -22,14 +22,14 @@ namespace PersonalMoney.Api.Services.Transaction
         /// <param name="id">The identifier.</param>
         /// <param name="model">The model.</param>
         /// <returns></returns>
-        Task<TransactionViewModel> Update(string id, TransactionViewModel model);
+        Task<TransactionViewModel> Update(int id, TransactionViewModel model);
 
         /// <summary>
-        /// Gets the transacion with the given identifier
+        /// Gets the transaction with the given identifier
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        Task<TransactionViewModel> Get(string id);
+        Task<TransactionViewModel> Get(int id);
 
         /// <summary>
         /// Gets the specified request.
@@ -43,7 +43,7 @@ namespace PersonalMoney.Api.Services.Transaction
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        Task Delete(string id);
+        Task Delete(int id);
 
         /// <summary>
         /// Gets the modified.

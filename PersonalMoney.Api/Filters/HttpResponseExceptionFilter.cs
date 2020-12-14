@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using PersonalMoney.Api.Helpers;
 
@@ -22,11 +23,17 @@ namespace PersonalMoney.Api.Filters
         /// <inheritdoc />
         public void OnActionExecuted(ActionExecutedContext context)
         {
-            if (context.Exception is PersonalMoneyException exception)
+            if (!(context.Exception is PersonalMoneyException exception))
             {
-                context.Result = new BadRequestObjectResult(exception.Message);
-                context.ExceptionHandled = true;
+                return;
             }
+            var data = new Dictionary<string, string>
+            {
+                ["code"] = exception.Code,
+                ["message"] = exception.Message
+            };
+            context.Result = new BadRequestObjectResult(data);
+            context.ExceptionHandled = true;
         }
     }
 }
