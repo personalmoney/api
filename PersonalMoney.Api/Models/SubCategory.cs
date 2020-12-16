@@ -1,5 +1,4 @@
-﻿using Google.Cloud.Firestore;
-using PersonalMoney.Api.Models.Base;
+﻿using PersonalMoney.Api.Models.Base;
 
 namespace PersonalMoney.Api.Models
 {
@@ -7,7 +6,6 @@ namespace PersonalMoney.Api.Models
     /// SubCategory Model
     /// </summary>
     /// <seealso cref="NameModel" />
-    [FirestoreData]
     public class SubCategory : NameModel
     {
         /// <summary>
@@ -16,7 +14,14 @@ namespace PersonalMoney.Api.Models
         /// <value>
         /// The category identifier.
         /// </value>
-        [FirestoreProperty("categoryId")]
-        public string CategoryId { get; set; }
+        public int CategoryId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the category.
+        /// </summary>
+        /// <value>
+        /// The category.
+        /// </value>
+        public Category Category { get; set; }
     }
 }

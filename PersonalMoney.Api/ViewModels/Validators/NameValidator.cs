@@ -1,8 +1,11 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
+using PersonalMoney.Api.Models;
 using PersonalMoney.Api.Models.Base;
-using PersonalMoney.Api.Services.FireStore;
+using PersonalMoney.Api.Services;
 using PersonalMoney.Api.ViewModels.Base;
 
 namespace PersonalMoney.Api.ViewModels.Validators
@@ -14,27 +17,29 @@ namespace PersonalMoney.Api.ViewModels.Validators
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
     /// <seealso cref="AbstractValidator{TViewModel}" />
     public abstract class NameValidator<TModel, TViewModel> : AbstractValidator<TViewModel>
-        where TModel : UserModel
+        where TModel : NameModel
         where TViewModel : NameViewModel
     {
-        private readonly IFireStoreService fireStoreService;
+        /// <summary>
+        /// The database context
+        /// </summary>
+        protected readonly AppDbContext DbContext;
 
         /// <summary>
-        /// Gets the name of the collection.
+        /// The user resolver
         /// </summary>
-        /// <value>
-        /// The name of the collection.
-        /// </value>
-        public abstract string CollectionName { get; protected set; }
+        protected readonly UserResolverService UserResolver;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NameValidator{TModel, TViewModel}" /> class.
         /// </summary>
-        /// <param name="fireStoreService">The fire store service.</param>
+        /// <param name="dbContext">The database context.</param>
+        /// <param name="userResolver">The user resolver service</param>
         /// <param name="maxLength">The maximum length.</param>
-        protected NameValidator(IFireStoreService fireStoreService, int maxLength)
+        protected NameValidator(AppDbContext dbContext, UserResolverService userResolver, int maxLength)
         {
-            this.fireStoreService = fireStoreService;
+            DbContext = dbContext;
+            UserResolver = userResolver;
 
             RuleFor(c => c.IsDeleted)
                 .Must(c => c == false)
@@ -61,14 +66,21 @@ namespace PersonalMoney.Api.ViewModels.Validators
         /// <returns></returns>
         protected virtual async Task<bool> CheckName(TViewModel model, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrEmpty(model.Id))
+            var query = DbContext
+                .Set<TModel>()
+                .AsNoTracking()
+                .Where(c => !c.IsDeleted)
+                .Where(c => c.UserId == UserResolver.GetUserId())
+                .Where(c => c.Name == model.Name);
+
+            if (model.Id <= 0)
             {
-                return await fireStoreService.FindDocumentByName<TModel>(CollectionName, model.Name) == null;
+                return !await query.AnyAsync(cancellationToken);
             }
-            else
-            {
-                return await fireStoreService.FindDocumentByName<TModel>(CollectionName, model.Name, model.Id) == null;
-            }
+
+            return !await query
+                .Where(c => c.Id != model.Id)
+                .AnyAsync(c => c.Name == model.Name, cancellationToken);
         }
     }
 }

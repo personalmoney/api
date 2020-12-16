@@ -31,9 +31,9 @@ namespace PersonalMoney.Api.Controllers
         /// </summary>
         /// <returns>The list Transactions</returns>
         [HttpGet]
-        public async Task<PagingResponse<TransactionViewModel>> Get([FromQuery] TransactionSearchViewModel request)
+        public PagingResponse<TransactionViewModel> Get([FromQuery] TransactionSearchViewModel request)
         {
-            return await service.Get(request);
+            return service.Get(request);
         }
 
         /// <summary>
@@ -41,9 +41,9 @@ namespace PersonalMoney.Api.Controllers
         /// </summary>
         /// <returns>The list account of types</returns>
         [HttpGet("modified")]
-        public async Task<PagingResponse<TransactionViewModel>> GetModifiedRecords([FromQuery] TransactionSearchViewModel request)
+        public PagingResponse<TransactionRequestModel> GetModifiedRecords([FromQuery] TransactionSearchViewModel request)
         {
-            return await service.GetModified(request);
+            return service.GetModified(request);
         }
 
         // GET: Transaction/Id
@@ -53,7 +53,7 @@ namespace PersonalMoney.Api.Controllers
         /// <param name="id">The identifier.</param>
         /// <returns>The Transaction</returns>
         [HttpGet("{id}")]
-        public async Task<TransactionViewModel> Get(string id)
+        public async Task<TransactionViewModel> Get(int id)
         {
             return await service.Get(id);
         }
@@ -65,7 +65,7 @@ namespace PersonalMoney.Api.Controllers
         /// <param name="value">The Transaction data.</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] TransactionViewModel value)
+        public async Task<IActionResult> Post([FromBody] TransactionRequestModel value)
         {
             value = await service.Create(value);
             if (value == null)
@@ -82,7 +82,7 @@ namespace PersonalMoney.Api.Controllers
         /// <param name="id">The identifier.</param>
         /// <param name="model">The Transaction data.</param>
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(string id, [FromBody] TransactionViewModel model)
+        public async Task<IActionResult> Put(int id, [FromBody] TransactionRequestModel model)
         {
             model = await service.Update(id, model);
             if (model == null)
@@ -98,7 +98,7 @@ namespace PersonalMoney.Api.Controllers
         /// </summary>
         /// <param name="id">The identifier.</param>
         [HttpDelete("{id}")]
-        public async Task Delete(string id)
+        public async Task Delete(int id)
         {
             await service.Delete(id);
         }

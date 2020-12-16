@@ -16,12 +16,15 @@ namespace PersonalMoney.Api.ViewModels.Mapper
         {
             //Viewmodel to domain
             CreateMap<TagViewModel, Tag>()
-                .ForMember(dest => dest.NameLowerCase, source => source.MapFrom(c => c.Name!.ToLower()))
                 .ForMember(dest => dest.UpdatedTime, source => source.Ignore())
                 .ForMember(dest => dest.CreatedTime, source => source.Ignore());
 
             //Domain to viewmodel
             CreateMap<Tag, TagViewModel>();
+
+            CreateMap<TransactionTag, TagViewModel>()
+                .ForMember(dest => dest.Name, source => source.MapFrom(c => c.Tag.Name))
+                .ForMember(dest => dest.Id, source => source.MapFrom(c => c.TagId));
         }
     }
 }

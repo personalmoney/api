@@ -1,87 +1,60 @@
-﻿using System;
-using System.Collections.Generic;
-using PersonalMoney.Api.Helpers;
-using PersonalMoney.Api.ViewModels.Base;
+﻿using System.Collections.Generic;
 
 namespace PersonalMoney.Api.ViewModels
 {
     /// <summary>
     /// Transaction view model
     /// </summary>
-    /// <seealso cref="TimeViewModel" />
-    public class TransactionViewModel : TimeViewModel
+    /// <seealso cref="TransactionRequestModel" />
+    public class TransactionViewModel : TransactionRequestModel
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TransactionViewModel"/> class.
         /// </summary>
         public TransactionViewModel()
         {
-            Tags = new List<string>();
+            Tags = new List<TagViewModel>();
         }
 
         /// <summary>
-        /// Gets or sets the account.
+        /// Gets or sets the name of the account.
         /// </summary>
         /// <value>
-        /// The account.
+        /// The name of the account.
         /// </value>
-        public string Account { get; set; }
+        public string AccountName { get; set; }
 
         /// <summary>
-        /// Converts to account.
+        /// To account name.
         /// </summary>
         /// <value>
-        /// To account.
+        /// The name of to account.
         /// </value>
-        public string ToAccount { get; set; }
+        public string ToAccountName { get; set; }
 
         /// <summary>
-        /// Gets or sets the sub category.
+        /// Gets or sets the name of the category.
         /// </summary>
         /// <value>
-        /// The sub category.
+        /// The name of the category.
         /// </value>
-        public string SubCategory { get; set; }
+        public string CategoryName { get; set; }
 
         /// <summary>
-        /// Gets or sets the payee.
+        /// Gets or sets the name of the sub category.
         /// </summary>
         /// <value>
-        /// The payee.
+        /// The name of the sub category.
         /// </value>
-        public string Payee { get; set; }
+        public string SubCategoryName { get; set; }
 
         /// <summary>
-        /// Gets or sets the amount.
+        /// Gets or sets the name of the payee.
         /// </summary>
         /// <value>
-        /// The amount.
+        /// The name of the payee.
         /// </value>
-        public decimal Amount { get; set; }
-
-        /// <summary>
-        /// Gets or sets the date.
-        /// </summary>
-        /// <value>
-        /// The date.
-        /// </value>
-        public DateTime Date { get; set; }
-
-        /// <summary>
-        /// Gets or sets the type.
-        /// </summary>
-        /// <value>
-        /// The type.
-        /// </value>
-        public TransactionType Type { get; set; }
-
-        /// <summary>
-        /// Gets or sets the notes.
-        /// </summary>
-        /// <value>
-        /// The notes.
-        /// </value>
-        public string Notes { get; set; }
+        public string PayeeName { get; set; }
 
         /// <summary>
         /// Gets or sets the tags.
@@ -89,6 +62,6 @@ namespace PersonalMoney.Api.ViewModels
         /// <value>
         /// The tags.
         /// </value>
-        public ICollection<string> Tags { get; set; }
+        public IList<TagViewModel> Tags { get; set; }
     }
 }

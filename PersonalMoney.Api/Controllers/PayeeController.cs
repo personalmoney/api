@@ -54,7 +54,7 @@ namespace PersonalMoney.Api.Controllers
         /// <param name="id">The identifier.</param>
         /// <returns>The Payee</returns>
         [HttpGet("{id}")]
-        public async Task<PayeeViewModel> Get(string id)
+        public async Task<PayeeViewModel> Get(int id)
         {
             return await service.Get(id);
         }
@@ -83,7 +83,7 @@ namespace PersonalMoney.Api.Controllers
         /// <param name="id">The identifier.</param>
         /// <param name="model">The Payee data.</param>
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(string id, [FromBody] PayeeViewModel model)
+        public async Task<IActionResult> Put(int id, [FromBody] PayeeViewModel model)
         {
             model = await service.Update(id, model);
             if (model == null)
@@ -99,7 +99,7 @@ namespace PersonalMoney.Api.Controllers
         /// </summary>
         /// <param name="id">The identifier.</param>
         [HttpDelete("{id}")]
-        public async Task Delete(string id)
+        public async Task Delete(int id)
         {
             await service.Delete(id);
         }

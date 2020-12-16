@@ -14,6 +14,6 @@ namespace PersonalMoney.Api.ViewModels
         /// <value>
         /// The category identifier.
         /// </value>
-        public string CategoryId { get; set; }
+        public int CategoryId { get; set; }
     }
 }

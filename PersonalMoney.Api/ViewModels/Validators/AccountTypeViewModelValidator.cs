@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
-using PersonalMoney.Api.Helpers;
-using PersonalMoney.Api.Services.FireStore;
+using PersonalMoney.Api.Models;
+using PersonalMoney.Api.Services;
 
 namespace PersonalMoney.Api.ViewModels.Validators
 {
@@ -8,16 +8,15 @@ namespace PersonalMoney.Api.ViewModels.Validators
     /// AccountType viewModel validator
     /// </summary>
     /// <seealso cref="AccountTypeViewModel" />
-    public class AccountTypeViewModelValidator : NameValidator<Models.AccountType, AccountTypeViewModel>
+    public class AccountTypeViewModelValidator : NameValidator<AccountType, AccountTypeViewModel>
     {
-        /// <inheritdoc />
-        public override string CollectionName { get; protected set; } = CollectionNames.AccountTypes;
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="AccountTypeViewModelValidator"/> class.
+        /// Initializes a new instance of the <see cref="AccountTypeViewModelValidator" /> class.
         /// </summary>
-        public AccountTypeViewModelValidator(IFireStoreService fireStoreService)
-        : base(fireStoreService, 50)
+        /// <param name="dbContext">The database context.</param>
+        /// <param name="userResolver">The user resolver.</param>
+        public AccountTypeViewModelValidator(AppDbContext dbContext, UserResolverService userResolver)
+        : base(dbContext, userResolver, 50)
         {
             RuleFor(c => c.Icon)
                 .NotEmpty()

@@ -1,5 +1,4 @@
 ﻿using System;
-using Google.Cloud.Firestore;
 
 namespace PersonalMoney.Api.Models.Base
 {
@@ -15,7 +14,6 @@ namespace PersonalMoney.Api.Models.Base
         /// <value>
         /// The created time.
         /// </value>
-        [FirestoreProperty("createTime")]
         public DateTime? CreatedTime { get; internal set; }
 
         /// <summary>
@@ -24,7 +22,6 @@ namespace PersonalMoney.Api.Models.Base
         /// <value>
         /// The updated time.
         /// </value>
-        [FirestoreProperty("updateTime")]
         public DateTime? UpdatedTime { get; internal set; }
     }
 }

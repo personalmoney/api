@@ -32,7 +32,7 @@ namespace PersonalMoney.Api.Controllers
         /// <param name="categoryId">The category identifier.</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IEnumerable<SubCategoryViewModel>> Get(string categoryId)
+        public async Task<IEnumerable<SubCategoryViewModel>> Get(int categoryId)
         {
             return await service.GetByCategoryId(categoryId);
         }
@@ -57,7 +57,7 @@ namespace PersonalMoney.Api.Controllers
         /// The SubCategory
         /// </returns>
         [HttpGet("{id}")]
-        public async Task<SubCategoryViewModel> Get(string categoryId, string id)
+        public async Task<SubCategoryViewModel> Get(int categoryId, int id)
         {
             return await service.Get(categoryId, id);
         }
@@ -86,7 +86,7 @@ namespace PersonalMoney.Api.Controllers
         /// <param name="id">The identifier.</param>
         /// <param name="model">The SubCategory data.</param>
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(string id, [FromBody] SubCategoryViewModel model)
+        public async Task<IActionResult> Put(int id, [FromBody] SubCategoryViewModel model)
         {
             model = await service.Update(id, model);
             if (model == null)
@@ -103,7 +103,7 @@ namespace PersonalMoney.Api.Controllers
         /// <param name="categoryId">The category identifier.</param>
         /// <param name="id">The identifier.</param>
         [HttpDelete("{id}")]
-        public async Task Delete(string categoryId, string id)
+        public async Task Delete(int categoryId, int id)
         {
             await service.Delete(categoryId, id);
         }
