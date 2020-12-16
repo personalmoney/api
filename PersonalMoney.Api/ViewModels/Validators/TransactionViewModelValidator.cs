@@ -79,7 +79,8 @@ namespace PersonalMoney.Api.ViewModels.Validators
                 {
                     RuleFor(c => c.SubCategoryId)
                         .Must(CheckRecord<SubCategory>)
-                        .WithMessage("Invalid To Sub category");
+                        .When(c => c.Type != TransactionType.Transfer)
+                        .WithMessage("Invalid Sub category");
                 });
 
             RuleFor(c => c.PayeeId)
@@ -89,7 +90,8 @@ namespace PersonalMoney.Api.ViewModels.Validators
                 {
                     RuleFor(c => c.PayeeId)
                         .Must(CheckRecord<Payee>)
-                        .WithMessage("Invalid To Payee");
+                        .When(c => c.Type != TransactionType.Transfer)
+                        .WithMessage("Invalid Payee");
                 });
 
             RuleFor(c => c.Notes)
