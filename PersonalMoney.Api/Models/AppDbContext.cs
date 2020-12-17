@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -100,6 +101,14 @@ namespace PersonalMoney.Api.Models
         /// </value>
         public DbSet<TransactionTag> TransactionTags { get; set; }
 
+        /// <summary>
+        /// Gets or sets the users.
+        /// </summary>
+        /// <value>
+        /// The users.
+        /// </value>
+        public DbSet<User> Users { get; set; }
+
         #region SaveChanges
 
         /// <inheritdoc />
@@ -123,17 +132,18 @@ namespace PersonalMoney.Api.Models
                 return;
             }
 
-            string userId = null;
+            int userId = 0;
             if (userResolver != null)
             {
-                userId = userResolver.GetUserId();
+                string id = userResolver.GetUserId();
+                userId = Users.First(c => c.UserId == id).Id;
             }
 
             IEnumerable<EntityEntry<TimeModel>> shortEntries = ChangeTracker.Entries<TimeModel>();
             AddUserAndTime(shortEntries, userId);
         }
 
-        private static void AddUserAndTime(IEnumerable<EntityEntry<TimeModel>> entries, string id)
+        private static void AddUserAndTime(IEnumerable<EntityEntry<TimeModel>> entries, int id)
         {
             foreach (EntityEntry<TimeModel> item in entries)
             {

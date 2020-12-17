@@ -42,7 +42,7 @@ namespace PersonalMoney.Api.ViewModels.Validators
                 .Where(c => !c.IsDeleted)
                 .Where(c => c.CategoryId == model.CategoryId)
                 .Where(c => c.Name == model.Name)
-                .Where(c => c.UserId == UserResolver.GetUserId());
+                .Where(c => c.User.UserId == UserResolver.GetUserId());
 
             if (model.Id <= 0)
             {
@@ -62,7 +62,7 @@ namespace PersonalMoney.Api.ViewModels.Validators
                 .AsNoTracking()
                 .Where(c => !c.IsDeleted)
                 .Where(c => c.Id == categoryId)
-                .Where(c => c.UserId == UserResolver.GetUserId())
+                .Where(c => c.User.UserId == UserResolver.GetUserId())
                 .AnyAsync(cancellationToken);
         }
     }

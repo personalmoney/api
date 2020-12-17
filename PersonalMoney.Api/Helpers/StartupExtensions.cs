@@ -38,6 +38,7 @@ namespace PersonalMoney.Api.Helpers
             services.AddScoped<IPayeeService, PayeeService>();
             services.AddScoped<ITagService, TagService>();
             services.AddScoped<ITransactionService, TransactionService>();
+            services.AddScoped<IUserService, UserService>();
 
             services.AddCors(options =>
             {

@@ -118,7 +118,7 @@ namespace PersonalMoney.Api.ViewModels.Validators
                 .Set<T>()
                 .AsNoTracking()
                 .Where(c => !c.IsDeleted)
-                .Where(c => c.UserId == userResolver.GetUserId())
+                .Where(c => c.User.UserId == userResolver.GetUserId())
                 .Any(c => c.Id == id);
         }
 
@@ -128,7 +128,7 @@ namespace PersonalMoney.Api.ViewModels.Validators
                 .Tags
                 .AsNoTracking()
                 .Where(c => !c.IsDeleted)
-                .Where(c => c.UserId == userResolver.GetUserId())
+                .Where(c => c.User.UserId == userResolver.GetUserId())
                 .Count(c => tags.Contains(c.Id));
 
             return records == tags.Count;

@@ -20,7 +20,11 @@ namespace PersonalMoney.Api.Services
     {
         private readonly IMapper mapper;
         private readonly AppDbContext dataContext;
-        private readonly UserResolverService userResolver;
+
+        /// <summary>
+        /// The user identifier
+        /// </summary>
+        protected readonly int UserId;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseService{TModel, TViewModel}"/> class.
@@ -32,7 +36,27 @@ namespace PersonalMoney.Api.Services
         {
             this.mapper = mapper;
             this.dataContext = dataContext;
-            this.userResolver = userResolver;
+            UserId = GetUserId(dataContext, userResolver);
+        }
+
+        /// <summary>
+        /// Gets the user identifier.
+        /// </summary>
+        /// <param name="appDbContext">The application database context.</param>
+        /// <param name="userResolver">The user resolver.</param>
+        /// <returns></returns>
+        protected int GetUserId(AppDbContext appDbContext, UserResolverService userResolver)
+        {
+            var id = userResolver.GetUserId();
+            var user = appDbContext.Users.FirstOrDefault(c => c.UserId == id);
+            if (user != null)
+            {
+                return user.Id;
+            }
+            user = new User { UserId = id };
+            appDbContext.Users.Add(user);
+            appDbContext.SaveChanges();
+            return user.Id;
         }
 
         /// <inheritdoc />
@@ -51,7 +75,7 @@ namespace PersonalMoney.Api.Services
         {
             var models = await dbSet
                 .Where(c => !c.IsDeleted)
-                .Where(c => c.UserId == userResolver.GetUserId())
+                .Where(c => c.UserId == UserId)
                 .ToListAsync();
             var viewModels = mapper.Map<IEnumerable<TViewModel>>(models);
             return viewModels;
@@ -62,7 +86,7 @@ namespace PersonalMoney.Api.Services
         {
             var models = await dataContext.Set<TModel>()
                 .Where(c => c.UpdatedTime > lastSyncTime)
-                .Where(c => c.UserId == userResolver.GetUserId())
+                .Where(c => c.UserId == UserId)
                 .ToListAsync();
             var viewModels = mapper.Map<IEnumerable<TViewModel>>(models);
             return viewModels;
@@ -74,7 +98,7 @@ namespace PersonalMoney.Api.Services
             var view = await dataContext.Set<TModel>()
                 .Where(c => !c.IsDeleted)
                 .Where(c => c.Id == id)
-                .Where(c => c.UserId == userResolver.GetUserId())
+                .Where(c => c.UserId == UserId)
                 .FirstOrDefaultAsync();
             var viewModel = mapper.Map<TViewModel>(view);
             return viewModel;

@@ -13,7 +13,6 @@ namespace PersonalMoney.Api.Services.Transaction
     {
         private readonly IMapper mapper;
         private readonly AppDbContext dataContext;
-        private readonly string userId;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TransactionService"/> class.
@@ -28,7 +27,6 @@ namespace PersonalMoney.Api.Services.Transaction
         {
             this.mapper = mapper;
             this.dataContext = dataContext;
-            userId = userResolver.GetUserId();
         }
 
         /// <inheritdoc />
@@ -36,7 +34,7 @@ namespace PersonalMoney.Api.Services.Transaction
         {
             return await dataContext.Transactions
                 .Where(c => !c.IsDeleted)
-                .Where(c => c.UserId == userId)
+                .Where(c => c.UserId == UserId)
                 .ProjectTo<TransactionViewModel>(mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
@@ -46,7 +44,7 @@ namespace PersonalMoney.Api.Services.Transaction
         {
             var query = dataContext.Transactions
                 .Where(c => !c.IsDeleted)
-                .Where(c => c.UserId == userId)
+                .Where(c => c.UserId == UserId)
                 .ProjectTo<TransactionViewModel>(mapper.ConfigurationProvider);
 
             var response = PagingResponse(request, query);
@@ -59,7 +57,7 @@ namespace PersonalMoney.Api.Services.Transaction
         {
             var query = dataContext.Transactions
                 .Where(c => c.UpdatedTime > request.LastSyncTime)
-                .Where(c => c.UserId == userId)
+                .Where(c => c.UserId == UserId)
                 .ProjectTo<TransactionRequestModel>(mapper.ConfigurationProvider);
 
             var response = PagingResponse(request, query);

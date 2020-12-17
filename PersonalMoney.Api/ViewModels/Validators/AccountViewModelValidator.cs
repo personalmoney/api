@@ -44,7 +44,7 @@ namespace PersonalMoney.Api.ViewModels.Validators
             return await DbContext.AccountTypes
                 .Where(c => !c.IsDeleted)
                 .AsNoTracking()
-                .Where(c => c.UserId == UserResolver.GetUserId())
+                .Where(c => c.User.UserId == UserResolver.GetUserId())
                 .Where(c => c.Id == accountType)
                 .AnyAsync(cancellationToken);
         }

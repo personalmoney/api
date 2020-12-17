@@ -70,7 +70,7 @@ namespace PersonalMoney.Api.ViewModels.Validators
                 .Set<TModel>()
                 .AsNoTracking()
                 .Where(c => !c.IsDeleted)
-                .Where(c => c.UserId == UserResolver.GetUserId())
+                .Where(c => c.User.UserId == UserResolver.GetUserId())
                 .Where(c => c.Name == model.Name);
 
             if (model.Id <= 0)

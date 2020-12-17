@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PersonalMoney.Api.Models;
+using PersonalMoney.Api.Services;
 
 namespace PersonalMoney.Api.Controllers
 {
@@ -11,6 +13,20 @@ namespace PersonalMoney.Api.Controllers
     [ApiController]
     public class IndexController : ControllerBase
     {
+        private readonly IUserService userService;
+        private readonly UserResolverService userResolver;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IndexController" /> class.
+        /// </summary>
+        /// <param name="userService">The user service.</param>
+        /// <param name="userResolver">The user resolver.</param>
+        public IndexController(IUserService userService, UserResolverService userResolver)
+        {
+            this.userService = userService;
+            this.userResolver = userResolver;
+        }
+
         /// <summary>
         /// Gets this service health status.
         /// </summary>
@@ -19,6 +35,21 @@ namespace PersonalMoney.Api.Controllers
         public ActionResult Get()
         {
             return Ok("Service active");
+        }
+
+        /// <summary>
+        /// Create the user.
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult Post()
+        {
+            var user = new User
+            {
+                UserId = userResolver.GetUserId()
+            };
+            userService.CreateUser(user);
+            return Ok();
         }
 
         /// <summary>

@@ -19,7 +19,6 @@ namespace PersonalMoney.Api.Services.SubCategory
     {
         private readonly IMapper mapper;
         private readonly AppDbContext dataContext;
-        private readonly UserResolverService userResolver;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CategoryService" /> class.
@@ -35,7 +34,6 @@ namespace PersonalMoney.Api.Services.SubCategory
         {
             this.mapper = mapper;
             this.dataContext = dataContext;
-            this.userResolver = userResolver;
         }
 
         /// <inheritdoc />
@@ -44,7 +42,7 @@ namespace PersonalMoney.Api.Services.SubCategory
             var models = await dataContext.SubCategories
                 .Where(c => !c.IsDeleted)
                 .Where(c => c.CategoryId == categoryId)
-                .Where(c => c.UserId == userResolver.GetUserId())
+                .Where(c => c.UserId == UserId)
                 .ToListAsync();
 
             var viewModels = mapper.Map<IEnumerable<SubCategoryViewModel>>(models);
