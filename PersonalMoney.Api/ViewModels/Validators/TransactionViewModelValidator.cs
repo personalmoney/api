@@ -40,18 +40,22 @@ namespace PersonalMoney.Api.ViewModels.Validators
                         .WithMessage("Invalid Account");
 
                     RuleFor(c => c.AccountId)
-                        .NotEqual(c => c.ToAccountId)
+                        .NotEqual(c => c.ToAccountId.GetValueOrDefault())
                         .WithMessage("From and To Accounts should not be same");
                 });
 
             RuleFor(c => c.IsDeleted).Equal(false);
 
             RuleFor(c => c.ToAccountId)
+                .Empty()
+                .When(c => c.Type != TransactionType.Transfer);
+
+            RuleFor(c => c.ToAccountId)
                 .NotEmpty()
                 .When(c => c.Type == TransactionType.Transfer)
                 .DependentRules(() =>
                 {
-                    RuleFor(c => c.ToAccountId)
+                    RuleFor(c => c.ToAccountId.GetValueOrDefault())
                         .Must(CheckRecord<Account>)
                         .When(c => c.Type == TransactionType.Transfer)
                         .WithMessage("Invalid To Account");

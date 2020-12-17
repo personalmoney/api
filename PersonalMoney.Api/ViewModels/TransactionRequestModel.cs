@@ -33,7 +33,7 @@ namespace PersonalMoney.Api.ViewModels
         /// <value>
         /// To account.
         /// </value>
-        public int ToAccountId { get; set; }
+        public int? ToAccountId { get; set; }
 
         /// <summary>
         /// Gets or sets the sub category.
