@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using PersonalMoney.Api.Models;
@@ -63,7 +64,21 @@ namespace PersonalMoney.Api.Services
         public virtual async Task<IEnumerable<TViewModel>> Get()
         {
             var dbSet = dataContext.Set<TModel>();
-            return await GetData(dbSet);
+            return await GetProjectedData(dbSet);
+        }
+
+        /// <summary>
+        /// Gets the data.
+        /// </summary>
+        /// <param name="dbSet">The database set.</param>
+        /// <returns></returns>
+        protected async Task<IEnumerable<TViewModel>> GetProjectedData(IQueryable<TModel> dbSet)
+        {
+            return await dbSet
+                .Where(c => !c.IsDeleted)
+                .Where(c => c.UserId == UserId)
+                .ProjectTo<TViewModel>(mapper.ConfigurationProvider)
+                .ToListAsync();
         }
 
         /// <summary>

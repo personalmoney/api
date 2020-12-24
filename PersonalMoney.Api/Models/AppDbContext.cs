@@ -109,6 +109,20 @@ namespace PersonalMoney.Api.Models
         /// </value>
         public DbSet<User> Users { get; set; }
 
+        /// <inheritdoc />
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Account>()
+                .HasMany(c => c.Transactions)
+                .WithOne(c => c.Account);
+
+            modelBuilder.Entity<Account>()
+                .HasMany(c => c.ToTransactions)
+                .WithOne(c => c.ToAccount);
+
+            base.OnModelCreating(modelBuilder);
+        }
+
         #region SaveChanges
 
         /// <inheritdoc />

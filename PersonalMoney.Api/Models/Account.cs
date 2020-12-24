@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using PersonalMoney.Api.Models.Base;
 
 namespace PersonalMoney.Api.Models
@@ -23,7 +24,7 @@ namespace PersonalMoney.Api.Models
         /// <value>
         /// The initial balance.
         /// </value>
-        public double InitialBalance { get; set; }
+        public decimal InitialBalance { get; set; }
 
         /// <summary>
         /// Gets or sets the minimum balance.
@@ -97,5 +98,21 @@ namespace PersonalMoney.Api.Models
         /// The type of the account.
         /// </value>
         public virtual AccountType AccountType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the transactions.
+        /// </summary>
+        /// <value>
+        /// The transactions.
+        /// </value>
+        public virtual IList<Transaction> Transactions { get; set; }
+
+        /// <summary>
+        /// Converts to transactions.
+        /// </summary>
+        /// <value>
+        /// To transactions.
+        /// </value>
+        public virtual IList<Transaction> ToTransactions { get; set; }
     }
 }
