@@ -41,7 +41,7 @@ namespace PersonalMoney.Api.ViewModels
         /// <value>
         /// The sub category.
         /// </value>
-        public int SubCategoryId { get; set; }
+        public int? SubCategoryId { get; set; }
 
         /// <summary>
         /// Gets or sets the payee.
@@ -49,7 +49,7 @@ namespace PersonalMoney.Api.ViewModels
         /// <value>
         /// The payee.
         /// </value>
-        public int PayeeId { get; set; }
+        public int? PayeeId { get; set; }
 
         /// <summary>
         /// Gets or sets the amount.
