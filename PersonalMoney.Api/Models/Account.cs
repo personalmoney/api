@@ -18,14 +18,6 @@ namespace PersonalMoney.Api.Models
         public int AccountTypeId { get; set; }
 
         /// <summary>
-        /// Gets or sets the balance.
-        /// </summary>
-        /// <value>
-        /// The balance.
-        /// </value>
-        public double? Balance { get; set; }
-
-        /// <summary>
         /// Gets or sets the initial balance.
         /// </summary>
         /// <value>
