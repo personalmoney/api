@@ -132,24 +132,28 @@ namespace PersonalMoney.Api.Models
                 return;
             }
 
-            int userId = 0;
+            int? userId = 0;
             if (userResolver != null)
             {
                 string id = userResolver.GetUserId();
-                userId = Users.First(c => c.UserId == id).Id;
+                userId = Users.FirstOrDefault(c => c.UserId == id)?.Id;
             }
 
             IEnumerable<EntityEntry<TimeModel>> shortEntries = ChangeTracker.Entries<TimeModel>();
             AddUserAndTime(shortEntries, userId);
         }
 
-        private static void AddUserAndTime(IEnumerable<EntityEntry<TimeModel>> entries, int id)
+        private static void AddUserAndTime(IEnumerable<EntityEntry<TimeModel>> entries, int? id)
         {
             foreach (EntityEntry<TimeModel> item in entries)
             {
                 var currentTime = DateTime.UtcNow;
                 item.Entity.UpdatedTime = currentTime;
-                item.Entity.UserId = id;
+
+                if (id.HasValue)
+                {
+                    item.Entity.UserId = id.Value;
+                }
 
                 if (item.Entity.Id == 0)
                 {
