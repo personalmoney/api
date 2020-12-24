@@ -25,9 +25,11 @@ namespace PersonalMoney.Api
         /// <returns></returns>
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration(options =>
+                .ConfigureAppConfiguration((context, options) =>
                 {
+                    IHostEnvironment env = context.HostingEnvironment;
                     options.AddJsonFile("appsettings.json", false, true);
+                    options.AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true);
                     options.AddEnvironmentVariables();
                     options.AddCommandLine(args);
                 })

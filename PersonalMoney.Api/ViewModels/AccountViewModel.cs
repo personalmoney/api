@@ -14,7 +14,7 @@ namespace PersonalMoney.Api.ViewModels
         /// <value>
         /// The type of the account.
         /// </value>
-        public string AccountType { get; set; }
+        public int AccountTypeId { get; set; }
 
         /// <summary>
         /// Gets or sets the balance.
@@ -38,7 +38,7 @@ namespace PersonalMoney.Api.ViewModels
         /// <value>
         /// The minimum balance.
         /// </value>
-        public decimal MinimumBalance { get; set; }
+        public double MinimumBalance { get; set; }
 
         /// <summary>
         /// Gets or sets the credit limit.
@@ -46,7 +46,7 @@ namespace PersonalMoney.Api.ViewModels
         /// <value>
         /// The credit limit.
         /// </value>
-        public decimal CreditLimit { get; set; }
+        public double CreditLimit { get; set; }
 
         /// <summary>
         /// Gets or sets the payment date.
@@ -62,7 +62,7 @@ namespace PersonalMoney.Api.ViewModels
         /// <value>
         /// The interest rate.
         /// </value>
-        public decimal InterestRate { get; set; }
+        public double InterestRate { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether [include balance].

@@ -1,6 +1,4 @@
-﻿using Google.Cloud.Firestore;
-
-namespace PersonalMoney.Api.Models.Base
+﻿namespace PersonalMoney.Api.Models.Base
 {
     /// <summary>
     /// User Model
@@ -14,7 +12,14 @@ namespace PersonalMoney.Api.Models.Base
         /// <value>
         /// The user identifier.
         /// </value>
-        [FirestoreProperty("userId")]
-        public string UserId { get; set; }
+        public int UserId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the user.
+        /// </summary>
+        /// <value>
+        /// The user.
+        /// </value>
+        public User User { get; set; }
     }
 }

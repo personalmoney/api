@@ -1,9 +1,10 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
-using PersonalMoney.Api.Helpers;
-using PersonalMoney.Api.Services.Category;
-using PersonalMoney.Api.Services.FireStore;
+using Microsoft.EntityFrameworkCore;
+using PersonalMoney.Api.Models;
+using PersonalMoney.Api.Services;
 
 namespace PersonalMoney.Api.ViewModels.Validators
 {
@@ -11,27 +12,19 @@ namespace PersonalMoney.Api.ViewModels.Validators
     /// SubCategory ViewModel
     /// </summary>
     /// <seealso cref="NameValidator{TModel, TViewModel}" />
-    public class SubCategoryViewModelValidator : NameValidator<Models.SubCategory, SubCategoryViewModel>
+    public class SubCategoryViewModelValidator : NameValidator<SubCategory, SubCategoryViewModel>
     {
-        private readonly ICategoryService categoryService;
-
-        /// <inheritdoc />
-        public override string CollectionName { get; protected set; }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SubCategoryViewModelValidator" /> class.
         /// </summary>
-        /// <param name="fireStoreService">The fire store service.</param>
-        /// <param name="categoryService">The category service.</param>
-        public SubCategoryViewModelValidator(IFireStoreService fireStoreService, ICategoryService categoryService)
-            : base(fireStoreService, 50)
+        /// <param name="dbContext">The database context.</param>
+        /// <param name="userResolver">The user resolver.</param>
+        public SubCategoryViewModelValidator(AppDbContext dbContext, UserResolverService userResolver)
+            : base(dbContext, userResolver, 50)
         {
-            this.categoryService = categoryService;
-
             RuleFor(c => c.CategoryId)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
-                .MaximumLength(50)
                 .MustAsync(CheckCategory)
                 .WithMessage(c => "Invalid Parent category");
         }
@@ -39,17 +32,38 @@ namespace PersonalMoney.Api.ViewModels.Validators
         /// <inheritdoc />
         protected override async Task<bool> CheckName(SubCategoryViewModel model, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrEmpty(model.CategoryId))
+            if (model.CategoryId <= 0)
             {
                 return false;
             }
-            CollectionName = $"{CollectionNames.Categories}/{model.CategoryId}/{CollectionNames.SubCategories}";
-            return await base.CheckName(model, cancellationToken);
+
+            var query = DbContext.SubCategories
+                .AsNoTracking()
+                .Where(c => !c.IsDeleted)
+                .Where(c => c.CategoryId == model.CategoryId)
+                .Where(c => c.Name == model.Name)
+                .Where(c => c.User.UserId == UserResolver.GetUserId());
+
+            if (model.Id <= 0)
+            {
+                return !await query.AnyAsync(cancellationToken);
+            }
+            else
+            {
+                return !await query
+                    .Where(c => c.Id != model.Id)
+                    .AnyAsync(cancellationToken);
+            }
         }
 
-        private async Task<bool> CheckCategory(string categoryId, CancellationToken cancellationToken)
+        private async Task<bool> CheckCategory(int categoryId, CancellationToken cancellationToken)
         {
-            return await categoryService.Get(categoryId) != null;
+            return await DbContext.Categories
+                .AsNoTracking()
+                .Where(c => !c.IsDeleted)
+                .Where(c => c.Id == categoryId)
+                .Where(c => c.User.UserId == UserResolver.GetUserId())
+                .AnyAsync(cancellationToken);
         }
     }
 }

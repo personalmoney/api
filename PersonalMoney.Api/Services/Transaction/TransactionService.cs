@@ -1,87 +1,82 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Google.Cloud.Firestore;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using PersonalMoney.Api.Helpers;
-using PersonalMoney.Api.Services.FireStore;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
+using PersonalMoney.Api.Models;
 using PersonalMoney.Api.ViewModels;
 using PersonalMoney.Api.ViewModels.Base;
 
 namespace PersonalMoney.Api.Services.Transaction
 {
-    internal class TransactionService : BaseService<Models.Transaction, TransactionViewModel>, ITransactionService
+    internal class TransactionService : BaseService<Models.Transaction, TransactionRequestModel>, ITransactionService
     {
         private readonly IMapper mapper;
-        private readonly string userId;
-        private readonly FirestoreDb db;
+        private readonly AppDbContext dataContext;
 
-        /// <inheritdoc />
-        public override string CollectionName { get; protected set; } = CollectionNames.Transactions;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TransactionService"/> class.
+        /// </summary>
+        /// <param name="mapper">The mapper.</param>
+        /// <param name="dataContext">The database context</param>
+        /// <param name="userResolver">The user resolver service</param>
         public TransactionService(IMapper mapper,
-            IFireStoreService fireStore,
-            IConfiguration configuration,
-            IHttpContextAccessor httpAccess)
-          : base(mapper, fireStore)
+            AppDbContext dataContext,
+            UserResolverService userResolver)
+          : base(mapper, dataContext, userResolver)
         {
             this.mapper = mapper;
-            userId = httpAccess.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "user_id")!.Value;
-            if (string.IsNullOrEmpty(userId))
-            {
-                throw new ArgumentException("Invalid user");
-            }
-            db = FirestoreDb.Create(configuration["FireBaseId"]);
+            this.dataContext = dataContext;
         }
 
         /// <inheritdoc />
-        public async Task<PagingResponse<TransactionViewModel>> Get(TransactionSearchViewModel request)
+        public new async Task<TransactionViewModel> Get(int id)
         {
-            CollectionReference collectionRef = db.Collection(CollectionNames.Transactions);
-            var query = collectionRef.WhereEqualTo("userId", userId)
-             .WhereEqualTo("isDeleted", false)
-             .Limit(request.PageSize)
-             .StartAfter(request.PageSize * request.CurrentPage);
-
-            QuerySnapshot snapshot = await query.GetSnapshotAsync();
-            var records = snapshot.Documents.Select(c => c.ConvertToWithId<Models.Transaction>());
-            var viewModels = mapper.Map<IEnumerable<TransactionViewModel>>(records);
-
-            PagingResponse<TransactionViewModel> pagingResponse = new PagingResponse<TransactionViewModel>(viewModels)
-            {
-                PageSize = request.PageSize,
-                CurrentPage = request.CurrentPage,
-                TotalRecords = 200
-            };
-            return pagingResponse;
+            return await dataContext.Transactions
+                .Where(c => !c.IsDeleted)
+                .Where(c => c.UserId == UserId)
+                .ProjectTo<TransactionViewModel>(mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
 
         /// <inheritdoc />
-        public async Task<PagingResponse<TransactionViewModel>> GetModified(TransactionSearchViewModel request)
+        public PagingResponse<TransactionViewModel> Get(TransactionSearchViewModel request)
         {
-            CollectionReference collectionRef = db.Collection(CollectionNames.Transactions);
-            var query = collectionRef.WhereEqualTo("userId", userId)
-                .Limit(request.PageSize)
-                .StartAfter(request.PageSize * request.CurrentPage);
+            var query = dataContext.Transactions
+                .Where(c => !c.IsDeleted)
+                .Where(c => c.UserId == UserId)
+                .ProjectTo<TransactionViewModel>(mapper.ConfigurationProvider);
 
-            if (request.LastSyncTime.HasValue)
-            {
-                query = query.WhereGreaterThanOrEqualTo("updateTime", request.LastSyncTime.Value.ToUniversalTime());
-            }
-            QuerySnapshot snapshot = await query.GetSnapshotAsync();
-            var records = snapshot.Documents.Select(c => c.ConvertToWithId<Models.Transaction>());
-            var viewModels = mapper.Map<IEnumerable<TransactionViewModel>>(records);
+            var response = PagingResponse(request, query);
 
-            PagingResponse<TransactionViewModel> pagingResponse = new PagingResponse<TransactionViewModel>(viewModels)
+            return response;
+        }
+
+        /// <inheritdoc />
+        public PagingResponse<TransactionRequestModel> GetModified(TransactionSearchViewModel request)
+        {
+            var query = dataContext.Transactions
+                .Where(c => c.UpdatedTime > request.LastSyncTime)
+                .Where(c => c.UserId == UserId)
+                .ProjectTo<TransactionRequestModel>(mapper.ConfigurationProvider);
+
+            var response = PagingResponse(request, query);
+
+            return response;
+        }
+
+        private static PagingResponse<T> PagingResponse<T>(PagingRequest request, IQueryable<T> query)
+        {
+            var response = new PagingResponse<T>
             {
-                PageSize = request.PageSize,
                 CurrentPage = request.CurrentPage,
-                TotalRecords = 200
+                PageSize = request.PageSize,
+                TotalRecords = query.Count(),
+                Records = query
+                    .Skip((request.CurrentPage - 1) * request.PageSize)
+                    .Take(request.PageSize)
             };
-            return pagingResponse;
+            return response;
         }
     }
 }

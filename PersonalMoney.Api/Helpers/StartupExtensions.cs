@@ -3,17 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using AspNetCoreRateLimit;
-using Google.Cloud.Firestore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using PersonalMoney.Api.Models.Base;
+using PersonalMoney.Api.Services;
 using PersonalMoney.Api.Services.Account;
 using PersonalMoney.Api.Services.AccountType;
 using PersonalMoney.Api.Services.Category;
-using PersonalMoney.Api.Services.FireStore;
 using PersonalMoney.Api.Services.Payee;
 using PersonalMoney.Api.Services.SubCategory;
 using PersonalMoney.Api.Services.Tag;
@@ -32,7 +30,7 @@ namespace PersonalMoney.Api.Helpers
         public static void AddLocalServices(this IServiceCollection services, string myAllowSpecificOrigins, IConfiguration configuration)
         {
             services.AddHttpContextAccessor();
-            services.AddScoped<IFireStoreService, FireStoreService>();
+            services.AddTransient<UserResolverService>();
             services.AddScoped<IAccountTypeService, AccountTypeService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ICategoryService, CategoryService>();
@@ -40,6 +38,7 @@ namespace PersonalMoney.Api.Helpers
             services.AddScoped<IPayeeService, PayeeService>();
             services.AddScoped<ITagService, TagService>();
             services.AddScoped<ITransactionService, TransactionService>();
+            services.AddScoped<IUserService, UserService>();
 
             services.AddCors(options =>
             {
@@ -145,19 +144,6 @@ namespace PersonalMoney.Api.Helpers
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Personal money API V1");
                 c.RoutePrefix = string.Empty;
             });
-        }
-
-        /// <summary>
-        /// Converts the snapshot to model with identifier.
-        /// </summary>
-        /// <typeparam name="T">The model</typeparam>
-        /// <param name="snapshot">The snapshot.</param>
-        /// <returns>The model</returns>
-        public static T ConvertToWithId<T>(this DocumentSnapshot snapshot) where T : BaseModel
-        {
-            var result = snapshot.ConvertTo<T>();
-            result.Id = snapshot.Id;
-            return result;
         }
     }
 }

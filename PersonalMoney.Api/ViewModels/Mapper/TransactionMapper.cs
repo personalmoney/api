@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AutoMapper;
+using PersonalMoney.Api.Helpers;
 using PersonalMoney.Api.Models;
 
 namespace PersonalMoney.Api.ViewModels.Mapper
@@ -15,24 +17,24 @@ namespace PersonalMoney.Api.ViewModels.Mapper
         public TransactionMapper()
         {
             //Viewmodel to domain
-            CreateMap<TransactionViewModel, Transaction>()
-                .ForMember(dest => dest.AccountId, source => source.MapFrom(c => c.Account))
-                .ForMember(dest => dest.ToAccountId, source => source.MapFrom(c => c.ToAccount))
-                .ForMember(dest => dest.SubCategoryId, source => source.MapFrom(c => c.SubCategory))
-                .ForMember(dest => dest.PayeeId, source => source.MapFrom(c => c.Payee))
+            CreateMap<TransactionRequestModel, Transaction>()
                 .ForMember(dest => dest.Date, source => source.MapFrom(c => c.Date.ToUniversalTime()))
-                .ForMember(dest => dest.Tags, source => source.MapFrom(c => c.Tags.Select(d => new TransactionTag { TagId = d })))
+                .ForMember(dest => dest.Tags, source => source.MapFrom(c => c.TagIds.Select(d => new TransactionTag { TagId = d })))
                 .ForMember(dest => dest.UpdatedTime, source => source.Ignore())
                 .ForMember(dest => dest.CreatedTime, source => source.Ignore());
 
             //Domain to viewmodel
+            CreateMap<Transaction, TransactionRequestModel>()
+                .ForMember(dest => dest.Type, source => source.MapFrom(c => Enum.Parse<TransactionType>(c.Type)))
+                .ForMember(dest => dest.TagIds, source => source.MapFrom(c => c.Tags.Select(tag => tag.TagId)));
+
+            //Domain to viewmodel
             CreateMap<Transaction, TransactionViewModel>()
-                .ForMember(dest => dest.Account, source => source.MapFrom(c => c.AccountId))
-                .ForMember(dest => dest.SubCategory, source => source.MapFrom(c => c.SubCategoryId))
-                .ForMember(dest => dest.Payee, source => source.MapFrom(c => c.PayeeId))
-                .ForMember(dest => dest.Date, source => source.MapFrom(c => c.Date.GetValueOrDefault().Date))
-                .ForMember(dest => dest.Tags, source => source.MapFrom(c => c.Tags.Select(c => c.TagId)))
-                .ForMember(dest => dest.ToAccount, source => source.MapFrom(c => c.ToAccountId));
+                .ForMember(dest => dest.Type, source => source.MapFrom(c => Enum.Parse<TransactionType>(c.Type)))
+                .ForMember(dest => dest.AccountName, source => source.MapFrom(c => c.Account.Name))
+                .ForMember(dest => dest.CategoryName, source => source.MapFrom(c => c.SubCategory.Category.Name))
+                .ForMember(dest => dest.SubCategoryName, source => source.MapFrom(c => c.SubCategory.Name))
+                .ForMember(dest => dest.PayeeName, source => source.MapFrom(c => c.Payee.Name));
         }
     }
 }

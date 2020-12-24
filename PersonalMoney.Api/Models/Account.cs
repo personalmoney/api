@@ -1,4 +1,5 @@
-﻿using Google.Cloud.Firestore;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using PersonalMoney.Api.Models.Base;
 
 namespace PersonalMoney.Api.Models
@@ -7,7 +8,6 @@ namespace PersonalMoney.Api.Models
     /// Account Model
     /// </summary>
     /// <seealso cref="NameModel" />
-    [FirestoreData]
     public class Account : NameModel
     {
         /// <summary>
@@ -16,17 +16,7 @@ namespace PersonalMoney.Api.Models
         /// <value>
         /// The type.
         /// </value>
-        [FirestoreProperty("type")]
-        public string Type { get; set; }
-
-        /// <summary>
-        /// Gets or sets the balance.
-        /// </summary>
-        /// <value>
-        /// The balance.
-        /// </value>
-        [FirestoreProperty("balance")]
-        public double? Balance { get; set; }
+        public int AccountTypeId { get; set; }
 
         /// <summary>
         /// Gets or sets the initial balance.
@@ -34,8 +24,7 @@ namespace PersonalMoney.Api.Models
         /// <value>
         /// The initial balance.
         /// </value>
-        [FirestoreProperty("initialBalance")]
-        public double InitialBalance { get; set; }
+        public decimal InitialBalance { get; set; }
 
         /// <summary>
         /// Gets or sets the minimum balance.
@@ -43,7 +32,6 @@ namespace PersonalMoney.Api.Models
         /// <value>
         /// The minimum balance.
         /// </value>
-        [FirestoreProperty("minimumBalance")]
         public double MinimumBalance { get; set; }
 
         /// <summary>
@@ -52,7 +40,6 @@ namespace PersonalMoney.Api.Models
         /// <value>
         /// The credit limit.
         /// </value>
-        [FirestoreProperty("creditLimit")]
         public double CreditLimit { get; set; }
 
         /// <summary>
@@ -61,7 +48,6 @@ namespace PersonalMoney.Api.Models
         /// <value>
         /// The payment date.
         /// </value>
-        [FirestoreProperty("paymentDate")]
         public int? PaymentDate { get; set; }
 
         /// <summary>
@@ -70,7 +56,6 @@ namespace PersonalMoney.Api.Models
         /// <value>
         /// The interest rate.
         /// </value>
-        [FirestoreProperty("interestRate")]
         public double InterestRate { get; set; }
 
         /// <summary>
@@ -79,7 +64,6 @@ namespace PersonalMoney.Api.Models
         /// <value>
         ///   <c>true</c> to include in balance calculation; otherwise, <c>false</c>.
         /// </value>
-        [FirestoreProperty("includeInBalance")]
         public bool IncludeInBalance { get; set; }
 
         /// <summary>
@@ -88,7 +72,6 @@ namespace PersonalMoney.Api.Models
         /// <value>
         ///   <c>true</c> if this instance is active; otherwise, <c>false</c>.
         /// </value>
-        [FirestoreProperty("isActive")]
         public bool IsActive { get; set; }
 
         /// <summary>
@@ -97,7 +80,6 @@ namespace PersonalMoney.Api.Models
         /// <value>
         ///   <c>true</c> if need to exclude from this account dashboard; otherwise, <c>false</c>.
         /// </value>
-        [FirestoreProperty("excludeFromDashboard")]
         public bool ExcludeFromDashboard { get; set; }
 
         /// <summary>
@@ -106,7 +88,31 @@ namespace PersonalMoney.Api.Models
         /// <value>
         /// The notes.
         /// </value>
-        [FirestoreProperty("notes")]
+        [MaxLength(500)]
         public string Notes { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type of the account.
+        /// </summary>
+        /// <value>
+        /// The type of the account.
+        /// </value>
+        public virtual AccountType AccountType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the transactions.
+        /// </summary>
+        /// <value>
+        /// The transactions.
+        /// </value>
+        public virtual IList<Transaction> Transactions { get; set; }
+
+        /// <summary>
+        /// Converts to transactions.
+        /// </summary>
+        /// <value>
+        /// To transactions.
+        /// </value>
+        public virtual IList<Transaction> ToTransactions { get; set; }
     }
 }

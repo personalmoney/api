@@ -1,5 +1,4 @@
-﻿using Google.Cloud.Firestore;
-using PersonalMoney.Api.Models.Base;
+﻿using PersonalMoney.Api.Models.Base;
 
 namespace PersonalMoney.Api.Models
 {
@@ -7,7 +6,6 @@ namespace PersonalMoney.Api.Models
     /// Tag model
     /// </summary>
     /// <seealso cref="NameModel" />
-    [FirestoreData]
     public class Tag : NameModel
     {
     }
