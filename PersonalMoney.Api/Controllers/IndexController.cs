@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PersonalMoney.Api.Models;
 using PersonalMoney.Api.Services;
+using PersonalMoney.Api.ViewModels;
 
 namespace PersonalMoney.Api.Controllers
 {
@@ -42,13 +42,10 @@ namespace PersonalMoney.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult Post()
+        public ActionResult Post(UserViewModel model)
         {
-            var user = new User
-            {
-                UserId = userResolver.GetUserId()
-            };
-            userService.CreateUser(user);
+            model.UserId = userResolver.GetUserId();
+            userService.CreateUser(model);
             return Ok();
         }
 
