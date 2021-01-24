@@ -45,6 +45,8 @@ namespace PersonalMoney.Api.Services.Transaction
             var query = dataContext.Transactions
                 .Where(c => !c.IsDeleted)
                 .Where(c => c.UserId == UserId)
+                .OrderByDescending(c => c.Date)
+                .ThenByDescending(c => c.Id)
                 .ProjectTo<TransactionViewModel>(mapper.ConfigurationProvider);
 
             var response = PagingResponse(request, query);
