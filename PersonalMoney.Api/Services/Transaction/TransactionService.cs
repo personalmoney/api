@@ -47,6 +47,7 @@ namespace PersonalMoney.Api.Services.Transaction
 `t`.`Type`, `t`.`UpdatedTime`, `t`.`UserId`, getTotal({0},{1},t.date,t.AccountId,t.ToAccountId) as Balance FROM `Transactions` AS `t`", request.AccountId, UserId)
                 .Where(c => !c.IsDeleted)
                 .Where(c => c.UserId == UserId)
+                .Where(c => c.AccountId == request.AccountId || c.ToAccountId == request.AccountId)
                 .OrderByDescending(c => c.Date)
                 .ThenByDescending(c => c.Id)
                 .ProjectTo<TransactionViewModel>(mapper.ConfigurationProvider);
