@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using PersonalMoney.Api.Models.Base;
 
 namespace PersonalMoney.Api.Models
@@ -120,6 +121,14 @@ namespace PersonalMoney.Api.Models
         /// </value>
         [MaxLength(100)]
         public string Number { get; set; }
+
+        /// <summary>
+        /// Gets or sets the total.
+        /// </summary>
+        /// <value>
+        /// The total.
+        /// </value>
+        public decimal Balance { get; set; }
 
         /// <summary>
         /// Gets the sub transactions.
