@@ -32,7 +32,8 @@ select
         t2.`Date` <= transDate
         and t2.UserId = userId
         and NOT (`t2`.`IsDeleted`)
-        and (fromAccountId = t2.AccountId or toAccountId = t2.AccountId or fromAccountId = t2.ToAccountId);
+        and (fromAccountId = t2.AccountId or toAccountId = t2.AccountId or fromAccountId = t2.ToAccountId or toAccountId = t2.ToAccountId)
+        AND (accountId = t2.AccountId or accountId = t2.ToAccountId);
 
 RETURN _total;
 
