@@ -16,5 +16,13 @@ namespace PersonalMoney.Api.ViewModels
         /// The last synchronize time.
         /// </value>
         public DateTime? LastSyncTime { get; set; }
+
+        /// <summary>
+        /// Gets or sets the account identifier.
+        /// </summary>
+        /// <value>
+        /// The account identifier.
+        /// </value>
+        public int AccountId { get; set; }
     }
 }

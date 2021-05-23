@@ -159,7 +159,7 @@ namespace PersonalMoney.Api.Models
 
         private static void AddUserAndTime(IEnumerable<EntityEntry<TimeModel>> entries, int? id)
         {
-            foreach (EntityEntry<TimeModel> item in entries)
+            foreach (EntityEntry<TimeModel> item in entries.Where(c => c.State != EntityState.Unchanged))
             {
                 var currentTime = DateTime.UtcNow;
                 item.Entity.UpdatedTime = currentTime;
@@ -172,6 +172,10 @@ namespace PersonalMoney.Api.Models
                 if (item.Entity.Id == 0)
                 {
                     item.Entity.CreatedTime = currentTime;
+                }
+                else
+                {
+                    item.Property(x => x.CreatedTime).IsModified = false;
                 }
             }
         }

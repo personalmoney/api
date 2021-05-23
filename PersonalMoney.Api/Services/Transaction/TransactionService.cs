@@ -42,9 +42,14 @@ namespace PersonalMoney.Api.Services.Transaction
         /// <inheritdoc />
         public PagingResponse<TransactionViewModel> Get(TransactionSearchViewModel request)
         {
-            var query = dataContext.Transactions
+            var query = dataContext.Transactions.FromSqlRaw(@"SELECT `t`.`AccountId`,`t`.`Amount`, `t`.`CreatedTime`, COALESCE(`t`.`Date`, '0001-01-01 00:00:00.000000') AS `c`,
+`t`.`Id`, `t`.`IsDeleted`, `t`.`Notes`, `t`.`PayeeId`, `t`.`SubCategoryId`, `t`.`ToAccountId`, `t`.`Date`, `t`.`Number`, `t`.`Status`, `t`.`ToAmount`,
+`t`.`Type`, `t`.`UpdatedTime`, `t`.`UserId`, getTotal({0},{1},t.date,t.AccountId,t.ToAccountId) as Balance FROM `Transactions` AS `t`", request.AccountId, UserId)
                 .Where(c => !c.IsDeleted)
                 .Where(c => c.UserId == UserId)
+                .Where(c => c.AccountId == request.AccountId || c.ToAccountId == request.AccountId)
+                .OrderByDescending(c => c.Date)
+                .ThenByDescending(c => c.Id)
                 .ProjectTo<TransactionViewModel>(mapper.ConfigurationProvider);
 
             var response = PagingResponse(request, query);
@@ -63,6 +68,27 @@ namespace PersonalMoney.Api.Services.Transaction
             var response = PagingResponse(request, query);
 
             return response;
+        }
+
+        /// <inheritdoc cref="BaseService{TModel,TViewModel}" />
+        public override async Task<TransactionRequestModel> Update(int id, TransactionRequestModel model)
+        {
+            var tags = dataContext.TransactionTags
+                .Where(c => c.TransactionId == model.Id)
+                .ToList();
+
+            if (tags.Count > 0)
+            {
+                var tagsToDelete = tags.Where(c => !model.TagIds.Contains(c.TagId)).ToList();
+                dataContext.TransactionTags.RemoveRange(tagsToDelete);
+
+                foreach (var tag in tags.Except(tagsToDelete))
+                {
+                    model.TagIds.Remove(tag.TagId);
+                }
+            }
+
+            return await base.Update(id, model);
         }
 
         private static PagingResponse<T> PagingResponse<T>(PagingRequest request, IQueryable<T> query)

@@ -1,4 +1,4 @@
-﻿using PersonalMoney.Api.Models;
+﻿using PersonalMoney.Api.ViewModels;
 
 namespace PersonalMoney.Api.Services
 {
@@ -11,6 +11,6 @@ namespace PersonalMoney.Api.Services
         /// Creates the user.
         /// </summary>
         /// <param name="user">The user.</param>
-        void CreateUser(User user);
+        void CreateUser(UserViewModel user);
     }
 }

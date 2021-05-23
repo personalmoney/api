@@ -18,8 +18,8 @@ namespace PersonalMoney.Api.ViewModels.Mapper
         {
             //Viewmodel to domain
             CreateMap<AccountViewModel, Account>()
-                .ForMember(dest => dest.UpdatedTime, source => source.Ignore())
-                .ForMember(dest => dest.CreatedTime, source => source.Ignore());
+                .ForMember(dest => dest.UpdatedTime, source => source.UseDestinationValue())
+                .ForMember(dest => dest.CreatedTime, source => source.UseDestinationValue());
             //Domain to viewmodel
             CreateMap<Account, AccountViewModel>()
                 .ForMember(dest => dest.UpdatedTime, source => source.MapFrom(c => c.UpdatedTime))
@@ -27,13 +27,13 @@ namespace PersonalMoney.Api.ViewModels.Mapper
                 .ForMember(c => c.Balance, source =>
                     source.MapFrom(d =>
                         d.InitialBalance +
-                        (d.Transactions.Any() ? d.Transactions
+                        (d.Transactions
                             .Where(c => !c.IsDeleted)
-                            .Sum(c => c.Type == TransactionType.Deposit.ToString() ? c.Amount : c.Amount * -1) : 0)
+                            .Sum(c => c.Type == TransactionType.Deposit.ToString() ? c.Amount : c.Amount * -1) ?? 0)
                         +
-                        (d.ToTransactions.Any() ? d.ToTransactions
+                        (d.ToTransactions
                             .Where(c => !c.IsDeleted)
-                            .Sum(c => c.Amount) : 0)));
+                            .Sum(c => c.Amount) ?? 0)));
         }
     }
 }

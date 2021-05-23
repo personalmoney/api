@@ -57,6 +57,14 @@ namespace PersonalMoney.Api.ViewModels
         public string PayeeName { get; set; }
 
         /// <summary>
+        /// Gets or sets the total.
+        /// </summary>
+        /// <value>
+        /// The total.
+        /// </value>
+        public decimal Balance { get; set; }
+
+        /// <summary>
         /// Gets or sets the tags.
         /// </summary>
         /// <value>

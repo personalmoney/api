@@ -84,7 +84,7 @@ namespace PersonalMoney.Api.Models
         /// <value>
         /// The amount.
         /// </value>
-        public decimal Amount { get; set; }
+        public decimal? Amount { get; set; }
 
         /// <summary>
         /// Converts to amount.
@@ -120,6 +120,14 @@ namespace PersonalMoney.Api.Models
         /// </value>
         [MaxLength(100)]
         public string Number { get; set; }
+
+        /// <summary>
+        /// Gets or sets the total.
+        /// </summary>
+        /// <value>
+        /// The total.
+        /// </value>
+        public decimal Balance { get; set; }
 
         /// <summary>
         /// Gets the sub transactions.
