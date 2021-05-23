@@ -12,7 +12,8 @@ CREATE FUNCTION getTotal(
     `userId` INT,
     `transDate` DATETIME,
     `fromAccountId` INT,
-    `toAccountId` INT
+    `toAccountId` INT,
+    `id` INT
 )
 RETURNS decimal(10,2)
 DETERMINISTIC
@@ -29,7 +30,7 @@ select
     from
         Transactions t2
     where
-        t2.`Date` <= transDate
+        (t2.`Date` < transDate OR (t2.`Date` = transDate and t2.id <= id))
         and t2.UserId = userId
         and NOT (`t2`.`IsDeleted`)
         and (fromAccountId = t2.AccountId or toAccountId = t2.AccountId or fromAccountId = t2.ToAccountId or toAccountId = t2.ToAccountId)

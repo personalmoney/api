@@ -42,19 +42,26 @@ namespace PersonalMoney.Api.Services.Transaction
         /// <inheritdoc />
         public PagingResponse<TransactionViewModel> Get(TransactionSearchViewModel request)
         {
-            var query = dataContext.Transactions.FromSqlRaw(@"SELECT `t`.`AccountId`,`t`.`Amount`, `t`.`CreatedTime`, COALESCE(`t`.`Date`, '0001-01-01 00:00:00.000000') AS `c`,
+            var raw = dataContext.Transactions.FromSqlRaw(@"SELECT `t`.`AccountId`,`t`.`Amount`, `t`.`CreatedTime`, COALESCE(`t`.`Date`, '0001-01-01 00:00:00.000000') AS `c`,
 `t`.`Id`, `t`.`IsDeleted`, `t`.`Notes`, `t`.`PayeeId`, `t`.`SubCategoryId`, `t`.`ToAccountId`, `t`.`Date`, `t`.`Number`, `t`.`Status`, `t`.`ToAmount`,
-`t`.`Type`, `t`.`UpdatedTime`, `t`.`UserId`, getTotal({0},{1},t.date,t.AccountId,t.ToAccountId) as Balance FROM `Transactions` AS `t`", request.AccountId, UserId)
+`t`.`Type`, `t`.`UpdatedTime`, `t`.`UserId`, getTotal({0},{1},t.date,t.AccountId,t.ToAccountId,t.Id) as Balance FROM `Transactions` AS `t`", request.AccountId, UserId);
+
+            var dataQuery = AddFilters(request, raw);
+            var countQuery = AddFilters(request, dataContext.Transactions);
+            var response = PagingResponse(request, countQuery, dataQuery);
+
+            return response;
+        }
+
+        private IQueryable<TransactionViewModel> AddFilters(TransactionSearchViewModel request, IQueryable<Models.Transaction> transactions)
+        {
+            return transactions
                 .Where(c => !c.IsDeleted)
                 .Where(c => c.UserId == UserId)
                 .Where(c => c.AccountId == request.AccountId || c.ToAccountId == request.AccountId)
                 .OrderByDescending(c => c.Date)
                 .ThenByDescending(c => c.Id)
                 .ProjectTo<TransactionViewModel>(mapper.ConfigurationProvider);
-
-            var response = PagingResponse(request, query);
-
-            return response;
         }
 
         /// <inheritdoc />
@@ -65,7 +72,7 @@ namespace PersonalMoney.Api.Services.Transaction
                 .Where(c => c.UserId == UserId)
                 .ProjectTo<TransactionRequestModel>(mapper.ConfigurationProvider);
 
-            var response = PagingResponse(request, query);
+            var response = PagingResponse(request, query, query);
 
             return response;
         }
@@ -91,14 +98,14 @@ namespace PersonalMoney.Api.Services.Transaction
             return await base.Update(id, model);
         }
 
-        private static PagingResponse<T> PagingResponse<T>(PagingRequest request, IQueryable<T> query)
+        private static PagingResponse<T> PagingResponse<T>(PagingRequest request, IQueryable<T> countQuery, IQueryable<T> dataQuery)
         {
             var response = new PagingResponse<T>
             {
                 CurrentPage = request.CurrentPage,
                 PageSize = request.PageSize,
-                TotalRecords = query.Count(),
-                Records = query
+                TotalRecords = countQuery.Count(),
+                Records = dataQuery
                     .Skip((request.CurrentPage - 1) * request.PageSize)
                     .Take(request.PageSize)
             };
