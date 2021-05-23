@@ -18,8 +18,8 @@ namespace PersonalMoney.Api.ViewModels.Mapper
         {
             //Viewmodel to domain
             CreateMap<AccountViewModel, Account>()
-                .ForMember(dest => dest.UpdatedTime, source => source.Ignore())
-                .ForMember(dest => dest.CreatedTime, source => source.Ignore());
+                .ForMember(dest => dest.UpdatedTime, source => source.UseDestinationValue())
+                .ForMember(dest => dest.CreatedTime, source => source.UseDestinationValue());
             //Domain to viewmodel
             CreateMap<Account, AccountViewModel>()
                 .ForMember(dest => dest.UpdatedTime, source => source.MapFrom(c => c.UpdatedTime))

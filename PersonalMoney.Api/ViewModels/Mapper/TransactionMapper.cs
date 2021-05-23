@@ -20,8 +20,8 @@ namespace PersonalMoney.Api.ViewModels.Mapper
             CreateMap<TransactionRequestModel, Transaction>()
                 .ForMember(dest => dest.Date, source => source.MapFrom(c => c.Date.ToUniversalTime()))
                 .ForMember(dest => dest.Tags, source => source.MapFrom(c => c.TagIds.Select(d => new TransactionTag { TagId = d })))
-                .ForMember(dest => dest.UpdatedTime, source => source.Ignore())
-                .ForMember(dest => dest.CreatedTime, source => source.Ignore());
+                .ForMember(dest => dest.UpdatedTime, source => source.UseDestinationValue())
+                .ForMember(dest => dest.CreatedTime, source => source.UseDestinationValue());
 
             //Domain to viewmodel
             CreateMap<Transaction, TransactionRequestModel>()
