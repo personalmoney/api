@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using PersonalMoney.Api.Models.Base;
 
 namespace PersonalMoney.Api.Models
@@ -85,7 +84,7 @@ namespace PersonalMoney.Api.Models
         /// <value>
         /// The amount.
         /// </value>
-        public decimal Amount { get; set; }
+        public decimal? Amount { get; set; }
 
         /// <summary>
         /// Converts to amount.
