@@ -70,6 +70,27 @@ namespace PersonalMoney.Api.Services.Transaction
             return response;
         }
 
+        /// <inheritdoc cref="BaseService{TModel,TViewModel}" />
+        public override async Task<TransactionRequestModel> Update(int id, TransactionRequestModel model)
+        {
+            var tags = dataContext.TransactionTags
+                .Where(c => c.TransactionId == model.Id)
+                .ToList();
+
+            if (tags.Count > 0)
+            {
+                var tagsToDelete = tags.Where(c => !model.TagIds.Contains(c.TagId)).ToList();
+                dataContext.TransactionTags.RemoveRange(tagsToDelete);
+
+                foreach (var tag in tags.Except(tagsToDelete))
+                {
+                    model.TagIds.Remove(tag.TagId);
+                }
+            }
+
+            return await base.Update(id, model);
+        }
+
         private static PagingResponse<T> PagingResponse<T>(PagingRequest request, IQueryable<T> query)
         {
             var response = new PagingResponse<T>
