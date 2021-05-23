@@ -173,6 +173,10 @@ namespace PersonalMoney.Api.Models
                 {
                     item.Entity.CreatedTime = currentTime;
                 }
+                else
+                {
+                    item.Property(x => x.CreatedTime).IsModified = false;
+                }
             }
         }
 
