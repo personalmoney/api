@@ -34,7 +34,8 @@ namespace PersonalMoney.Api.ViewModels.Mapper
                 .ForMember(dest => dest.AccountName, source => source.MapFrom(c => c.Account.Name))
                 .ForMember(dest => dest.CategoryName, source => source.MapFrom(c => c.SubCategory.Category.Name))
                 .ForMember(dest => dest.SubCategoryName, source => source.MapFrom(c => c.SubCategory.Name))
-                .ForMember(dest => dest.PayeeName, source => source.MapFrom(c => c.Payee.Name));
+                .ForMember(dest => dest.PayeeName, source => source.MapFrom(c => c.Payee.Name))
+                .ForMember(dest => dest.Balance, source => source.MapFrom(c => c.Type == "Transfer" ? c.Balance + c.ToAccount.InitialBalance : c.Balance + c.Account.InitialBalance));
         }
     }
 }
