@@ -48,7 +48,7 @@ namespace PersonalMoney.Api
                 .AddFluentValidation(c => c.RegisterValidatorsFromAssemblyContaining<Startup>());
 
             services.AddDbContext<AppDbContext>(options =>
-                options.UseMySQL(Configuration.GetConnectionString("DbContext")));
+                options.UseNpgsql(Configuration.GetConnectionString("DbContext")));
 
             services.AddSwaggerServices();
             services.AddAutoMapper(typeof(Startup));

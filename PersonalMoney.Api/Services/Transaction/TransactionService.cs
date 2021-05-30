@@ -42,9 +42,7 @@ namespace PersonalMoney.Api.Services.Transaction
         /// <inheritdoc />
         public PagingResponse<TransactionViewModel> Get(TransactionSearchViewModel request)
         {
-            var raw = dataContext.Transactions.FromSqlRaw(@"SELECT `t`.`AccountId`,`t`.`Amount`, `t`.`CreatedTime`, COALESCE(`t`.`Date`, '0001-01-01 00:00:00.000000') AS `c`,
-`t`.`Id`, `t`.`IsDeleted`, `t`.`Notes`, `t`.`PayeeId`, `t`.`SubCategoryId`, `t`.`ToAccountId`, `t`.`Date`, `t`.`Number`, `t`.`Status`, `t`.`ToAmount`,
-`t`.`Type`, `t`.`UpdatedTime`, `t`.`UserId`, getTotal({0},{1},t.date,t.AccountId,t.ToAccountId,t.Id) as Balance FROM `Transactions` AS `t`", request.AccountId, UserId)
+            var raw = dataContext.Transactions
                 .AsNoTracking();
 
             var dataQuery = AddFilters(request, raw);
